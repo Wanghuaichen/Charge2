@@ -2,7 +2,7 @@
 #include "message.h"
 
 
-static QueueHandle_t UsartRecMsgQueue;   //接收信息队列句柄
+ QueueHandle_t UsartRecMsgQueue;   //接收信息队列句柄
 static QueueHandle_t UsartSenMsgQueue;   //接收信息队列句柄
 
 
@@ -27,10 +27,10 @@ int MessageSend(char *msg)
 	strcpy(Msg,msg);
 	if(UsartSenMsgQueue!=NULL)
 	{
-		err = xQueueSend(UsartSenMsgQueue,Msg,1000);
+		err = xQueueSend(UsartSenMsgQueue,Msg,portMAX_DELAY);
 		if(err!=pdTRUE)
 		{
-			printf("failed\r\n");
+			printf("Message failed\r\n");
 			return -1;
 		}
 	}
@@ -73,6 +73,7 @@ void MessageSendTask(void *pArg)
 			{
 			   err = xSemaphoreTake(Message.OKBinarySemaphore,5000);
 				{
+					printf("%d\r\n",i);
 					if(err == pdTRUE)
 					{
 						break;

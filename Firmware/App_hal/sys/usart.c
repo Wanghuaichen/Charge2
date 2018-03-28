@@ -115,7 +115,16 @@ void USART2_IRQHandler(void)
 	if ((__HAL_UART_GET_FLAG(&UART2_Handler, UART_FLAG_IDLE) != RESET))  
 	{
 		__HAL_UART_CLEAR_IDLEFLAG(&UART2_Handler);  
-		MessageReceiveFromISR(usart2RecBuf);
+		//MessageReceiveFromISR(usart2RecBuf);
+	  if(UsartRecMsgQueue!=NULL)
+		{
+			err = xQueueSendFromISR(UsartRecMsgQueue,usart2RecBuf,&xHighPriorityTaskWoken);
+			if(err!=pdTRUE)
+			{
+				printf("failed\r\n");
+			}
+			portYIELD_FROM_ISR(xHighPriorityTaskWoken);
+		}
 		usart2RecLen = 0;
 		memset(usart2RecBuf,0,120);
 	}

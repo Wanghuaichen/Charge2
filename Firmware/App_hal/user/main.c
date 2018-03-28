@@ -35,6 +35,7 @@ int main()
 	LogInit(115200);
 	Usart2Init(115200);
 	UsartWrite("hello usart2\r\n");
+	printf("hello usart1\r\n");
 	xTaskCreate( (TaskFunction_t) StartTask,       //任务函数
 							 (const char*   ) "StartTask",     //任务名称
 							 (uint16_t      ) START_STK_SIZE,  //任务堆栈大小

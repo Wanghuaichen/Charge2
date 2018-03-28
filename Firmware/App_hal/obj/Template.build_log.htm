@@ -21,47 +21,37 @@ Target DLL:      Segger\JL2CM3.dll V2.99.23.0
 Dialog DLL:      TARMSTM.DLL V1.66.0.0
  
 <h2>Project:</h2>
-D:\work\terabits\Chagre2.0\Firmware\App_hal\user\RTC.uvprojx
+D:\GitHub\Charge2\Firmware\App_hal\user\RTC.uvprojx
 Project File Date:  03/27/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'RTC'
-compiling usart.c...
+compiling message.c...
 ..\include\message.h(24): warning:  #1-D: last line of file ends without a newline
   extern void MessageReceiveTask(void *pArg);
-..\sys\usart.c(118): warning:  #223-D: function "MessageReceiveFromISR" declared implicitly
-  		MessageReceiveFromISR(usart2RecBuf);
-..\sys\usart.c(120): warning:  #223-D: function "memset" declared implicitly
-  		memset(usart2RecBuf,0,120);
-..\sys\usart.c(108): warning:  #177-D: variable "err"  was declared but never referenced
-  	BaseType_t err;
-..\sys\usart.c(109): warning:  #177-D: variable "xHighPriorityTaskWoken"  was declared but never referenced
-  	BaseType_t xHighPriorityTaskWoken;
-..\sys\usart.c(127): warning:  #223-D: function "strlen" declared implicitly
-  	int len = strlen(Data);
-..\sys\usart.c: 6 warnings, 0 errors
-compiling main.c...
-..\include\gprs.h(25): warning:  #1-D: last line of file ends without a newline
-  int deviceConnect(void);
-..\include\message.h(24): warning:  #1-D: last line of file ends without a newline
-  extern void MessageReceiveTask(void *pArg);
-main.c(91): warning:  #223-D: function "memset" declared implicitly
-  		memset(buf,0,120);
-main.c(106): warning:  #1-D: last line of file ends without a newline
-  //}
-main.c: 4 warnings, 0 errors
+..\source\message.c(57): warning:  #940-D: missing return statement at end of non-void function "MessageSendFromISR" 
+  }
+..\source\message.c(106): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+  	UsartWrite((uint8_t*)cmd);
+..\source\message.c(140): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\message.c(140): warning:  #940-D: missing return statement at end of non-void function "MessageReceiveFromISR" 
+  }
+..\source\message.c(128): warning:  #177-D: variable "Res"  was declared but never referenced
+  		u8 Res;
+..\source\message.c: 6 warnings, 0 errors
 linking...
-Program Size: Code=17936 RO-data=360 RW-data=160 ZI-data=23288  
+Program Size: Code=17964 RO-data=360 RW-data=160 ZI-data=23288  
 FromELF: creating hex file...
-"..\OBJ\Template.axf" - 0 Error(s), 10 Warning(s).
+"..\OBJ\Template.axf" - 0 Error(s), 6 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_RTC
   C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
