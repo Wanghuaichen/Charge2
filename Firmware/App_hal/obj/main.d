@@ -75,3 +75,4 @@
 ..\obj\main.o: ..\FreeRTOS\include\semphr.h
 ..\obj\main.o: ..\include\message.h
 ..\obj\main.o: ..\FreeRTOS\include\timers.h
+..\obj\main.o: ..\include\flash.h

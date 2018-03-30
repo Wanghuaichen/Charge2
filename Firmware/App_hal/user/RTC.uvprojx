@@ -754,6 +754,36 @@
               <FileType>1</FileType>
               <FilePath>..\source\cjson.c</FilePath>
             </File>
+            <File>
+              <FileName>active.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\active.c</FilePath>
+            </File>
+            <File>
+              <FileName>charge.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\charge.c</FilePath>
+            </File>
+            <File>
+              <FileName>para.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\para.c</FilePath>
+            </File>
+            <File>
+              <FileName>ota.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\ota.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>driver</GroupName>
+          <Files>
+            <File>
+              <FileName>flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\flash.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

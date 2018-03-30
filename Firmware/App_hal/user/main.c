@@ -8,6 +8,7 @@
 #include "gprs.h"
 #include "message.h"
 #include "timers.h"
+#include "flash.h"
 
 /*开始任务*/
 #define START_TASK_PRIO    1          //任务优先级
@@ -44,13 +45,23 @@ xTimerHandle netTimerHandler;
 int main()
 {
 	HAL_Init();                    	  
-  Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
+    Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
 	HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 	delay_init();
 	LogInit(115200);
 	Usart2Init(115200);
 	//UsartWrite("hello usart2\r\n");
 	printf("hello usart1\r\n");
+	
+	char * buf = pvPortMalloc(32);
+	memset(buf,0,32);
+	//STMFLASH_Write(0X0807D000,(u32*)"hello huka",8);
+	STMFLASH_Read(0X0807D000,(u32*)buf,8);
+	
+	printf("buf %s\r\n",buf);
+	
+	while(1);
+
 	xTaskCreate( (TaskFunction_t) StartTask,         /*任务函数*/
 							 (const char*   ) "StartTask",       /*任务名称*/
 							 (uint16_t      ) START_STK_SIZE,    /*任务堆栈大小*/

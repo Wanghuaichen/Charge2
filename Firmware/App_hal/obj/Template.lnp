@@ -61,6 +61,11 @@
 "..\obj\gprs.o"
 "..\obj\message.o"
 "..\obj\cjson.o"
+"..\obj\active.o"
+"..\obj\charge.o"
+"..\obj\para.o"
+"..\obj\ota.o"
+"..\obj\flash.o"
 --strict --scatter "..\OBJ\Template.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
