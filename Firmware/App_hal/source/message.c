@@ -97,10 +97,9 @@ void MessageSendTask(void *pArg)
 }
 void NetMessageSendTask(void *pArg)
 {
-    char* buf = pvPortMalloc(200);
+  char* buf = pvPortMalloc(200);
 	while(1)
 	{
-
 		memset(buf,0,200);
 		xQueueReceive(UsartSenMsgQueue,buf,portMAX_DELAY);
 		Message.payLoad = buf;
@@ -144,7 +143,6 @@ void NetMessageReceiveTask(void *pArg)   //命令解析任务
 	char* buf = pvPortMalloc(120);
 	while(1)
 	{
-		
 		xQueueReceive(UsartRecMsgQueue,buf,portMAX_DELAY);
 		printf("Get buf %s\r\n",buf);
 		if(NULL != strstr(buf,G510.rep[G510.repNum]))

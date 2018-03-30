@@ -192,15 +192,15 @@ int deviceConnect(void)
 			{
 				vTaskResume(MsgRecTaskHanhler);
 			}
-			/*删除网络发送任务*/
+			/*挂起网络发送任务*/
 		   if(NetMsgSendTaskHanhler!=NULL)
 			{
-				vTaskDelete(NetMsgSendTaskHanhler);
+				vTaskSuspend(NetMsgSendTaskHanhler);
 			}
-			/*删除网络解析任务*/
+			/*挂起网络解析任务*/
 		   if(NetMsgRecTaskHanhler!=NULL)
 			{
-				vTaskDelete(NetMsgRecTaskHanhler);
+				vTaskSuspend(NetMsgRecTaskHanhler);
 			}
             printf("Connecet to cloud successful\r\n");
 			return 1;

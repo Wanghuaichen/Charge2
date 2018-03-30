@@ -1894,7 +1894,6 @@ Section Cross References
     gprs.o(i.deviceConnect) refers to tasks.o(i.vTaskSuspend) for vTaskSuspend
     gprs.o(i.deviceConnect) refers to tasks.o(i.vTaskResume) for vTaskResume
     gprs.o(i.deviceConnect) refers to gprs.o(i.pdeviceConnect) for pdeviceConnect
-    gprs.o(i.deviceConnect) refers to tasks.o(i.vTaskDelete) for vTaskDelete
     gprs.o(i.deviceConnect) refers to noretval__2printf.o(.text) for __2printf
     gprs.o(i.deviceConnect) refers to tasks.o(i.vTaskSuspendAll) for vTaskSuspendAll
     gprs.o(i.deviceConnect) refers to main.o(.data) for MsgRecTaskHanhler
