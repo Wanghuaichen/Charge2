@@ -69,3 +69,7 @@
 ..\obj\gprs.o: ..\FreeRTOS\include\mpu_wrappers.h
 ..\obj\gprs.o: ..\FreeRTOS\include\semphr.h
 ..\obj\gprs.o: ..\FreeRTOS\include\queue.h
+..\obj\gprs.o: ..\include\message.h
+..\obj\gprs.o: ..\FreeRTOS\include\task.h
+..\obj\gprs.o: ..\FreeRTOS\include\list.h
+..\obj\gprs.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

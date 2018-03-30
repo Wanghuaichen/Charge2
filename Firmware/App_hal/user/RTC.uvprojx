@@ -749,6 +749,11 @@
               <FileType>1</FileType>
               <FilePath>..\source\message.c</FilePath>
             </File>
+            <File>
+              <FileName>cjson.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\cjson.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

@@ -5,9 +5,19 @@
 
 typedef struct GPRS {
 	u8 status;
-	u8 cmdId;
+	u8 cmdNum;
+	volatile u8 repNum;
 	char ip[30];
-    char *rep[10];
+    const  char *rep[12];
+	const  char *cmd[12];
+    char imei[20];
+    char imsi[20];
+    char csq[6];
+
+	char  productKey[16];
+	char  deviceName[20];
+	char  deviceScreat[36];
+	
 	const u32 IPFlashAddr;
     const u32 OtaIPFlashAddr;
 	int(*SetOtaIP)(char*ip);
@@ -16,10 +26,11 @@ typedef struct GPRS {
 	int(*Connect)(void);
 	void(*reset)(void);
 	int(*CheckNet)(void);
-	void (*Config)(struct GPRS * gprs);
+	void (*Config)(const char *pimei,const char *pimsi,const char * pcsq);
 	
-	SemaphoreHandle_t ConnectBinarySemaphore;
+	SemaphoreHandle_t GprsBinarySemaphore;
 	
 }Gprs;
 
-int deviceConnect(void);
+extern int deviceConnect(void);
+extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);

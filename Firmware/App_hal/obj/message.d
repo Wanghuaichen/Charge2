@@ -72,3 +72,4 @@
 ..\obj\message.o: ..\FreeRTOS\include\task.h
 ..\obj\message.o: ..\FreeRTOS\include\list.h
 ..\obj\message.o: ..\FreeRTOS\include\semphr.h
+..\obj\message.o: ..\include\gprs.h

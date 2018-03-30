@@ -14,11 +14,15 @@ typedef struct MESSAGE
 	const char  *payLoad;
 	
 	SemaphoreHandle_t OKBinarySemaphore;
-	void (*send)(void);
+	void (*send)(u8 head);
 }Mes;
 
-extern void deviceSend(void);
-extern void MsgInfoConfig(char *deviceName,char *productKey,char *deviceScreat);
-extern int MessageSend(char *msg);
+extern void deviceSend(u8 head);
+extern void MsgInfoConfig(char *productKey,char *deviceName,char *deviceScreat);
+extern int  MessageSend(const char *msg);
+
 extern void MessageSendTask(void *pArg);
+extern void NetMessageSendTask(void *pArg);
+
 extern void MessageReceiveTask(void *pArg);
+extern void NetMessageReceiveTask(void *pArg);

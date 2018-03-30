@@ -74,3 +74,4 @@
 ..\obj\main.o: ..\include\gprs.h
 ..\obj\main.o: ..\FreeRTOS\include\semphr.h
 ..\obj\main.o: ..\include\message.h
+..\obj\main.o: ..\FreeRTOS\include\timers.h
