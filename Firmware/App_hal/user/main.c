@@ -12,40 +12,42 @@
 
 /*开始任务*/
 #define START_TASK_PRIO    1          //任务优先级
-#define START_STK_SIZE     128        //任务堆栈大小
+#define START_STK_SIZE     256        //任务堆栈大小
 TaskHandle_t StartTaskHanhler;        //任务句柄
 void StartTask(void *pvParameters);   //任务函数
 
 /*串口接收队列解析任务*/
-#define MsgRecTask_TASK_PRIO    4                    //任务优先级
-#define MsgRecTask_STK_SIZE     128                  //任务堆栈大小
+#define MsgRecTask_TASK_PRIO    5                    //任务优先级
+#define MsgRecTask_STK_SIZE     256                  //任务堆栈大小
 TaskHandle_t MsgRecTaskHanhler;                  //任务句柄
 //回调函数在message.c中定义，创建任务时注册          //任务函数
 
 /*联网串口接收队列解析任务*/
 #define NetMsgRecTask_TASK_PRIO    4                    //任务优先级
-#define NetMsgRecTask_STK_SIZE     128                  //任务堆栈大小
+#define NetMsgRecTask_STK_SIZE     256                  //任务堆栈大小
 TaskHandle_t NetMsgRecTaskHanhler;                  //任务句柄
 //回调函数在message.c中定义，创建任务时注册          //任务函数
 
 /*数据包封装串口发送*/
-#define MsgSend_TASK_PRIO    3          //任务优先级
-#define MsgSend_STK_SIZE     128        //任务堆栈大小
+#define MsgSend_TASK_PRIO    5          //任务优先级
+#define MsgSend_STK_SIZE     256        //任务堆栈大小
 TaskHandle_t MsgSendTaskHanhler;        //任务句柄
 
 
 /*联网包串口发送,与封装任务互斥运行*/
 #define NetMsgSend_TASK_PRIO    3          //任务优先级
-#define NetMsgSend_STK_SIZE     128        //任务堆栈大小
+#define NetMsgSend_STK_SIZE     256        //任务堆栈大小
 TaskHandle_t NetMsgSendTaskHanhler;        //任务句柄
 
 extern Gprs G510;
 xTimerHandle netTimerHandler;
 
+xTimerHandle testTimerHandler;
+void TestTask(void);
 int main()
 {
 	HAL_Init();                    	  
-    Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
+  Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
 	HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 	delay_init();
 	LogInit(115200);
@@ -60,7 +62,6 @@ int main()
 	
 	printf("buf %s\r\n",buf);
 	
-	while(1);
 
 	xTaskCreate( (TaskFunction_t) StartTask,         /*任务函数*/
 							 (const char*   ) "StartTask",       /*任务名称*/
@@ -83,8 +84,17 @@ void StartTask(void * pvParameter)
 																	  (void *        )1,
 																		(TimerCallbackFunction_t)G510.Connect
 																		);
+		
+
+	 testTimerHandler = xTimerCreate(  (const char *  )"testTimer",
+																		(TickType_t    )3000,
+																		(UBaseType_t   )pdTRUE,
+																	  (void *        )2,
+																		(TimerCallbackFunction_t)TestTask
+																		);
+
 																		
-		MsgInfoConfig("name","key","screat");
+		MsgInfoConfig("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");
 		G510.Config("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");																
 	  /*创建串口接收任务*/
 		xTaskCreate( (TaskFunction_t) MessageReceiveTask,       /*任务函数*/
@@ -141,15 +151,9 @@ void StartTask(void * pvParameter)
 //		vTaskDelay(3000);
 //	}
 //}
-//void LED1Task(void *pArg)
-//{	
-//	u8   p[20];
-//	u8 msgQRemainSize;   //消息队列剩余大小
-//	u8 msgQTotalSize;    //消息队列总大小
-//	while(1)
-//	{
-//		printf("hello\r\n");
-//		vTaskDelay(500);
-//		
-//	}
-//}
+void TestTask(void)
+{	
+		printf("hello\r\n");
+	  G510.UpdateCSQ();
+	//	MessageSend("hello");
+}

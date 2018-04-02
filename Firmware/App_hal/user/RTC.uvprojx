@@ -333,7 +333,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32F103xE</Define>
+              <Define>USE_HAL_DRIVER,STM32F103xE,DEBUG</Define>
               <Undefine></Undefine>
               <IncludePath>..\user;..\include;..\sys;..\lib\Inc;..\lib\Inc\Legacy;..\core;..\FreeRTOS;..\FreeRTOS\include;..\FreeRTOS\portable\MemMang;..\FreeRTOS\portable\RVDS\ARM_CM3</IncludePath>
             </VariousControls>
@@ -773,6 +773,11 @@
               <FileName>ota.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\source\ota.c</FilePath>
+            </File>
+            <File>
+              <FileName>register.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\register.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,11 +1,13 @@
 #include <string.h>
 #include "message.h"
 #include "gprs.h"
-
+#include "register.h"
 
 QueueHandle_t UsartRecMsgQueue;   //接收信息队列句柄
 static QueueHandle_t UsartSenMsgQueue;   //接收信息队列句柄
 extern Gprs G510;
+extern SemaphoreHandle_t RigisterBinarySemaphore;
+extern QueueHandle_t csqQueueHandler;
 
 static Mes Message; 
 void MsgInfoConfig(char *productKey,char *deviceName,char *deviceScreat)
@@ -59,6 +61,7 @@ int MessageSendFromISR(char *msg)
 		portYIELD_FROM_ISR(xHighPriorityTaskWoken);
 	}
 	vPortFree(Msg);
+	return 1;
 }
 void MessageSendTask(void *pArg)
 {
@@ -111,21 +114,27 @@ void NetMessageSendTask(void *pArg)
 /*消息发送注册函数*/
 void deviceSend(u8 head)
 {
+	char *cmd = pvPortMalloc(100);
+	char *len = pvPortMalloc(6);
 	if(head==1)
 	{
-		char *cmd = pvPortMalloc(300);
-		memset(cmd,0,300);
-		strcpy(cmd,"AT+");
-		strcat(cmd,Message.deviceName);
-		strcat(cmd,"/");
+		memset(cmd,0,100);
+		memset(len,0,6);
+		sprintf(len, "%d", strlen(Message.payLoad));
+		strcpy(cmd,"AT+CLOUDPUB=\"/");
 		strcat(cmd,Message.productKey);
 		strcat(cmd,"/");
-		strcat(cmd,Message.deviceScreat);
-		strcat(cmd,"/");
-		strcat(cmd,Message.payLoad);
+		strcat(cmd,Message.deviceName);
+		strcat(cmd,"/data\",0,");
+		strcat(cmd,len);
+		strcat(cmd,"\r\n");
 		UsartWrite((uint8_t*)cmd);
-		printf("cmd %s\r\n",cmd);
-		vPortFree(cmd);
+		vTaskDelay(100);
+		UsartWrite((uint8_t*)Message.payLoad);
+#ifdef 	DEBUG
+	  printf("send message: %s",cmd);
+		printf("%s\r\n",Message.payLoad);
+#endif
 	}
 	else
 	{
@@ -134,8 +143,9 @@ void deviceSend(u8 head)
 		strcpy(cmd,Message.payLoad);
 		UsartWrite((uint8_t*)cmd);
 		printf("cmd %s\r\n",cmd);
-		vPortFree(cmd);
 	}
+	vPortFree(len);
+	vPortFree(cmd);
 }
 
 void NetMessageReceiveTask(void *pArg)   //命令解析任务
@@ -143,11 +153,41 @@ void NetMessageReceiveTask(void *pArg)   //命令解析任务
 	char* buf = pvPortMalloc(120);
 	while(1)
 	{
+		memset(buf,0,120);
 		xQueueReceive(UsartRecMsgQueue,buf,portMAX_DELAY);
 		printf("Get buf %s\r\n",buf);
 		if(NULL != strstr(buf,G510.rep[G510.repNum]))
 		{
-		   xSemaphoreGive(G510.GprsBinarySemaphore);
+			if(NULL != strstr(G510.rep[G510.repNum],"CIMI"))   /*Receive imsi*/
+			{
+				 char * result;
+				 result = strstr(buf,G510.rep[G510.repNum]);
+				 result+=strlen(G510.rep[G510.repNum]);
+				 memcpy(G510.imsi,result,15);
+			}
+		  else if(NULL != strstr(G510.rep[G510.repNum],"CGSN"))   /*Receive imei*/
+			{
+				 char * result;
+				 result = strstr(buf,G510.rep[G510.repNum]);
+				 result+=strlen(G510.rep[G510.repNum]);
+				 memcpy(G510.imei,result,15);
+			}
+			else if(NULL != strstr(G510.rep[G510.repNum],"CSQ"))   /*Receive csq*/
+			{
+				 char * result;
+				 result = strstr(buf,G510.rep[G510.repNum]);
+				 result+=strlen(G510.rep[G510.repNum]);
+				 if((*(result+1))!=',')
+				 {
+					 G510.csq = ((*result)-'0')*10+(*(result+1))-'0';
+				 }
+				 else 
+				 {
+					 G510.csq = (*result)-'0';
+				 }
+				 printf("CSQ Value %d\r\n",G510.csq);
+			}
+			xSemaphoreGive(G510.GprsBinarySemaphore);
 		}
 		vTaskDelay(100);
 	}
@@ -159,11 +199,23 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 	char* buf = pvPortMalloc(120);
 	while(1)
 	{
+		memset(buf,0,120);
 		xQueueReceive(UsartRecMsgQueue,buf,portMAX_DELAY);
 		printf("Get buf %s\r\n",buf);
 		if(NULL != strstr(buf,"OK"))
 		{
-		   xSemaphoreGive(Message.OKBinarySemaphore);
+			 if(Message.OKBinarySemaphore!=NULL)
+			 {
+		      xSemaphoreGive(Message.OKBinarySemaphore);
+			 }
+		}
+		if(RigisterBinarySemaphore!=NULL)
+		{
+			 if(NULL != strstr(buf,REGISTER_REP))
+		   {
+				 if(RigisterBinarySemaphore!=NULL)
+		     xSemaphoreGive(RigisterBinarySemaphore);
+			 }
 		}
 		vTaskDelay(100);
 	}
@@ -171,7 +223,6 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 }
 int MessageReceiveFromISR(char *msg)
 {
-		u8 Res;
 	  BaseType_t err;
 	  BaseType_t xHighPriorityTaskWoken;
 		if(UsartRecMsgQueue!=NULL)
@@ -183,4 +234,5 @@ int MessageReceiveFromISR(char *msg)
 			}
 			portYIELD_FROM_ISR(xHighPriorityTaskWoken);
 		}
+		return 1;
 }

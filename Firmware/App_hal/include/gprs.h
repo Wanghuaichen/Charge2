@@ -2,17 +2,20 @@
 #include "sys.h"
 #include "FreeRTOS.h"
 #include "semphr.h"
+#include "queue.h"
 
 typedef struct GPRS {
 	u8 status;
-	u8 cmdNum;
+	volatile u8 regStatus;
+	volatile u8 cmdNum;
+	volatile u8 cmdStartNumber;
 	volatile u8 repNum;
 	char ip[30];
-    const  char *rep[12];
-	const  char *cmd[12];
+    const  char *rep[15];
+	const  char *cmd[15];
     char imei[20];
     char imsi[20];
-    char csq[6];
+    int csq;
 
 	char  productKey[16];
 	char  deviceName[20];
@@ -26,11 +29,16 @@ typedef struct GPRS {
 	int(*Connect)(void);
 	void(*reset)(void);
 	int(*CheckNet)(void);
+	int(*UpdateCSQ)(void);
 	void (*Config)(const char *pimei,const char *pimsi,const char * pcsq);
 	
 	SemaphoreHandle_t GprsBinarySemaphore;
+	SemaphoreHandle_t CSQBinarySemaphore;
+	SemaphoreHandle_t NetCheckBinarySemaphore;
+	QueueHandle_t csqQueueHandler;
 	
 }Gprs;
 
 extern int deviceConnect(void);
 extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+extern int deviceUpdateCSQ(void);

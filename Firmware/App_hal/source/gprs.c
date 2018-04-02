@@ -2,6 +2,8 @@
 #include "gprs.h"
 #include "message.h"
 #include "string.h"
+#include "timers.h"
+#include "queue.h"
 //const char* AT =			      	  "AT\r\n";
 //const char* ATi8 =		          "ATi8\r\n";
 //const char* ATE0 =			        "ATE0\r\n\0";
@@ -37,6 +39,8 @@ extern QueueHandle_t UsartRecMsgQueue;        /*消息接收队列*/
 extern TaskHandle_t MsgSendTaskHanhler;       /*消息封装发送任务*/
 extern TaskHandle_t NetMsgSendTaskHanhler;    /*联网数据包发送任务*/
 extern TaskHandle_t NetMsgRecTaskHanhler; /*网络数据解析任务*/
+
+extern xTimerHandle	testTimerHandler;
 static char authenticationCode[160] = {0};
 static char subscriptionCode[160] = {0};
 Gprs G510={
@@ -54,6 +58,9 @@ Gprs G510={
 	.rep[9] = "+CLOUDAUTH: OK",
 	.rep[10] = "CLOUDCONN",
 	.rep[11] = "OK",
+	.rep[12] = "+CIMI: ",       /*Get imsi*/
+	.rep[13] = "+CGSN: \"",     /*Get imei*/
+	.rep[14] = "+CSQ: ",        /*CSQ*/
 	
 	.cmd[0] = "AT\r\n",
 	.cmd[1] = "ATi8\r\n",
@@ -66,11 +73,16 @@ Gprs G510={
 	.cmd[8] = "AT+MIPCALL?\r\n",
 	
 	.cmd[10] = "AT+CLOUDCONN=70,0,3\r\n",
-	.cmdNum = 12,
+	
+	.cmd[12] = "AT+CIMI\r\n",    /*Get imsi*/
+	.cmd[13] = "AT+CGSN?\r\n",   /*Get imei*/
+	.cmd[14] = "AT+CSQ\r\n",
+	.cmdNum = 15,
 	.IPFlashAddr = 0,
 	.OtaIPFlashAddr =0,
 	.Connect = deviceConnect,
 	.Config = deviceConfig,
+	.UpdateCSQ = deviceUpdateCSQ,
 };
 void deviceConfig(const char *pproductKey,const char *pdeviceName,const char * pdeviceScreat)
 {
@@ -79,7 +91,9 @@ void deviceConfig(const char *pproductKey,const char *pdeviceName,const char * p
 
 	printf("G510 Config\r\n");
 	G510.status = 0;
+	G510.regStatus = 0;
 	G510.repNum = 0;
+	G510.cmdStartNumber = 0;
 	memset(G510.productKey,0,16);
 	memset(G510.deviceName,0,20);
 	memset(G510.deviceScreat,0,36);
@@ -110,6 +124,9 @@ void deviceConfig(const char *pproductKey,const char *pdeviceName,const char * p
 	G510.cmd[11] = subscriptionCode;
 	
 	G510.GprsBinarySemaphore = xSemaphoreCreateBinary();
+	G510.CSQBinarySemaphore = xSemaphoreCreateBinary();
+	G510.NetCheckBinarySemaphore = xSemaphoreCreateBinary();
+	G510.csqQueueHandler = xQueueCreate(1,120);
 }
 static int pdeviceConnect(void)
 {
@@ -117,7 +134,7 @@ static int pdeviceConnect(void)
 	//to do
 	//reset the gprs moduel
 	printf("Please add the moduel reset command\r\n");
-	for(int i=0;i<G510.cmdNum;i++)
+	for(int i=G510.cmdStartNumber;i<G510.cmdNum;i++)
 	{
 		
 		
@@ -183,14 +200,14 @@ int deviceConnect(void)
 		if(pdeviceConnect()>0)
 		{
 			/*回复解析任务*/
-	       if(MsgRecTaskHanhler!=NULL)
+	        if(MsgRecTaskHanhler!=NULL)
 			{
 				vTaskResume(MsgRecTaskHanhler);
 			}
 			/*回复封装发送任务*/
 	       if(MsgSendTaskHanhler!=NULL)
 			{
-				vTaskResume(MsgRecTaskHanhler);
+				vTaskResume(MsgSendTaskHanhler);
 			}
 			/*挂起网络发送任务*/
 		   if(NetMsgSendTaskHanhler!=NULL)
@@ -203,11 +220,26 @@ int deviceConnect(void)
 				vTaskSuspend(NetMsgRecTaskHanhler);
 			}
             printf("Connecet to cloud successful\r\n");
+			
+			if(G510.regStatus==0)
+			{
+			   /*注册*/
+			   DeviceRegister();
+			   xTimerStart(testTimerHandler,portMAX_DELAY);
+			}
+
 			return 1;
 		}
-        printf("Connect to cloud failed %d.....\r\n",i+1);
+    printf("Connect to cloud failed %d.....\r\n",i+1);
 	}
-	printf("Device Rebooting\r\n");
-	vTaskSuspendAll();
+	printf("System Rebooting\r\n");
+	NVIC_SystemReset();
 	while(1);
+}
+
+int deviceUpdateCSQ(void)
+{
+    G510.cmdStartNumber = 14;
+	G510.regStatus = 1;
+	G510.Connect();
 }

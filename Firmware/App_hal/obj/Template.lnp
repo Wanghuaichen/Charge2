@@ -65,6 +65,7 @@
 "..\obj\charge.o"
 "..\obj\para.o"
 "..\obj\ota.o"
+"..\obj\register.o"
 "..\obj\flash.o"
 --strict --scatter "..\OBJ\Template.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
