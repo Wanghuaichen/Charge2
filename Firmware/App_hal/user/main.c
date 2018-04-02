@@ -52,7 +52,7 @@ int main()
 	Usart2Init(115200);
 	//UsartWrite("hello usart2\r\n");
 	printf("hello usart1\r\n");
-	
+	//master
 	char * buf = pvPortMalloc(32);
 	memset(buf,0,32);
 	//STMFLASH_Write(0X0807D000,(u32*)"hello huka",8);
