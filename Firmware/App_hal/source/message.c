@@ -24,11 +24,20 @@ void MsgInfoConfig(char *productKey,char *deviceName,char *deviceScreat)
 	strcpy(Message.deviceScreat,deviceScreat);
 }
 /*将PayLoad数据包发送到发送队列中*/
-int MessageSend(const char *msg)
+int MessageSend(const char *msg,u8 at)
 {
 	BaseType_t err;
 	char * Msg = pvPortMalloc(200);
-	strcpy(Msg,msg);
+	memset(Msg,0,200);
+	if(at==1)
+	{
+	  strcpy(Msg,"AT");
+		strcat(Msg,msg);
+	}
+	else if(at==0)
+	{
+		strcpy(Msg,msg);
+	}
 	if(UsartSenMsgQueue!=NULL)
 	{
 		err = xQueueSend(UsartSenMsgQueue,Msg,portMAX_DELAY);
@@ -42,12 +51,20 @@ int MessageSend(const char *msg)
 	return 1;
 }
 /*在中断中将PayLoad数据包发送到发送队列中*/
-int MessageSendFromISR(char *msg)
+int MessageSendFromISR(char *msg,u8 at)
 {
 	BaseType_t err;
 	BaseType_t xHighPriorityTaskWoken;
 	char * Msg = pvPortMalloc(200);
-	strcpy(Msg,msg);
+  if(at==1)
+	{
+	  strcpy(Msg,"AT");
+		strcat(Msg,msg);
+	}
+	else if(at==0)
+	{
+		strcpy(Msg,msg);
+	}
 	if(UsartSenMsgQueue!=NULL)
 	{
 		err = xQueueSendFromISR(UsartSenMsgQueue,Msg,&xHighPriorityTaskWoken);
@@ -69,7 +86,14 @@ void MessageSendTask(void *pArg)
 		memset(buf,0,200);
 		xQueueReceive(UsartSenMsgQueue,buf,portMAX_DELAY);
 		Message.payLoad = buf;
-		Message.send(1);
+		if(NULL!=strstr(buf,"AT"))
+		{
+		  Message.send(1);
+		}
+		else
+		{
+			Message.send(0);
+		}
 		BaseType_t err = pdFALSE;
 		i = 0;
 		while(1)
@@ -91,19 +115,6 @@ void MessageSendTask(void *pArg)
 				break;
 			}
 		}
-		vTaskDelay(100);
-	}
-	vPortFree(buf);
-}
-void NetMessageSendTask(void *pArg)
-{
-  char* buf = pvPortMalloc(200);
-	while(1)
-	{
-		memset(buf,0,200);
-		xQueueReceive(UsartSenMsgQueue,buf,portMAX_DELAY);
-		Message.payLoad = buf;
-		Message.send(0);
 		vTaskDelay(100);
 	}
 	vPortFree(buf);
@@ -138,37 +149,8 @@ void deviceSend(u8 head)
 	}
 }
 
-void NetMessageReceiveTask(void *pArg)   //命令解析任务
-{
-	char* buf = pvPortMalloc(120);
-	while(1)
-	{
-		xQueueReceive(UsartRecMsgQueue,buf,portMAX_DELAY);
-		printf("Get buf %s\r\n",buf);
-		if(NULL != strstr(buf,G510.rep[G510.repNum]))
-		{
-		   xSemaphoreGive(G510.GprsBinarySemaphore);
-		}
-		vTaskDelay(100);
-	}
-	vPortFree(buf);
-}
 
-void MessageReceiveTask(void *pArg)   //命令解析任务
-{
-	char* buf = pvPortMalloc(120);
-	while(1)
-	{
-		xQueueReceive(UsartRecMsgQueue,buf,portMAX_DELAY);
-		printf("Get buf %s\r\n",buf);
-		if(NULL != strstr(buf,"OK"))
-		{
-		   xSemaphoreGive(Message.OKBinarySemaphore);
-		}
-		vTaskDelay(100);
-	}
-	vPortFree(buf);
-}
+
 int MessageReceiveFromISR(char *msg)
 {
 		u8 Res;
@@ -183,4 +165,30 @@ int MessageReceiveFromISR(char *msg)
 			}
 			portYIELD_FROM_ISR(xHighPriorityTaskWoken);
 		}
+}
+void MessageReceiveTask(void *pArg)   //命令解析任务
+{
+	char* buf = pvPortMalloc(120);
+	char* rep = pvPortMalloc(30);
+	while(1)
+	{
+		xQueueReceive(UsartRecMsgQueue,buf,portMAX_DELAY);
+		printf("Get buf %s\r\n",buf);
+		if(xQueuePeek(G510.GprsRepQueue,rep,0)==pdTRUE)
+		{
+			if(NULL != strstr(buf,rep))
+			{
+				xQueueReceive(G510.GprsRepQueue,rep,0);
+				xSemaphoreGive(G510.GprsConnectBinarySemaphore);
+			}
+		}
+		if(NULL != strstr(buf,"OK"))
+		{
+		   xSemaphoreGive(Message.OKBinarySemaphore);
+		}
+		
+		vTaskDelay(100);
+	}
+	vPortFree(buf);
+	vPortFree(rep);
 }

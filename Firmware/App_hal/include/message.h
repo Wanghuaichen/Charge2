@@ -19,10 +19,9 @@ typedef struct MESSAGE
 
 extern void deviceSend(u8 head);
 extern void MsgInfoConfig(char *productKey,char *deviceName,char *deviceScreat);
-extern int  MessageSend(const char *msg);
+extern int  MessageSend(const char *msg,u8 at);
 
 extern void MessageSendTask(void *pArg);
-extern void NetMessageSendTask(void *pArg);
+extern int  MessageSendFromISR(char *msg,u8 at);
 
 extern void MessageReceiveTask(void *pArg);
-extern void NetMessageReceiveTask(void *pArg);

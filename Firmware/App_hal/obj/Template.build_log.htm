@@ -17,61 +17,35 @@ Library Manager: ArmAr.exe V5.06 update 4 (build 422)
 Hex Converter:   FromElf.exe V5.06 update 4 (build 422)
 CPU DLL:         SARMCM3.DLL V5.23
 Dialog DLL:      DARMSTM.DLL V1.68.0.0
-Target DLL:      Segger\JL2CM3.dll V2.99.23.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.18.0
 Dialog DLL:      TARMSTM.DLL V1.66.0.0
  
 <h2>Project:</h2>
 D:\GitHub\Charge2\Firmware\App_hal\user\RTC.uvprojx
-Project File Date:  03/30/2018
+Project File Date:  04/02/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'RTC'
-compiling message.c...
-..\include\message.h(28): warning:  #1-D: last line of file ends without a newline
-  extern void NetMessageReceiveTask(void *pArg);
-..\include\gprs.h(36): warning:  #1-D: last line of file ends without a newline
-  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
-..\source\message.c(62): warning:  #940-D: missing return statement at end of non-void function "MessageSendFromISR" 
-  }
-..\source\message.c(96): warning:  #111-D: statement is unreachable
-  	vPortFree(buf);
-..\source\message.c(109): warning:  #111-D: statement is unreachable
-  	vPortFree(buf);
-..\source\message.c(126): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
-  		UsartWrite((uint8_t*)cmd);
-..\source\message.c(135): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
-  		UsartWrite((uint8_t*)cmd);
-..\source\message.c(154): warning:  #111-D: statement is unreachable
-  	vPortFree(buf);
-..\source\message.c(170): warning:  #111-D: statement is unreachable
-  	vPortFree(buf);
-..\source\message.c(186): warning:  #1-D: last line of file ends without a newline
-  }
-..\source\message.c(186): warning:  #940-D: missing return statement at end of non-void function "MessageReceiveFromISR" 
-  }
-..\source\message.c(174): warning:  #177-D: variable "Res"  was declared but never referenced
-  		u8 Res;
-..\source\message.c: 12 warnings, 0 errors
 compiling gprs.c...
-..\include\gprs.h(36): warning:  #1-D: last line of file ends without a newline
+..\include\gprs.h(37): warning:  #1-D: last line of file ends without a newline
   extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
-..\include\message.h(28): warning:  #1-D: last line of file ends without a newline
-  extern void NetMessageReceiveTask(void *pArg);
-..\source\gprs.c(213): warning:  #1-D: last line of file ends without a newline
+..\source\gprs.c(257): warning:  #1-D: last line of file ends without a newline
   }
+..\source\gprs.c(175): warning:  #177-D: function "pdeviceGetCSQ"  was declared but never referenced
+  static int pdeviceGetCSQ(void)
 ..\source\gprs.c: 3 warnings, 0 errors
 linking...
 Program Size: Code=11464 RO-data=380 RW-data=124 ZI-data=23100  
 FromELF: creating hex file...
-"..\OBJ\Template.axf" - 0 Error(s), 15 Warning(s).
+"..\OBJ\Template.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_RTC
   C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

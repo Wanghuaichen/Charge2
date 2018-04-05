@@ -35,12 +35,11 @@
 extern TaskHandle_t MsgRecTaskHanhler;        /*消息解析任务*/
 extern QueueHandle_t UsartRecMsgQueue;        /*消息接收队列*/
 extern TaskHandle_t MsgSendTaskHanhler;       /*消息封装发送任务*/
-extern TaskHandle_t NetMsgSendTaskHanhler;    /*联网数据包发送任务*/
-extern TaskHandle_t NetMsgRecTaskHanhler; /*网络数据解析任务*/
 static char authenticationCode[160] = {0};
 static char subscriptionCode[160] = {0};
 Gprs G510={
-	.status = 0,
+	
+	.cmdNum = 12,
 	.rep[0] = "OK",
 	.rep[1] = "OK",
 	.rep[2] = "OK",
@@ -54,6 +53,7 @@ Gprs G510={
 	.rep[9] = "+CLOUDAUTH: OK",
 	.rep[10] = "CLOUDCONN",
 	.rep[11] = "OK",
+	.rep[12] = "CSQ",
 	
 	.cmd[0] = "AT\r\n",
 	.cmd[1] = "ATi8\r\n",
@@ -66,7 +66,8 @@ Gprs G510={
 	.cmd[8] = "AT+MIPCALL?\r\n",
 	
 	.cmd[10] = "AT+CLOUDCONN=70,0,3\r\n",
-	.cmdNum = 12,
+	
+	.cmd[12] = "AT+CSQ?\r\n",
 	.IPFlashAddr = 0,
 	.OtaIPFlashAddr =0,
 	.Connect = deviceConnect,
@@ -78,8 +79,7 @@ void deviceConfig(const char *pproductKey,const char *pdeviceName,const char * p
 	memset(pcmd,0,160);
 
 	printf("G510 Config\r\n");
-	G510.status = 0;
-	G510.repNum = 0;
+	
 	memset(G510.productKey,0,16);
 	memset(G510.deviceName,0,20);
 	memset(G510.deviceScreat,0,36);
@@ -109,28 +109,35 @@ void deviceConfig(const char *pproductKey,const char *pdeviceName,const char * p
 	strcpy(subscriptionCode,pcmd);
 	G510.cmd[11] = subscriptionCode;
 	
-	G510.GprsBinarySemaphore = xSemaphoreCreateBinary();
+	G510.GprsConnectBinarySemaphore = xSemaphoreCreateBinary();
+	G510.GprsCSQBinarySemaphore = xSemaphoreCreateBinary();
+	G510.GprsNetCheckBinarySemaphore = xSemaphoreCreateBinary();
+	G510.GprsRepQueue = xQueueCreate(1,30);
 }
 static int pdeviceConnect(void)
 {
 	printf("G510 Connecting\r\n");
-	//to do
-	//reset the gprs moduel
 	printf("Please add the moduel reset command\r\n");
 	for(int i=0;i<G510.cmdNum;i++)
 	{
-		
-		
 		u8 count = 0;
 		BaseType_t err;
-	    G510.repNum = i;
-	    MessageSend(G510.cmd[i]);
+		if(G510.GprsRepQueue!=NULL)
+	  {
+			err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[i]);
+			if(err!=pdTRUE)
+			{
+				printf("Rep Send failed\r\n");
+				return -1;
+			}
+  	}
+	  MessageSend(G510.cmd[i],0);
 		while(1)
 		{
 			count++;
-			if(G510.GprsBinarySemaphore!=NULL)
+			if(G510.GprsConnectBinarySemaphore!=NULL)
 			{
-			    err = xSemaphoreTake(G510.GprsBinarySemaphore,10000);
+			    err = xSemaphoreTake(G510.GprsConnectBinarySemaphore,10000);
 				{
 					printf("%d\r\n",count);
 					if(err == pdTRUE)
@@ -139,7 +146,16 @@ static int pdeviceConnect(void)
 					}
 					else
 					{
-						MessageSend(G510.cmd[i]);
+						MessageSend(G510.cmd[i],0);
+						if(G510.GprsRepQueue!=NULL)
+						{
+							err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[i]);
+							if(err!=pdTRUE)
+							{
+								printf("Rep Sen failed\r\n");
+								return -1;
+							}
+						}
 					}
 				}
 			}
@@ -156,56 +172,84 @@ static int pdeviceConnect(void)
 	}
 	return 1;
 }
+static int pdeviceGetCSQ(void)
+{
+		u8 count = 0;
+		BaseType_t err;
+		if(G510.GprsRepQueue!=NULL)
+	  {
+			err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[12]);
+			if(err!=pdTRUE)
+			{
+				printf("Rep Send failed\r\n");
+				return -1;
+			}
+  	}
+	  MessageSend(G510.cmd[12],0);
+		while(1)
+		{
+			count++;
+			if(G510.GprsCSQBinarySemaphore!=NULL)
+			{
+			    err = xSemaphoreTake(G510.GprsCSQBinarySemaphore,10000);
+				{
+					printf("%d\r\n",count);
+					if(err == pdTRUE)
+					{
+							return 1;
+					}
+					else
+					{
+						MessageSend(G510.cmd[12],0);
+						if(G510.GprsRepQueue!=NULL)
+						{
+							err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[12]);
+							if(err!=pdTRUE)
+							{
+								printf("Rep Sen failed\r\n");
+								return -1;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				printf("No G510 semaphore \r\n");
+			}
+			if(count>=5)
+			{
+				return -1; 
+			}
+		}
+}
 int deviceConnect(void)
 {
-	/*挂起解析任务*/
-    if(MsgRecTaskHanhler!=NULL)
-	{
-		vTaskSuspend(MsgRecTaskHanhler);
-	}
-	/*挂起封装发送任务*/
-	if(MsgSendTaskHanhler!=NULL)
-	{
-		vTaskSuspend(MsgSendTaskHanhler);
-	}
-	/*恢复网络发送任务*/
-	if(NetMsgSendTaskHanhler!=NULL)
-	{
-		vTaskResume(NetMsgSendTaskHanhler);
-	}
-    /*恢复网络解析任务*/
-	if(NetMsgRecTaskHanhler!=NULL)
-	{
-		vTaskResume(NetMsgRecTaskHanhler);
-	}
+
 	for(int i=0;i<5;i++)
 	{
 		if(pdeviceConnect()>0)
 		{
-			/*回复解析任务*/
-	       if(MsgRecTaskHanhler!=NULL)
-			{
-				vTaskResume(MsgRecTaskHanhler);
-			}
-			/*回复封装发送任务*/
-	       if(MsgSendTaskHanhler!=NULL)
-			{
-				vTaskResume(MsgRecTaskHanhler);
-			}
-			/*挂起网络发送任务*/
-		   if(NetMsgSendTaskHanhler!=NULL)
-			{
-				vTaskSuspend(NetMsgSendTaskHanhler);
-			}
-			/*挂起网络解析任务*/
-		   if(NetMsgRecTaskHanhler!=NULL)
-			{
-				vTaskSuspend(NetMsgRecTaskHanhler);
-			}
-            printf("Connecet to cloud successful\r\n");
+      printf("Connecet to cloud successful\r\n");
 			return 1;
 		}
-        printf("Connect to cloud failed %d.....\r\n",i+1);
+    printf("Connect to cloud failed %d.....\r\n",i+1);
+	}
+	printf("Device Rebooting\r\n");
+	vTaskSuspendAll();
+	while(1);
+}
+int deviceGetCSQ(void)
+{
+
+	for(int i=0;i<5;i++)
+	{
+		if(pdeviceConnect()>0)
+		{
+      printf("Connecet to cloud successful\r\n");
+			return 1;
+		}
+    printf("Connect to cloud failed %d.....\r\n",i+1);
 	}
 	printf("Device Rebooting\r\n");
 	vTaskSuspendAll();
