@@ -5,6 +5,9 @@
 
 typedef struct GPRS {
 	u8 cmdNum;
+	volatile u8 connectFlag;
+	volatile u8 csqFlag;
+	volatile u8 netFlag;
 	char ip[30];
   const  char *rep[15];
 	const  char *cmd[15];
@@ -27,8 +30,9 @@ typedef struct GPRS {
 	void (*Config)(const char *pimei,const char *pimsi,const char * pcsq);
 	
 	SemaphoreHandle_t GprsConnectBinarySemaphore;
-	SemaphoreHandle_t GprsCSQBinarySemaphore;
-	SemaphoreHandle_t GprsNetCheckBinarySemaphore;
+//	SemaphoreHandle_t GprsCSQRecBinarySemaphore;
+//	SemaphoreHandle_t GprsCSQGetBinarySemaphore;
+	//SemaphoreHandle_t GprsNetCheckBinarySemaphore;
 	QueueHandle_t GprsRepQueue;
 	
 }Gprs;

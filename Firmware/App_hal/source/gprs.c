@@ -2,6 +2,7 @@
 #include "gprs.h"
 #include "message.h"
 #include "string.h"
+#include "timers.h"
 //const char* AT =			      	  "AT\r\n";
 //const char* ATi8 =		          "ATi8\r\n";
 //const char* ATE0 =			        "ATE0\r\n\0";
@@ -75,6 +76,9 @@ Gprs G510={
 };
 void deviceConfig(const char *pproductKey,const char *pdeviceName,const char * pdeviceScreat)
 {
+	G510.connectFlag = 0;
+	G510.csqFlag = 0;
+	G510.netFlag = 0;
 	char * pcmd = pvPortMalloc(160);
 	memset(pcmd,0,160);
 
@@ -110,8 +114,8 @@ void deviceConfig(const char *pproductKey,const char *pdeviceName,const char * p
 	G510.cmd[11] = subscriptionCode;
 	
 	G510.GprsConnectBinarySemaphore = xSemaphoreCreateBinary();
-	G510.GprsCSQBinarySemaphore = xSemaphoreCreateBinary();
-	G510.GprsNetCheckBinarySemaphore = xSemaphoreCreateBinary();
+	//G510.GprsCSQBinarySemaphore = xSemaphoreCreateBinary();
+//	G510.GprsNetCheckBinarySemaphore = xSemaphoreCreateBinary();
 	G510.GprsRepQueue = xQueueCreate(1,30);
 }
 static int pdeviceConnect(void)
@@ -138,7 +142,6 @@ static int pdeviceConnect(void)
 			if(G510.GprsConnectBinarySemaphore!=NULL)
 			{
 			    err = xSemaphoreTake(G510.GprsConnectBinarySemaphore,10000);
-				{
 					printf("%d\r\n",count);
 					if(err == pdTRUE)
 					{
@@ -157,7 +160,6 @@ static int pdeviceConnect(void)
 							}
 						}
 					}
-				}
 			}
 			else
 			{
@@ -172,65 +174,73 @@ static int pdeviceConnect(void)
 	}
 	return 1;
 }
-static int pdeviceGetCSQ(void)
-{
-		u8 count = 0;
-		BaseType_t err;
-		if(G510.GprsRepQueue!=NULL)
-	  {
-			err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[12]);
-			if(err!=pdTRUE)
-			{
-				printf("Rep Send failed\r\n");
-				return -1;
-			}
-  	}
-	  MessageSend(G510.cmd[12],0);
-		while(1)
-		{
-			count++;
-			if(G510.GprsCSQBinarySemaphore!=NULL)
-			{
-			    err = xSemaphoreTake(G510.GprsCSQBinarySemaphore,10000);
-				{
-					printf("%d\r\n",count);
-					if(err == pdTRUE)
-					{
-							return 1;
-					}
-					else
-					{
-						MessageSend(G510.cmd[12],0);
-						if(G510.GprsRepQueue!=NULL)
-						{
-							err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[12]);
-							if(err!=pdTRUE)
-							{
-								printf("Rep Sen failed\r\n");
-								return -1;
-							}
-						}
-					}
-				}
-			}
-			else
-			{
-				printf("No G510 semaphore \r\n");
-			}
-			if(count>=5)
-			{
-				return -1; 
-			}
-		}
-}
+//static int pdeviceGetCSQ(void)
+//{
+//		u8 count = 0;
+//		BaseType_t err;
+//		if(G510.GprsRepQueue!=NULL)
+//	  {
+//			err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[12]);
+//			if(err!=pdTRUE)
+//			{
+//				printf("Rep Send failed\r\n");
+//				return -1;
+//			}
+//  	}
+//	  MessageSend(G510.cmd[12],0);
+//		if(G510.GprsConnectRecBinarySemaphore!=NULL)
+//		{
+//		    xSemaphoreGive(G510.GprsConnectRecBinarySemaphore);
+//		}
+//		while(1)
+//		{
+//			count++;
+//			if(G510.GprsCSQBinarySemaphore!=NULL)
+//			{
+//			    err = xSemaphoreTake(G510.GprsCSQBinarySemaphore,10000);
+//				{
+//					printf("%d\r\n",count);
+//					if(err == pdTRUE)
+//					{
+//							return 1;
+//					}
+//					else
+//					{
+//						MessageSend(G510.cmd[12],0);
+//						if(G510.GprsRepQueue!=NULL)
+//						{
+//							err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[12]);
+//							if(err!=pdTRUE)
+//							{
+//								printf("Rep Sen failed\r\n");
+//								return -1;
+//							}
+//						}
+//					}
+//				}
+//			}
+//			else
+//			{
+//				printf("No G510 semaphore \r\n");
+//			}
+//			if(count>=5)
+//			{
+//				return -1; 
+//			}
+//		}
+//}
+extern xTimerHandle testTimerHandler;
 int deviceConnect(void)
 {
-
+	printf("connecty\r\n");
+  G510.connectFlag = 1;
 	for(int i=0;i<5;i++)
 	{
 		if(pdeviceConnect()>0)
 		{
       printf("Connecet to cloud successful\r\n");
+			G510.connectFlag = 0;
+		  xTimerStart(testTimerHandler,portMAX_DELAY);
 			return 1;
 		}
     printf("Connect to cloud failed %d.....\r\n",i+1);
@@ -239,19 +249,19 @@ int deviceConnect(void)
 	vTaskSuspendAll();
 	while(1);
 }
-int deviceGetCSQ(void)
-{
+//int deviceGetCSQ(void)
+//{
 
-	for(int i=0;i<5;i++)
-	{
-		if(pdeviceConnect()>0)
-		{
-      printf("Connecet to cloud successful\r\n");
-			return 1;
-		}
-    printf("Connect to cloud failed %d.....\r\n",i+1);
-	}
-	printf("Device Rebooting\r\n");
-	vTaskSuspendAll();
-	while(1);
-}
+//	for(int i=0;i<5;i++)
+//	{
+//		if(pdeviceConnect()>0)
+//		{
+//      printf("Connecet to cloud successful\r\n");
+//			return 1;
+//		}
+//    printf("Connect to cloud failed %d.....\r\n",i+1);
+//	}
+//	printf("Device Rebooting\r\n");
+//	vTaskSuspendAll();
+//	while(1);
+//}

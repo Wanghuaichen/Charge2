@@ -784,6 +784,11 @@
               <FileType>1</FileType>
               <FilePath>..\source\flash.c</FilePath>
             </File>
+            <File>
+              <FileName>gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\gpio.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

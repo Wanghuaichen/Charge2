@@ -76,3 +76,4 @@
 ..\obj\main.o: ..\include\message.h
 ..\obj\main.o: ..\FreeRTOS\include\timers.h
 ..\obj\main.o: ..\include\flash.h
+..\obj\main.o: ..\include\gpio.h

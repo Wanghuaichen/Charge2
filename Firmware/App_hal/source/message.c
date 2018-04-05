@@ -24,17 +24,17 @@ void MsgInfoConfig(char *productKey,char *deviceName,char *deviceScreat)
 	strcpy(Message.deviceScreat,deviceScreat);
 }
 /*将PayLoad数据包发送到发送队列中*/
-int MessageSend(const char *msg,u8 at)
+int MessageSend(const char *msg,u8 head)
 {
 	BaseType_t err;
 	char * Msg = pvPortMalloc(200);
 	memset(Msg,0,200);
-	if(at==1)
+	if(head==0)
 	{
-	  strcpy(Msg,"AT");
+	  strcpy(Msg,"AT-");
 		strcat(Msg,msg);
 	}
-	else if(at==0)
+	else if(head==1)
 	{
 		strcpy(Msg,msg);
 	}
@@ -85,14 +85,17 @@ void MessageSendTask(void *pArg)
 	{
 		memset(buf,0,200);
 		xQueueReceive(UsartSenMsgQueue,buf,portMAX_DELAY);
-		Message.payLoad = buf;
-		if(NULL!=strstr(buf,"AT"))
+
+		if(NULL!=strstr(buf,"AT-"))
 		{
-		  Message.send(1);
+			char * result = strstr(buf,"AT-");
+			result+=3;
+			Message.payLoad = result;
+			Message.send(0);
 		}
 		else
 		{
-			Message.send(0);
+			Message.send(1);
 		}
 		BaseType_t err = pdFALSE;
 		i = 0;
@@ -174,14 +177,17 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 	{
 		xQueueReceive(UsartRecMsgQueue,buf,portMAX_DELAY);
 		printf("Get buf %s\r\n",buf);
-		if(xQueuePeek(G510.GprsRepQueue,rep,0)==pdTRUE)
+		if(G510.connectFlag == 1)
 		{
-			if(NULL != strstr(buf,rep))
+			if(xQueuePeek(G510.GprsRepQueue,rep,0)==pdTRUE)
 			{
-				xQueueReceive(G510.GprsRepQueue,rep,0);
-				xSemaphoreGive(G510.GprsConnectBinarySemaphore);
+				if(NULL != strstr(buf,rep))
+				{
+					xQueueReceive(G510.GprsRepQueue,rep,0);
+					xSemaphoreGive(G510.GprsConnectBinarySemaphore);
+				}
 			}
-		}
+	  }
 		if(NULL != strstr(buf,"OK"))
 		{
 		   xSemaphoreGive(Message.OKBinarySemaphore);

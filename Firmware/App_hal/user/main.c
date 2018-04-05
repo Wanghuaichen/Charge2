@@ -9,6 +9,7 @@
 #include "message.h"
 #include "timers.h"
 #include "flash.h"
+#include "gpio.h"
 
 /*开始任务*/
 #define START_TASK_PRIO    1          //任务优先级
@@ -31,7 +32,9 @@ TaskHandle_t MsgSendTaskHanhler;        //任务句柄
 
 extern Gprs G510;
 xTimerHandle netTimerHandler;
+xTimerHandle testTimerHandler;
 
+void testTask(void *pArg);
 int main()
 {
 	HAL_Init();                    	  
@@ -40,6 +43,11 @@ int main()
 	delay_init();
 	LogInit(115200);
 	Usart2Init(115200);
+	McuPowerInit();
+	McuPowerEnable(0);	
+	delay_xms(500);
+	McuPowerEnable(1);	
+	delay_xms(5000);
 	printf("hello usart1\r\n");
 	// V3.0.0
 	char * buf = pvPortMalloc(32);
@@ -48,9 +56,6 @@ int main()
 	STMFLASH_Read(0X0807D000,(u32*)buf,8);
 	
 	printf("buf %s\r\n",buf);
-	
-	while(1);
-
 	xTaskCreate( (TaskFunction_t) StartTask,         /*任务函数*/
 							 (const char*   ) "StartTask",       /*任务名称*/
 							 (uint16_t      ) START_STK_SIZE,    /*任务堆栈大小*/
@@ -58,6 +63,7 @@ int main()
 							 (UBaseType_t   ) START_TASK_PRIO,   /*任务优先级*/
 							 (TaskHandle_t* ) &StartTaskHanhler  /*任务句柄*/
 	            );
+
 	vTaskStartScheduler();
 }
 
@@ -72,8 +78,13 @@ void StartTask(void * pvParameter)
 																	  (void *        )1,
 																		(TimerCallbackFunction_t)G510.Connect
 																		);
-																		
-		MsgInfoConfig("name","key","screat");
+	 testTimerHandler = xTimerCreate(  (const char *  )"OneShotTimer",
+																		(TickType_t    )3000,
+																		(UBaseType_t   )pdTRUE,
+																	  (void *        )2,
+																		(TimerCallbackFunction_t)testTask
+																		);																
+		MsgInfoConfig("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");
 		G510.Config("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");																
 	  /*创建串口接收任务*/
 		xTaskCreate( (TaskFunction_t) MessageReceiveTask,       /*任务函数*/
@@ -93,25 +104,20 @@ void StartTask(void * pvParameter)
 							 (TaskHandle_t* ) &MsgSendTaskHanhler/*任务句柄*/
 							 );
 		xTimerStart(netTimerHandler,portMAX_DELAY);
+						
 		/*删除开始任务*/
 		vTaskDelete(StartTaskHanhler);
 	  taskEXIT_CRITICAL();      /*退出临界区*/
 }
 
-//void LED0Task(void *pArg)
-//{
-//	char* buf = pvPortMalloc(120);
-//	while(1)
-//	{
-//	//	xQueueReceive(UsartRecMsgQueue,buf,portMAX_DELAY);
-//		  MessageSend("Test cmd  1\r\n");
-//		  MessageSend("Test cmd  2\r\n");
-//		  MessageSend("Test cmd  3\r\n");
-//		  MessageSend("Test cmd  4\r\n");
-//		memset(buf,0,120);
-//		vTaskDelay(3000);
-//	}
-//}
+void testTask(void *pArg)
+{
+	while(1)
+	{
+		MessageSend("hello",1);
+   // printf(hello);
+	}
+}
 //void LED1Task(void *pArg)
 //{	
 //	u8   p[20];
