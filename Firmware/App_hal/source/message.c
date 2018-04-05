@@ -95,6 +95,7 @@ void MessageSendTask(void *pArg)
 		}
 		else
 		{
+			Message.payLoad = buf;
 			Message.send(1);
 		}
 		BaseType_t err = pdFALSE;
@@ -125,21 +126,27 @@ void MessageSendTask(void *pArg)
 /*消息发送注册函数*/
 void deviceSend(u8 head)
 {
+	char *cmd = pvPortMalloc(100);
+	char *len = pvPortMalloc(6);
 	if(head==1)
 	{
-		char *cmd = pvPortMalloc(300);
-		memset(cmd,0,300);
-		strcpy(cmd,"AT+");
-		strcat(cmd,Message.deviceName);
-		strcat(cmd,"/");
+		memset(cmd,0,100);
+		memset(len,0,6);
+		sprintf(len, "%d", strlen(Message.payLoad));
+		strcpy(cmd,"AT+CLOUDPUB=\"/");
 		strcat(cmd,Message.productKey);
 		strcat(cmd,"/");
-		strcat(cmd,Message.deviceScreat);
-		strcat(cmd,"/");
-		strcat(cmd,Message.payLoad);
+		strcat(cmd,Message.deviceName);
+		strcat(cmd,"/data\",0,");
+		strcat(cmd,len);
+		strcat(cmd,"\r\n");
 		UsartWrite((uint8_t*)cmd);
-		printf("cmd %s\r\n",cmd);
-		vPortFree(cmd);
+		vTaskDelay(100);
+		UsartWrite((uint8_t*)Message.payLoad);
+#ifdef 	DEBUG
+	  printf("send message: %s",cmd);
+		printf("%s\r\n",Message.payLoad);
+#endif
 	}
 	else
 	{
@@ -148,8 +155,9 @@ void deviceSend(u8 head)
 		strcpy(cmd,Message.payLoad);
 		UsartWrite((uint8_t*)cmd);
 		printf("cmd %s\r\n",cmd);
-		vPortFree(cmd);
 	}
+	vPortFree(len);
+	vPortFree(cmd);
 }
 
 
@@ -184,6 +192,21 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 				if(NULL != strstr(buf,rep))
 				{
 					xQueueReceive(G510.GprsRepQueue,rep,0);
+					xSemaphoreGive(G510.GprsConnectBinarySemaphore);
+				}
+			}
+	  }
+		if(G510.csqFlag == 1)
+		{
+			if(xQueuePeek(G510.GprsRepQueue,rep,0)==pdTRUE)
+			{
+				if(NULL != strstr(buf,rep))
+				{
+					xQueueReceive(G510.GprsRepQueue,rep,0);
+					if(G510.GprsRepQueue!=NULL)
+	        {
+			       xQueueOverwrite(G510.CSQRepQueue,buf);
+  	      }
 					xSemaphoreGive(G510.GprsConnectBinarySemaphore);
 				}
 			}

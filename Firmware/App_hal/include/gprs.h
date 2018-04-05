@@ -30,7 +30,8 @@ typedef struct GPRS {
 	void (*Config)(const char *pimei,const char *pimsi,const char * pcsq);
 	
 	SemaphoreHandle_t GprsConnectBinarySemaphore;
-//	SemaphoreHandle_t GprsCSQRecBinarySemaphore;
+	SemaphoreHandle_t GprsCSQBinarySemaphore;
+	QueueHandle_t CSQRepQueue;
 //	SemaphoreHandle_t GprsCSQGetBinarySemaphore;
 	//SemaphoreHandle_t GprsNetCheckBinarySemaphore;
 	QueueHandle_t GprsRepQueue;

@@ -79,7 +79,7 @@ void StartTask(void * pvParameter)
 																		(TimerCallbackFunction_t)G510.Connect
 																		);
 	 testTimerHandler = xTimerCreate(  (const char *  )"OneShotTimer",
-																		(TickType_t    )3000,
+																		(TickType_t    )10000,
 																		(UBaseType_t   )pdTRUE,
 																	  (void *        )2,
 																		(TimerCallbackFunction_t)testTask
@@ -112,11 +112,7 @@ void StartTask(void * pvParameter)
 
 void testTask(void *pArg)
 {
-	while(1)
-	{
 		MessageSend("hello",1);
-   // printf(hello);
-	}
 }
 //void LED1Task(void *pArg)
 //{	

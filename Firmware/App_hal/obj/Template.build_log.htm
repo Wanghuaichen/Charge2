@@ -28,29 +28,31 @@ Project File Date:  04/05/2018
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'RTC'
 compiling message.c...
-..\include\gprs.h(41): warning:  #1-D: last line of file ends without a newline
+..\include\gprs.h(42): warning:  #1-D: last line of file ends without a newline
   extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
 ..\source\message.c(79): warning:  #940-D: missing return statement at end of non-void function "MessageSendFromISR" 
   }
-..\source\message.c(123): warning:  #111-D: statement is unreachable
+..\source\message.c(124): warning:  #111-D: statement is unreachable
   	vPortFree(buf);
-..\source\message.c(140): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+..\source\message.c(143): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
   		UsartWrite((uint8_t*)cmd);
-..\source\message.c(149): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+..\source\message.c(145): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+  		UsartWrite((uint8_t*)Message.payLoad);
+..\source\message.c(156): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
   		UsartWrite((uint8_t*)cmd);
-..\source\message.c(171): warning:  #940-D: missing return statement at end of non-void function "MessageReceiveFromISR" 
+..\source\message.c(179): warning:  #940-D: missing return statement at end of non-void function "MessageReceiveFromISR" 
   }
-..\source\message.c(159): warning:  #177-D: variable "Res"  was declared but never referenced
+..\source\message.c(167): warning:  #177-D: variable "Res"  was declared but never referenced
   		u8 Res;
-..\source\message.c(198): warning:  #111-D: statement is unreachable
+..\source\message.c(221): warning:  #111-D: statement is unreachable
   	vPortFree(buf);
-..\source\message.c(200): warning:  #1-D: last line of file ends without a newline
+..\source\message.c(223): warning:  #1-D: last line of file ends without a newline
   }
-..\source\message.c: 9 warnings, 0 errors
+..\source\message.c: 10 warnings, 0 errors
 linking...
-Program Size: Code=19936 RO-data=592 RW-data=484 ZI-data=23612  
+Program Size: Code=20224 RO-data=592 RW-data=492 ZI-data=23612  
 FromELF: creating hex file...
-"..\OBJ\Template.axf" - 0 Error(s), 9 Warning(s).
+"..\OBJ\Template.axf" - 0 Error(s), 10 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_RTC
