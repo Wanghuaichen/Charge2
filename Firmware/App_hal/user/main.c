@@ -79,7 +79,7 @@ void StartTask(void * pvParameter)
 																		(TimerCallbackFunction_t)G510.Connect
 																		);
 	 testTimerHandler = xTimerCreate(  (const char *  )"OneShotTimer",
-																		(TickType_t    )1000,
+																		(TickType_t    )10000,
 																		(UBaseType_t   )pdTRUE,
 																	  (void *        )2,
 																		(TimerCallbackFunction_t)testTask
@@ -113,9 +113,6 @@ void StartTask(void * pvParameter)
 void testTask(void *pArg)
 {
 	MessageSend("hello",1);
-	G510.UpdateCSQ();
-  G510.UpdateIMEI();
-  G510.UpdateIMSI();
 }
 //void LED1Task(void *pArg)
 //{	

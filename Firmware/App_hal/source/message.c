@@ -1,11 +1,13 @@
 #include <string.h>
 #include "message.h"
 #include "gprs.h"
+#include "register.h"
 
 
 QueueHandle_t UsartRecMsgQueue;   //接收信息队列句柄
 static QueueHandle_t UsartSenMsgQueue;   //接收信息队列句柄
 extern Gprs G510;
+extern SemaphoreHandle_t RigisterBinarySemaphore;
 
 static Mes Message; 
 void MsgInfoConfig(char *productKey,char *deviceName,char *deviceScreat)
@@ -244,6 +246,14 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 				}
 			}
 	  }
+		if(RigisterBinarySemaphore!=NULL)              /*注册回复*/
+		{  
+			 if(NULL != strstr(buf,REGISTER_REP))
+		   {
+				 if(RigisterBinarySemaphore!=NULL)
+		     xSemaphoreGive(RigisterBinarySemaphore);
+			 }
+		}
 		if(NULL != strstr(buf,"OK"))
 		{
 		   xSemaphoreGive(Message.OKBinarySemaphore);

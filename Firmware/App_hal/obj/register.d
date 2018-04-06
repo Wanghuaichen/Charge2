@@ -58,3 +58,16 @@
 ..\obj\register.o: ..\lib\Inc\stm32f1xx_ll_usb.h
 ..\obj\register.o: ..\lib\Inc\stm32f1xx_hal_pcd_ex.h
 ..\obj\register.o: ..\lib\Inc\stm32f1xx_hal_hcd.h
+..\obj\register.o: ..\FreeRTOS\include\FreeRTOS.h
+..\obj\register.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\obj\register.o: ..\FreeRTOS\include\FreeRTOSConfig.h
+..\obj\register.o: ..\sys\usart.h
+..\obj\register.o: ..\FreeRTOS\include\projdefs.h
+..\obj\register.o: ..\FreeRTOS\include\portable.h
+..\obj\register.o: ..\FreeRTOS\include\deprecated_definitions.h
+..\obj\register.o: ..\FreeRTOS\portable\RVDS\ARM_CM3\portmacro.h
+..\obj\register.o: ..\FreeRTOS\include\mpu_wrappers.h
+..\obj\register.o: ..\FreeRTOS\include\semphr.h
+..\obj\register.o: ..\FreeRTOS\include\queue.h
+..\obj\register.o: ..\include\gprs.h
+..\obj\register.o: ..\include\cjson.h

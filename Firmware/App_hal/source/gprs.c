@@ -4,6 +4,7 @@
 #include "string.h"
 #include "timers.h"
 #include "queue.h"
+#include "register.h"
 //const char* AT =			      	  "AT\r\n";
 //const char* ATi8 =		          "ATi8\r\n";
 //const char* ATE0 =			        "ATE0\r\n\0";
@@ -396,6 +397,7 @@ int deviceConnect(void)
 		{
       printf("Connecet to cloud successful\r\n");
 			G510.connectFlag = 0;
+			DeviceRegister();
 		  xTimerStart(testTimerHandler,portMAX_DELAY);
 			return 1;
 		}
