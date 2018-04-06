@@ -13,20 +13,20 @@
 
 /*开始任务*/
 #define START_TASK_PRIO    1          //任务优先级
-#define START_STK_SIZE     128        //任务堆栈大小
+#define START_STK_SIZE     256        //任务堆栈大小
 TaskHandle_t StartTaskHanhler;        //任务句柄
 void StartTask(void *pvParameters);   //任务函数
 
 /*串口接收队列解析任务*/
 #define MsgRecTask_TASK_PRIO    4                    //任务优先级
-#define MsgRecTask_STK_SIZE     128                  //任务堆栈大小
+#define MsgRecTask_STK_SIZE     256                  //任务堆栈大小
 TaskHandle_t MsgRecTaskHanhler;                  //任务句柄
 //回调函数在message.c中定义，创建任务时注册          //任务函数
 
 
 /*数据包封装串口发送*/
 #define MsgSend_TASK_PRIO    3          //任务优先级
-#define MsgSend_STK_SIZE     128        //任务堆栈大小
+#define MsgSend_STK_SIZE     256        //任务堆栈大小
 TaskHandle_t MsgSendTaskHanhler;        //任务句柄
 
 
@@ -79,7 +79,7 @@ void StartTask(void * pvParameter)
 																		(TimerCallbackFunction_t)G510.Connect
 																		);
 	 testTimerHandler = xTimerCreate(  (const char *  )"OneShotTimer",
-																		(TickType_t    )10000,
+																		(TickType_t    )1000,
 																		(UBaseType_t   )pdTRUE,
 																	  (void *        )2,
 																		(TimerCallbackFunction_t)testTask
@@ -112,7 +112,10 @@ void StartTask(void * pvParameter)
 
 void testTask(void *pArg)
 {
-		MessageSend("hello",1);
+	MessageSend("hello",1);
+	G510.UpdateCSQ();
+  G510.UpdateIMEI();
+  G510.UpdateIMSI();
 }
 //void LED1Task(void *pArg)
 //{	

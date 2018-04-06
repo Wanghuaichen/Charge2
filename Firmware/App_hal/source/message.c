@@ -126,11 +126,11 @@ void MessageSendTask(void *pArg)
 /*消息发送注册函数*/
 void deviceSend(u8 head)
 {
-	char *cmd = pvPortMalloc(100);
+	char *cmd = pvPortMalloc(200);
 	char *len = pvPortMalloc(6);
 	if(head==1)
 	{
-		memset(cmd,0,100);
+		memset(cmd,0,200);
 		memset(len,0,6);
 		sprintf(len, "%d", strlen(Message.payLoad));
 		strcpy(cmd,"AT+CLOUDPUB=\"/");
@@ -150,11 +150,14 @@ void deviceSend(u8 head)
 	}
 	else
 	{
-		char *cmd = pvPortMalloc(300);
-		memset(cmd,0,300);
+		memset(cmd,0,200);
 		strcpy(cmd,Message.payLoad);
 		UsartWrite((uint8_t*)cmd);
-		printf("cmd %s\r\n",cmd);
+#ifdef 	DEBUG
+	  printf("send message: %s",cmd);
+		printf("%s\r\n",Message.payLoad);
+#endif
+		
 	}
 	vPortFree(len);
 	vPortFree(cmd);
@@ -180,7 +183,7 @@ int MessageReceiveFromISR(char *msg)
 void MessageReceiveTask(void *pArg)   //命令解析任务
 {
 	char* buf = pvPortMalloc(120);
-	char* rep = pvPortMalloc(30);
+	char* rep = pvPortMalloc(60);
 	while(1)
 	{
 		xQueueReceive(UsartRecMsgQueue,buf,portMAX_DELAY);
@@ -207,7 +210,37 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 	        {
 			       xQueueOverwrite(G510.CSQRepQueue,buf);
   	      }
-					xSemaphoreGive(G510.GprsConnectBinarySemaphore);
+					xSemaphoreGive(G510.GprsCSQBinarySemaphore);
+				}
+			}
+	  }
+		if(G510.imeiFlag == 1)
+		{
+			if(xQueuePeek(G510.GprsRepQueue,rep,0)==pdTRUE)
+			{
+				if(NULL != strstr(buf,rep))
+				{
+					xQueueReceive(G510.GprsRepQueue,rep,0);
+					if(G510.IMEIRepQueue!=NULL)
+	        {
+			       xQueueOverwrite(G510.IMEIRepQueue,buf);
+  	      }
+					xSemaphoreGive(G510.IMEIBinarySemaphore);
+				}
+			}
+	  }
+		if(G510.imsiFlag == 1)
+		{
+			if(xQueuePeek(G510.GprsRepQueue,rep,0)==pdTRUE)
+			{
+				if(NULL != strstr(buf,rep))
+				{
+					xQueueReceive(G510.GprsRepQueue,rep,0);
+					if(G510.IMSIRepQueue!=NULL)
+	        {
+			       xQueueOverwrite(G510.IMSIRepQueue,buf);
+  	      }
+					xSemaphoreGive(G510.IMSIBinarySemaphore);
 				}
 			}
 	  }
