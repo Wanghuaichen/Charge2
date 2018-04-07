@@ -779,6 +779,21 @@
               <FileType>1</FileType>
               <FilePath>..\source\register.c</FilePath>
             </File>
+            <File>
+              <FileName>csq.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\csq.c</FilePath>
+            </File>
+            <File>
+              <FileName>devcmd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\devcmd.c</FilePath>
+            </File>
+            <File>
+              <FileName>board.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\board.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

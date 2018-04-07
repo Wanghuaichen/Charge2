@@ -74,3 +74,5 @@
 ..\obj\message.o: ..\FreeRTOS\include\semphr.h
 ..\obj\message.o: ..\include\gprs.h
 ..\obj\message.o: ..\include\register.h
+..\obj\message.o: ..\include\csq.h
+..\obj\message.o: ..\include\devcmd.h

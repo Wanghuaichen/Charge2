@@ -68,3 +68,10 @@
 ..\obj\active.o: ..\FreeRTOS\portable\RVDS\ARM_CM3\portmacro.h
 ..\obj\active.o: ..\FreeRTOS\include\mpu_wrappers.h
 ..\obj\active.o: ..\FreeRTOS\include\queue.h
+..\obj\active.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\obj\active.o: ..\include\portaddr.h
+..\obj\active.o: ..\include\cjson.h
+..\obj\active.o: ..\include\message.h
+..\obj\active.o: ..\FreeRTOS\include\task.h
+..\obj\active.o: ..\FreeRTOS\include\list.h
+..\obj\active.o: ..\FreeRTOS\include\semphr.h

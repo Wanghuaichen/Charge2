@@ -2,12 +2,16 @@
 #include "message.h"
 #include "gprs.h"
 #include "register.h"
+#include "csq.h"
+#include "devcmd.h"
 
 
 QueueHandle_t UsartRecMsgQueue;   //接收信息队列句柄
 static QueueHandle_t UsartSenMsgQueue;   //接收信息队列句柄
 extern Gprs G510;
 extern SemaphoreHandle_t RigisterBinarySemaphore;
+extern SemaphoreHandle_t CSQBinarySemaphore;
+extern QueueHandle_t DevCmdQueue;   
 
 static Mes Message; 
 void MsgInfoConfig(char *productKey,char *deviceName,char *deviceScreat)
@@ -253,6 +257,19 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 				 if(RigisterBinarySemaphore!=NULL)
 		     xSemaphoreGive(RigisterBinarySemaphore);
 			 }
+		}
+		if(CSQBinarySemaphore!=NULL)                   /*CSQ回复*/
+		{  
+			 if(NULL != strstr(buf,CSQ_REP))
+		   {
+				 if(CSQBinarySemaphore!=NULL)
+		     xSemaphoreGive(CSQBinarySemaphore);
+			 }
+		} 
+		if(NULL != strstr(buf,DEV_CMD))                /*devcmd Queue*/
+		{
+			 if(DevCmdQueue!=NULL)
+			 xQueueSend(DevCmdQueue,buf,0);
 		}
 		if(NULL != strstr(buf,"OK"))
 		{
