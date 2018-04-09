@@ -75,3 +75,4 @@
 ..\obj\devcmd.o: ..\FreeRTOS\include\list.h
 ..\obj\devcmd.o: ..\FreeRTOS\include\timers.h
 ..\obj\devcmd.o: ..\include\active.h
+..\obj\devcmd.o: ..\include\fota.h

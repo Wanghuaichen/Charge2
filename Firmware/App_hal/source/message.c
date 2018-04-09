@@ -4,6 +4,7 @@
 #include "register.h"
 #include "csq.h"
 #include "devcmd.h"
+#include "charge.h"
 
 
 QueueHandle_t UsartRecMsgQueue;   //接收信息队列句柄
@@ -12,6 +13,7 @@ extern Gprs G510;
 extern SemaphoreHandle_t RigisterBinarySemaphore;
 extern SemaphoreHandle_t CSQBinarySemaphore;
 extern QueueHandle_t DevCmdQueue;   
+extern QueueHandle_t ChaCmdQueue;
 
 static Mes Message; 
 void MsgInfoConfig(char *productKey,char *deviceName,char *deviceScreat)
@@ -270,6 +272,11 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 		{
 			 if(DevCmdQueue!=NULL)
 			 xQueueSend(DevCmdQueue,buf,0);
+		}
+		if(NULL != strstr(buf,DEV_CMD))                /*chacmd Queue*/
+		{
+			 if(ChaCmdQueue!=NULL)
+			 xQueueSend(ChaCmdQueue,buf,0);
 		}
 		if(NULL != strstr(buf,"OK"))
 		{

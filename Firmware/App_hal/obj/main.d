@@ -77,3 +77,5 @@
 ..\obj\main.o: ..\FreeRTOS\include\timers.h
 ..\obj\main.o: ..\include\flash.h
 ..\obj\main.o: ..\include\gpio.h
+..\obj\main.o: ..\include\csq.h
+..\obj\main.o: ..\include\devcmd.h

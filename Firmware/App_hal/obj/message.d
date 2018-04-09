@@ -76,3 +76,4 @@
 ..\obj\message.o: ..\include\register.h
 ..\obj\message.o: ..\include\csq.h
 ..\obj\message.o: ..\include\devcmd.h
+..\obj\message.o: ..\include\charge.h

@@ -69,6 +69,8 @@
 "..\obj\csq.o"
 "..\obj\devcmd.o"
 "..\obj\board.o"
+"..\obj\fota.o"
+"..\obj\port_1.o"
 "..\obj\flash.o"
 "..\obj\gpio.o"
 --strict --scatter "..\OBJ\Template.sct"

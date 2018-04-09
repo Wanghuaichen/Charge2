@@ -10,6 +10,8 @@
 #include "timers.h"
 #include "flash.h"
 #include "gpio.h"
+#include "csq.h"
+#include "devcmd.h"
 
 /*开始任务*/
 #define START_TASK_PRIO    1          //任务优先级
@@ -25,20 +27,25 @@ TaskHandle_t MsgRecTaskHanhler;                  //任务句柄
 
 
 /*数据包封装串口发送*/
-#define MsgSend_TASK_PRIO    3          //任务优先级
-#define MsgSend_STK_SIZE     256        //任务堆栈大小
+#define MsgSendTask_TASK_PRIO    3          //任务优先级
+#define MsgSendTask_STK_SIZE     256        //任务堆栈大小
 TaskHandle_t MsgSendTaskHanhler;        //任务句柄
 
+/*设备参数修改任务*/
+#define DeviceCmdTask_TASK_PRIO    2          //任务优先级
+#define DeviceCmdTask_STK_SIZE     256        //任务堆栈大小
+TaskHandle_t DeviceCmdTaskHanhler;            //任务句柄
 
 extern Gprs G510;
 xTimerHandle netTimerHandler;
 xTimerHandle testTimerHandler;
+xTimerHandle CSQTimerHandler;
 
 void testTask(void *pArg);
 int main()
 {
 	HAL_Init();                    	  
-    Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
+  Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
 	HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 	delay_init();
 	LogInit(115200);
@@ -78,16 +85,22 @@ void StartTask(void * pvParameter)
 																	  (void *        )1,
 																		(TimerCallbackFunction_t)G510.Connect
 																		);
-	 testTimerHandler = xTimerCreate(  (const char *  )"OneShotTimer",
+	 testTimerHandler = xTimerCreate( (const char *  )"OneShotTimer",
 																		(TickType_t    )10000,
 																		(UBaseType_t   )pdTRUE,
 																	  (void *        )2,
 																		(TimerCallbackFunction_t)testTask
-																		);																
+																		);	
+	 CSQTimerHandler  = xTimerCreate( (const char *  )"CSQTimer",
+																		(TickType_t    )86400000,      /*24小时定时器*/
+																		(UBaseType_t   )pdTRUE,
+																	  (void *        )3,
+																		(TimerCallbackFunction_t)DeviceUploadCSQ
+																		);																			
 		MsgInfoConfig("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");
 		G510.Config("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");																
 	  /*创建串口接收任务*/
-		xTaskCreate( (TaskFunction_t) MessageReceiveTask,       /*任务函数*/
+  	xTaskCreate( (TaskFunction_t) MessageReceiveTask,       /*任务函数*/
 							 (const char*   ) "LED0Task",                 /*任务名称*/
 							 (uint16_t      ) MsgRecTask_STK_SIZE,        /*任务堆栈大小*/
 							 (void *        ) NULL,                       /*传递给任务函数的参数*/
@@ -96,12 +109,20 @@ void StartTask(void * pvParameter)
 	            );
 
 	  	/*创建串口发送任务*/
-		xTaskCreate( (TaskFunction_t) MessageSendTask,       /*任务函数*/
-							 (const char*   ) "MsgTask",     /*任务名称*/
-							 (uint16_t      ) MsgSend_STK_SIZE,  /*任务堆栈大小*/
-							 (void *        ) NULL,            /*传递给任务函数的参数*/
-							 (UBaseType_t   ) MsgSend_TASK_PRIO, /*任务优先级*/
-							 (TaskHandle_t* ) &MsgSendTaskHanhler/*任务句柄*/
+		xTaskCreate( (TaskFunction_t) MessageSendTask,          /*任务函数*/
+							 (const char*   ) "MsgTask",                  /*任务名称*/
+							 (uint16_t      ) MsgSendTask_STK_SIZE,       /*任务堆栈大小*/
+							 (void *        ) NULL,                       /*传递给任务函数的参数*/
+							 (UBaseType_t   ) MsgSendTask_TASK_PRIO,      /*任务优先级*/
+							 (TaskHandle_t* ) &MsgSendTaskHanhler         /*任务句柄*/
+							 );
+		 /*创建DeviceCmd任务*/
+		xTaskCreate( (TaskFunction_t) DevCmdTask,                /*任务函数*/
+							 (const char*   ) "DevCmdTask",                /*任务名称*/
+							 (uint16_t      ) DeviceCmdTask_STK_SIZE,      /*任务堆栈大小*/
+							 (void *        ) NULL,                        /*传递给任务函数的参数*/
+							 (UBaseType_t   ) DeviceCmdTask_TASK_PRIO,     /*任务优先级*/
+							 (TaskHandle_t* ) &DeviceCmdTaskHanhler        /*任务句柄*/
 							 );
 		xTimerStart(netTimerHandler,portMAX_DELAY);
 						

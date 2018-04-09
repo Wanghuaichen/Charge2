@@ -5,6 +5,7 @@
 #include "message.h"
 #include "timers.h"
 #include "active.h"
+#include "fota.h"
 
 QueueHandle_t DevCmdQueue;   
 void DecCmdConfig(void)
@@ -20,14 +21,17 @@ void DevCmdTask(void* pAgr)
 		memset(buf,0,100);
 		xQueueReceive(DevCmdQueue,buf,portMAX_DELAY);
 		printf("DevCmdBuf: %s\r\n",buf);
-		
-		if(NULL!=strstr(buf,(const char*)ACTIVATE))   /*Éè±¸¼¤»î*/
+		if(NULL!=strstr(buf,(const char*)ACTIVATE))   /*è®¾å¤‡æ¿€æ´»*/
 		{
 			ActivateDevice(buf);	
 		}
-		if(NULL!=strstr(buf,(const char*)RELEASE))   /*Éè±¸½â°ó*/
+		if(NULL!=strstr(buf,(const char*)RELEASE))    /*è®¾å¤‡è§£ç»‘*/
 		{
 			ReleaseDevice();
+		}
+		if(NULL!=strstr(buf,(const char*)FOTA_END))    /*è®¾å¤‡æ›´æ–°*/
+		{
+			StartFota(buf);
 		}
 		vTaskDelay(100);
 	}
