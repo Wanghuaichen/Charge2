@@ -194,9 +194,9 @@ static int pdeviceConnect(void)
 
 static int pdeviceUpdateCSQ(void)
 {
-		u8 count = 0;
-		BaseType_t err;
-		if(G510.GprsRepQueue!=NULL)
+	  u8 count = 0;
+	  BaseType_t err;
+	  if(G510.GprsRepQueue!=NULL)
 	  {
 			err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[12]);
 			if(err!=pdTRUE)
@@ -204,7 +204,7 @@ static int pdeviceUpdateCSQ(void)
 				printf("Rep Send failed\r\n");
 				return -1;
 			}
-  	}
+  	  }
 	  MessageSend(G510.cmd[12],0);
 		while(1)
 		{

@@ -804,6 +804,11 @@
               <FileType>1</FileType>
               <FilePath>..\source\port.c</FilePath>
             </File>
+            <File>
+              <FileName>net.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\net.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

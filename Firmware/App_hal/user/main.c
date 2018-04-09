@@ -12,6 +12,7 @@
 #include "gpio.h"
 #include "csq.h"
 #include "devcmd.h"
+#include "net.h"
 
 /*开始任务*/
 #define START_TASK_PRIO    1          //任务优先级
@@ -37,7 +38,7 @@ TaskHandle_t MsgSendTaskHanhler;        //任务句柄
 TaskHandle_t DeviceCmdTaskHanhler;            //任务句柄
 
 extern Gprs G510;
-xTimerHandle netTimerHandler;
+xTimerHandle connectTimerHandler;
 xTimerHandle testTimerHandler;
 xTimerHandle CSQTimerHandler;
 
@@ -79,10 +80,10 @@ void StartTask(void * pvParameter)
 	 taskENTER_CRITICAL();     /*进入临界区*/
 	
 	/*触发联网定时器*/
-	 netTimerHandler = xTimerCreate(  (const char *  )"OneShotTimer",
+	 connectTimerHandler = xTimerCreate(  (const char *  )"OneShotTimer",
 																		(TickType_t    )2000,
 																		(UBaseType_t   )pdFALSE,
-																	  (void *        )1,
+																	    (void *        )1,
 																		(TimerCallbackFunction_t)G510.Connect
 																		);
 	 testTimerHandler = xTimerCreate( (const char *  )"OneShotTimer",
@@ -124,7 +125,7 @@ void StartTask(void * pvParameter)
 							 (UBaseType_t   ) DeviceCmdTask_TASK_PRIO,     /*任务优先级*/
 							 (TaskHandle_t* ) &DeviceCmdTaskHanhler        /*任务句柄*/
 							 );
-		xTimerStart(netTimerHandler,portMAX_DELAY);
+		xTimerStart(connectTimerHandler,portMAX_DELAY);
 						
 		/*删除开始任务*/
 		vTaskDelete(StartTaskHanhler);

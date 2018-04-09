@@ -12,6 +12,7 @@ static QueueHandle_t UsartSenMsgQueue;   //接收信息队列句柄
 extern Gprs G510;
 extern SemaphoreHandle_t RigisterBinarySemaphore;
 extern SemaphoreHandle_t CSQBinarySemaphore;
+extern SemaphoreHandle_t NetBinarySemaphore;
 extern QueueHandle_t DevCmdQueue;   
 extern QueueHandle_t ChaCmdQueue;
 
@@ -205,7 +206,7 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 					xQueueReceive(G510.GprsRepQueue,rep,0);
 					xSemaphoreGive(G510.GprsConnectBinarySemaphore);
 				}
-			}
+		 	}
 	  }
 		if(G510.csqFlag == 1)
 		{
@@ -252,7 +253,19 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 				}
 			}
 	  }
-		if(RigisterBinarySemaphore!=NULL)              /*注册回复*/
+		if(G510.netFlag == 1)                               /*网络检查*/
+		{
+			if(NULL != strstr(buf,"MIPCALL"))
+			{
+				char * result = strstr(buf,"MIPCALL");
+				if(NULL != strstr(result,"."))
+				if(NetBinarySemaphore!=NULL)
+				{
+					xSemaphoreGive(NetBinarySemaphore);
+				}
+			}
+	  }		
+		if(RigisterBinarySemaphore!=NULL)                    /*注册回复*/
 		{  
 			 if(NULL != strstr(buf,REGISTER_REP))
 		   {
@@ -260,7 +273,7 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 		     xSemaphoreGive(RigisterBinarySemaphore);
 			 }
 		}
-		if(CSQBinarySemaphore!=NULL)                   /*CSQ回复*/
+		if(CSQBinarySemaphore!=NULL)                          /*CSQ回复*/
 		{  
 			 if(NULL != strstr(buf,CSQ_REP))
 		   {

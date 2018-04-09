@@ -1,5 +1,5 @@
 Dependencies for Project 'RTC', Target 'RTC': (DO NOT MODIFY !)
-F (.\main.c)(0x5AC9A7D7)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\user -I ..\include -I ..\sys -I ..\lib\Inc -I ..\lib\Inc\Legacy -I ..\core -I ..\FreeRTOS -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\MemMang -I ..\FreeRTOS\portable\RVDS\ARM_CM3-I.\RTE\_RTC-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DDEBUG-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
+F (.\main.c)(0x5ACAC483)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\user -I ..\include -I ..\sys -I ..\lib\Inc -I ..\lib\Inc\Legacy -I ..\core -I ..\FreeRTOS -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\MemMang -I ..\FreeRTOS\portable\RVDS\ARM_CM3-I.\RTE\_RTC-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DDEBUG-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
 I (..\sys\sys.h)(0x5AB88E0B)
 I (..\user\stm32f1xx.h)(0x571DE09C)
 I (..\user\stm32f103xe.h)(0x571DE09C)
@@ -79,6 +79,7 @@ I (..\include\flash.h)(0x5ABE0208)
 I (..\include\gpio.h)(0x5AC6292B)
 I (..\include\csq.h)(0x5AC88523)
 I (..\include\devcmd.h)(0x5AC9A7D3)
+I (..\include\net.h)(0x5ACAC42A)
 F (.\stm32f1xx_it.c)(0x5AB89236)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\user -I ..\include -I ..\sys -I ..\lib\Inc -I ..\lib\Inc\Legacy -I ..\core -I ..\FreeRTOS -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\MemMang -I ..\FreeRTOS\portable\RVDS\ARM_CM3-I.\RTE\_RTC-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DDEBUG-o ..\obj\stm32f1xx_it.o --omf_browse ..\obj\stm32f1xx_it.crf --depend ..\obj\stm32f1xx_it.d)
 I (main.h)(0x59253840)
 I (..\lib\Inc\stm32f1xx_hal.h)(0x571E2CF8)
@@ -3479,7 +3480,7 @@ I (..\FreeRTOS\portable\RVDS\ARM_CM3\portmacro.h)(0x5AA9E60A)
 I (..\FreeRTOS\include\mpu_wrappers.h)(0x573F3A16)
 I (..\FreeRTOS\include\task.h)(0x573F3A16)
 I (..\FreeRTOS\include\list.h)(0x573F3A16)
-F (..\source\gprs.c)(0x5AC738E6)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\user -I ..\include -I ..\sys -I ..\lib\Inc -I ..\lib\Inc\Legacy -I ..\core -I ..\FreeRTOS -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\MemMang -I ..\FreeRTOS\portable\RVDS\ARM_CM3-I.\RTE\_RTC-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DDEBUG-o ..\obj\gprs.o --omf_browse ..\obj\gprs.crf --depend ..\obj\gprs.d)
+F (..\source\gprs.c)(0x5ACAC3E8)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\user -I ..\include -I ..\sys -I ..\lib\Inc -I ..\lib\Inc\Legacy -I ..\core -I ..\FreeRTOS -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\MemMang -I ..\FreeRTOS\portable\RVDS\ARM_CM3-I.\RTE\_RTC-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DDEBUG-o ..\obj\gprs.o --omf_browse ..\obj\gprs.crf --depend ..\obj\gprs.d)
 I (..\sys\sys.h)(0x5AB88E0B)
 I (..\user\stm32f1xx.h)(0x571DE09C)
 I (..\user\stm32f103xe.h)(0x571DE09C)
@@ -3555,7 +3556,7 @@ I (..\FreeRTOS\include\list.h)(0x573F3A16)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5A464A29)
 I (..\FreeRTOS\include\timers.h)(0x573F3A16)
 I (..\include\register.h)(0x5AC737E2)
-F (..\source\message.c)(0x5AC9F760)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\user -I ..\include -I ..\sys -I ..\lib\Inc -I ..\lib\Inc\Legacy -I ..\core -I ..\FreeRTOS -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\MemMang -I ..\FreeRTOS\portable\RVDS\ARM_CM3-I.\RTE\_RTC-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DDEBUG-o ..\obj\message.o --omf_browse ..\obj\message.crf --depend ..\obj\message.d)
+F (..\source\message.c)(0x5ACAC3E9)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\user -I ..\include -I ..\sys -I ..\lib\Inc -I ..\lib\Inc\Legacy -I ..\core -I ..\FreeRTOS -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\MemMang -I ..\FreeRTOS\portable\RVDS\ARM_CM3-I.\RTE\_RTC-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DDEBUG-o ..\obj\message.o --omf_browse ..\obj\message.crf --depend ..\obj\message.d)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5A464A29)
 I (..\include\message.h)(0x5AC6292B)
 I (..\FreeRTOS\include\FreeRTOS.h)(0x573F3A16)
@@ -4363,7 +4364,7 @@ I (..\include\active.h)(0x5AC8C8EA)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5A464A29)
 I (..\include\portaddr.h)(0x5AC98E72)
 I (..\include\cjson.h)(0x5ABDF30C)
-F (..\source\port.c)(0x5ACA02C4)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\user -I ..\include -I ..\sys -I ..\lib\Inc -I ..\lib\Inc\Legacy -I ..\core -I ..\FreeRTOS -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\MemMang -I ..\FreeRTOS\portable\RVDS\ARM_CM3-I.\RTE\_RTC-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DDEBUG-o ..\obj\port_1.o --omf_browse ..\obj\port_1.crf --depend ..\obj\port_1.d)
+F (..\source\port.c)(0x5ACA0611)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\user -I ..\include -I ..\sys -I ..\lib\Inc -I ..\lib\Inc\Legacy -I ..\core -I ..\FreeRTOS -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\MemMang -I ..\FreeRTOS\portable\RVDS\ARM_CM3-I.\RTE\_RTC-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DDEBUG-o ..\obj\port_1.o --omf_browse ..\obj\port_1.crf --depend ..\obj\port_1.d)
 I (..\include\port.h)(0x5AC9FC79)
 I (..\sys\sys.h)(0x5AB88E0B)
 I (..\user\stm32f1xx.h)(0x571DE09C)
@@ -4433,6 +4434,81 @@ I (..\FreeRTOS\include\deprecated_definitions.h)(0x573F3A16)
 I (..\FreeRTOS\portable\RVDS\ARM_CM3\portmacro.h)(0x5AA9E60A)
 I (..\FreeRTOS\include\mpu_wrappers.h)(0x573F3A16)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5A464A29)
+F (..\source\net.c)(0x5ACAC41D)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\user -I ..\include -I ..\sys -I ..\lib\Inc -I ..\lib\Inc\Legacy -I ..\core -I ..\FreeRTOS -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\MemMang -I ..\FreeRTOS\portable\RVDS\ARM_CM3-I.\RTE\_RTC-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DDEBUG-o ..\obj\net.o --omf_browse ..\obj\net.crf --depend ..\obj\net.d)
+I (..\include\net.h)(0x5ACAC42A)
+I (..\sys\sys.h)(0x5AB88E0B)
+I (..\user\stm32f1xx.h)(0x571DE09C)
+I (..\user\stm32f103xe.h)(0x571DE09C)
+I (..\core\core_cm3.h)(0x563336C5)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F606B8)
+I (..\core\core_cmInstr.h)(0x563336C5)
+I (..\core\cmsis_armcc.h)(0x563336C5)
+I (..\core\core_cmFunc.h)(0x563336C5)
+I (..\user\system_stm32f1xx.h)(0x571DE09C)
+I (..\lib\Inc\stm32f1xx_hal.h)(0x571E2CF8)
+I (..\user\stm32f1xx_hal_conf.h)(0x59293E9C)
+I (..\lib\Inc\stm32f1xx_hal_rcc.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_def.h)(0x571E2F9D)
+I (..\lib\Inc\Legacy/stm32_hal_legacy.h)(0x571E2F9D)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F606B8)
+I (..\lib\Inc\stm32f1xx_hal_rcc_ex.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_gpio.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_gpio_ex.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_dma.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_dma_ex.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_eth.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_can.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_can_ex.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_cec.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_cortex.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_adc.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_adc_ex.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_crc.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_dac.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_dac_ex.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_flash.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_flash_ex.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_sram.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_ll_fsmc.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_nor.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_i2c.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_i2s.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_iwdg.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_pwr.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_rtc.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_rtc_ex.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_pccard.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_sd.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_ll_sdmmc.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_nand.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_spi.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_tim.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_tim_ex.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_uart.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_usart.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_irda.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_smartcard.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_wwdg.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_pcd.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_ll_usb.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_pcd_ex.h)(0x571E2CF8)
+I (..\lib\Inc\stm32f1xx_hal_hcd.h)(0x571E2CF8)
+I (..\FreeRTOS\include\FreeRTOS.h)(0x573F3A16)
+I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F606B8)
+I (..\FreeRTOS\include\FreeRTOSConfig.h)(0x5AB907F6)
+I (..\sys\usart.h)(0x5ABBAE17)
+I (..\FreeRTOS\include\projdefs.h)(0x573F3A16)
+I (..\FreeRTOS\include\portable.h)(0x573F3A16)
+I (..\FreeRTOS\include\deprecated_definitions.h)(0x573F3A16)
+I (..\FreeRTOS\portable\RVDS\ARM_CM3\portmacro.h)(0x5AA9E60A)
+I (..\FreeRTOS\include\mpu_wrappers.h)(0x573F3A16)
+I (..\FreeRTOS\include\semphr.h)(0x573F3A16)
+I (..\FreeRTOS\include\queue.h)(0x573F3A16)
+I (..\include\gprs.h)(0x5AC73123)
+I (..\include\cjson.h)(0x5ABDF30C)
+I (..\include\message.h)(0x5AC6292B)
+I (..\FreeRTOS\include\task.h)(0x573F3A16)
+I (..\FreeRTOS\include\list.h)(0x573F3A16)
 F (..\source\flash.c)(0x5ABE01FC)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\user -I ..\include -I ..\sys -I ..\lib\Inc -I ..\lib\Inc\Legacy -I ..\core -I ..\FreeRTOS -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\MemMang -I ..\FreeRTOS\portable\RVDS\ARM_CM3-I.\RTE\_RTC-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_HD -DUSE_HAL_DRIVER -DSTM32F103xE -DDEBUG-o ..\obj\flash.o --omf_browse ..\obj\flash.crf --depend ..\obj\flash.d)
 I (..\include\flash.h)(0x5ABE0208)
 I (..\sys\sys.h)(0x5AB88E0B)
