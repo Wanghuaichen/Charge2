@@ -69,3 +69,4 @@
 ..\obj\port_1.o: ..\FreeRTOS\portable\RVDS\ARM_CM3\portmacro.h
 ..\obj\port_1.o: ..\FreeRTOS\include\mpu_wrappers.h
 ..\obj\port_1.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\obj\port_1.o: ..\include\cjson.h

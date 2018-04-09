@@ -237,7 +237,7 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 					xSemaphoreGive(G510.IMEIBinarySemaphore);
 				}
 			}
-	  }
+	    }
 		if(G510.imsiFlag == 1)
 		{
 			if(xQueuePeek(G510.GprsRepQueue,rep,0)==pdTRUE)
@@ -252,7 +252,7 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 					xSemaphoreGive(G510.IMSIBinarySemaphore);
 				}
 			}
-	  }
+	    }
 		if(G510.netFlag == 1)                               /*网络检查*/
 		{
 			if(NULL != strstr(buf,"MIPCALL"))
@@ -264,7 +264,7 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 					xSemaphoreGive(NetBinarySemaphore);
 				}
 			}
-	  }		
+	    }		
 		if(RigisterBinarySemaphore!=NULL)                    /*注册回复*/
 		{  
 			 if(NULL != strstr(buf,REGISTER_REP))

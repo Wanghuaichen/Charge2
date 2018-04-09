@@ -2,6 +2,7 @@
 #include "portaddr.h"
 #include "FreeRTOS.h"
 #include "string.h"
+#include "cjson.h"
 
 #define CHARGEPOWERON      0  //更换继电器后0-1状态要反置
 #define CHARGEPOWEROFF     1  //更换继电器后0-1状态要反置
@@ -1001,14 +1002,14 @@ static  DevicePort Port[20] =
 
 void deviceSetUseStatus(struct DxPort *port)          //设置IO充电       充电  状态设置并写入flash
 {
-	char * Msg = pvPortMalloc(40);
-	memset(Msg, 0, 40);
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
 	port->useStatus = 1;
 	strcpy(Msg, "port");
 	strcat(Msg, "1");
 	strcat(Msg, "status");
-	STMFLASH_Write(port->useStatusFlashAddr, (u32*)Msg, 4);
-	STMFLASH_Read(port->useStatusFlashAddr, (u32*)Msg, 4);
+	STMFLASH_Write(port->useStatusFlashAddr, (u32*)Msg, 10);
+	STMFLASH_Read(port->useStatusFlashAddr, (u32*)Msg, 10);
 	printf("Set UseStatus %s\r\n",Msg);
 	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, CHARGEPOWERON);           //打开继电器
 	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, CHARGELEDON);       //打开充电灯
@@ -1016,8 +1017,8 @@ void deviceSetUseStatus(struct DxPort *port)          //设置IO充电       充
 }
 void deviceSetFinishStatus(struct DxPort *port, u8 status)       //设置IO断电       完成  状态设置并写入flash
 {
-	char * Msg = pvPortMalloc(40);
-	memset(Msg, 0, 40);
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
 	port->finishFlag = status;
 	strcpy(Msg, "port");
 	if (status == 1)
@@ -1041,8 +1042,8 @@ void deviceSetFinishStatus(struct DxPort *port, u8 status)       //设置IO断�
 		strcat(Msg, "0");
 	}
 	strcat(Msg, "status");
-	STMFLASH_Write(port->finishFlagFlashAddr, (u32*)Msg, 4);
-	STMFLASH_Read(port->finishFlagFlashAddr, (u32*)Msg, 4);
+	STMFLASH_Write(port->finishFlagFlashAddr, (u32*)Msg, 10);
+	STMFLASH_Read(port->finishFlagFlashAddr, (u32*)Msg, 10);
 	printf("Set FinishStatus %s\r\n",Msg);
 	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, CHARGEPOWEROFF);            //关闭继电器
 	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, CHARGELEDOFF);        //关闭充电灯
@@ -1050,13 +1051,13 @@ void deviceSetFinishStatus(struct DxPort *port, u8 status)       //设置IO断�
 }
 void deviceSetErrorStatus(struct DxPort *port)          //设置端口损坏  状态设置并写入flash
 {
-	char * Msg = pvPortMalloc(40);
-	memset(Msg, 0, 40);
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
 	port->errorFlag = 1;		
 	strcpy(Msg, "port");
 	strcat(Msg, "1");
 	strcat(Msg, "status");
-	STMFLASH_Write(port->errorFlagFlashAddr, (u32*)Msg, 4);
+	STMFLASH_Write(port->errorFlagFlashAddr, (u32*)Msg, 10);
 	vPortFree(Msg);
 	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, CHARGEPOWEROFF);            //关闭继电器
 	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, CHARGELEDON);        //打开充电灯
@@ -1117,8 +1118,8 @@ int   deviceGetFinishStatus(struct DxPort *port)
 
 void deviceClearUseStatus(struct DxPort *port)        
 {
-	char * Msg = pvPortMalloc(40);
-	memset(Msg, 0, 40);
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
 	port->useStatus = 0;
 	strcpy(Msg, "port");
 	strcat(Msg, "0");
@@ -1130,8 +1131,8 @@ void deviceClearUseStatus(struct DxPort *port)
 }
 void deviceClearErrorStatus(struct DxPort *port)        
 {
-	char * Msg = pvPortMalloc(40);
-	memset(Msg, 0, 40);
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
 	port->errorFlag = 0;
 	strcpy(Msg, "port");
 	strcat(Msg, "0");
@@ -1139,12 +1140,12 @@ void deviceClearErrorStatus(struct DxPort *port)
 	STMFLASH_Write(port->errorFlagFlashAddr, (u32*)Msg, 10);
 	vPortFree(Msg);
 	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, CHARGEPOWEROFF);             //关闭继电器
-  HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, CHARGELEDOFF);         //关闭充电灯
+    HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, CHARGELEDOFF);         //关闭充电灯
 }
 void deviceClearFinishStatus(struct DxPort *port)     
 {
-	char * Msg = pvPortMalloc(40);
-	memset(Msg, 0, 40);
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
 	port->finishFlag = 0;
 	strcpy(Msg, "port");
 	strcat(Msg, "0");
@@ -1156,28 +1157,37 @@ void deviceClearFinishStatus(struct DxPort *port)
 }
 void deviceClearUseTime(struct DxPort *port)    
 {
-	char * Msg = pvPortMalloc(40);
-	memset(Msg, 0, 40);
-	port->useTime = 0;
+	float time = 0.0;
+    port->useTime = time;
+	printf("Set use %f time \r\n", time);
+	char * Msg = pvPortMalloc(60);
+	memset(Msg, 0, 60);
+	char *stat = pvPortMalloc(20);
+	memset(stat, 0, 20);
+	sprintf(stat, "%f", time);
 	strcpy(Msg, "port");
-	strcat(Msg, "00000");
-	strcat(Msg, "status");
-	STMFLASH_Write(port->useTimeFlashAddr, (u32*)Msg, 10);
+	strcat(Msg, stat);
+	strcat(Msg, "ed");
+	printf("Write UseTime %s\r\n", Msg);
+	STMFLASH_Write(port->useTimeFlashAddr, (u32*)Msg, 8);
+	memset(Msg, 0, 60);
+	STMFLASH_Read(port->useTimeFlashAddr, (u32*)Msg, 8);
+	printf("Read  UseTime %s\r\n",Msg);
 	vPortFree(Msg);
+	vPortFree(stat);
 }
 
 
 void   deviceUpdateUseStatus(struct DxPort *port)        //开机从Flash更新端口  使用  状态参数，不对端口IO操作
 {
 	char * s = NULL;
-	char * Msg = pvPortMalloc(40);
-	memset(Msg, 0, 40);
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
 	
 	char * head =  "port";
+	char * end = "status";
 	
-	char * end = "ed";
-	
-	STMFLASH_Read(port->useStatusFlashAddr, (u32*)Msg, 4);
+	STMFLASH_Read(port->useStatusFlashAddr, (u32*)Msg, 10);
 	printf("UpdateUseStatus %s\r\n", Msg);
 	
 	if (NULL != strstr((const char *)Msg, (const char *)end))
@@ -1202,7 +1212,7 @@ void   deviceUpdateUseStatus(struct DxPort *port)        //开机从Flash更新�
 			{
 				port->useStatus = -1;
 				HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, CHARGEPOWEROFF);              //关闭继电器
-			  HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, CHARGELEDOFF);          //关闭充电灯
+			    HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, CHARGELEDOFF);          //关闭充电灯
 			}
 		}
 	}
@@ -1218,11 +1228,11 @@ void   deviceUpdateErrorStatus(struct DxPort *port)        //开机从Flash更�
 	
 	char * end = "status";
 	
-	char * Msg = pvPortMalloc(40);
-	memset(Msg, 0, 40);
-	STMFLASH_Read(port->errorFlagFlashAddr, (u32*)Msg, 8);
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
+	STMFLASH_Read(port->errorFlagFlashAddr, (u32*)Msg, 10);
 	printf("ErrorStatus %s\r\n", Msg);
-		if(NULL != strstr((const char *)Msg, (const char *)end))
+	if(NULL != strstr((const char *)Msg, (const char *)end))
 	{
 		if (NULL != strstr((const char *)Msg, (const char *)head))
 		{
@@ -1258,25 +1268,35 @@ void   deviceUpdateFinishStatus(struct DxPort *port)     //开机从Flash更新�
 	
 	char * end ="status";
 	
-	char * Msg = pvPortMalloc(40);
-	memset(Msg, 0, 40);
-	STMFLASH_Read(port->finishFlagFlashAddr, (u32*)Msg, 8);
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
+	STMFLASH_Read(port->finishFlagFlashAddr, (u32*)Msg, 10);
 	printf("FinishStatus %s\r\n", Msg);
-
-	
 	if(NULL != strstr((const char *)Msg, (const char *)end))
 	{
 		if (NULL != strstr((const char *)Msg, (const char *)head))
 		{
 			s = strstr((const char *)Msg, (const char *)head);
 			s = s + strlen(head);
-			if (*s == '1') 
+			if (*s == '0') 
+			{
+				port->finishFlag = 0;
+			}
+			else if (*s == '1') 
 			{
 				port->finishFlag = 1;
 			}
-			else if (*s == '0') 
+		    else if (*s == '2') 
 			{
-				port->finishFlag = 0;
+				port->finishFlag = 2;
+			}
+			else if (*s == '3') 
+			{
+				port->finishFlag = 3;
+			}
+			else if (*s == '4') 
+			{
+				port->finishFlag = 4;
 			}
 			else
 			{
@@ -1291,15 +1311,14 @@ void  deviceUpdateUseTime(struct DxPort *port)
 	char * s = NULL;
 	char * d = NULL;
 	char * head = "port";
-	char * end = "status";
-	char * Msg = pvPortMalloc(40);
-	memset(Msg, 0, 40);
-	STMFLASH_Read(port->useTimeFlashAddr, (u32*)Msg, 8);
+	char * end = "ed";
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
+	STMFLASH_Read(port->useTimeFlashAddr, (u32*)Msg, 10);
 	printf("UseTime %s\r\n", Msg);
-
-		if(NULL != strstr((const char *)Msg, (const char *)end))
-	   {
-		   if (NULL != strstr((const char *)Msg, (const char *)head))
+	if(NULL != strstr((const char *)Msg, (const char *)end))
+	{
+		if (NULL != strstr((const char *)Msg, (const char *)head))
 		{
 			s = strstr((const char *)Msg, (const char *)head);
 			d = strstr((const char *)Msg, (const char *)end);
@@ -1312,18 +1331,6 @@ void  deviceUpdateUseTime(struct DxPort *port)
  				s++;
  			}
 			tim = atof((const char*)tmp);
-//			for (int i = 0; i < 5; i++)
-//			{
-//				if ((tmp[i] >= '0')&&(tmp[i] <= '9'))
-//				{
-//					tmp[i] -= '0';
-//				}
-//				else
-//				{
-//					tmp[i] = 0;
-//				}
-//			}
-//			tim = tmp[0] * 10000 + tmp[1] * 1000 + tmp[2] * 100 + tmp[3] * 10 + tmp[4];
 			port->useTime = tim;
 			printf("update time %f\r\n", tim);
 			vPortFree(Msg);
@@ -1370,6 +1377,10 @@ void devicePortInit(struct DxPort *port)
 		{
 			__GPIOF_CLK_ENABLE();
 		}
+	    else if (port->displayLedPinGPIOX == GPIOG)
+		{
+			__GPIOG_CLK_ENABLE();
+		}
 		GPIO_InitStructure.Pin = port->displayLedPin;
 		GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
 		GPIO_InitStructure.Speed = GPIO_SPEED_HIGH;
@@ -1403,11 +1414,51 @@ void devicePortInit(struct DxPort *port)
 		{
 			__GPIOF_CLK_ENABLE();
 		}
+		else if (port->controlPinGPIOX == GPIOG)
+		{
+			__GPIOG_CLK_ENABLE();
+		}
 		GPIO_InitStructure.Pin = port->controlPin;
 		GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
 		GPIO_InitStructure.Speed = GPIO_SPEED_HIGH;
 		GPIO_InitStructure.Pull = GPIO_NOPULL;
 		HAL_GPIO_Init(port->controlPinGPIOX, &GPIO_InitStructure);
+	}
+	//load　　IO
+	{
+		if (port->loadPinGPIOX == GPIOA)
+		{
+			__GPIOA_CLK_ENABLE();
+		}
+		else if (port->loadPinGPIOX == GPIOB)
+		{
+			__GPIOB_CLK_ENABLE();
+		}
+		else if (port->loadPinGPIOX == GPIOC)
+		{
+			__GPIOC_CLK_ENABLE();
+		}
+		else if (port->loadPinGPIOX == GPIOD)
+		{
+			__GPIOD_CLK_ENABLE();
+		}
+		else if (port->loadPinGPIOX == GPIOE)
+		{
+			__GPIOE_CLK_ENABLE();
+		}
+		else if (port->loadPinGPIOX == GPIOF)
+		{
+			__GPIOF_CLK_ENABLE();
+		}
+		else if (port->loadPinGPIOX == GPIOG)
+		{
+			__GPIOG_CLK_ENABLE();
+		}
+		GPIO_InitStructure.Pin = port->loadPin;
+		GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStructure.Speed = GPIO_SPEED_HIGH;
+		GPIO_InitStructure.Pull = GPIO_NOPULL;
+		HAL_GPIO_Init(port->loadPinGPIOX, &GPIO_InitStructure);
 	}
 	//adc　　IO
 	{
@@ -1441,6 +1492,10 @@ void devicePortInit(struct DxPort *port)
 		{
 			__GPIOF_CLK_ENABLE();
 		}
+		else if (port->adcPinGPIOX == GPIOG)
+		{
+			__GPIOG_CLK_ENABLE();
+		}
 		if (port->ADCX == ADC1)
 		{
 			__HAL_RCC_ADC1_CLK_ENABLE();               
@@ -1452,10 +1507,6 @@ void devicePortInit(struct DxPort *port)
 		else if (port->ADCX == ADC3)
 		{
 			__HAL_RCC_ADC3_CLK_ENABLE();       			 
-		}
-		else if (port->ADCX == ADC3)
-		{
-			__HAL_RCC_ADC3_CLK_ENABLE();   
 		}
 		port->adcHandler.Instance = port->ADCX;
 		port->adcHandler.Init.DataAlign = ADC_DATAALIGN_RIGHT;                         //右对齐
@@ -1472,139 +1523,150 @@ void devicePortInit(struct DxPort *port)
 
 void PortSetUseStatus(u8 portnumber)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
 		while (1)
 			;
 	}
+	portnumber--;
 	Port[portnumber].SetUseStatus(&Port[portnumber]);
 }
 void PortSetFinishStatus(u8 portnumber, u8 status)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
 		while (1)
 			;
 	}
+	portnumber--;
 	Port[portnumber].SetFinishStatus(&Port[portnumber], status);
 }
 void PortSetErrorStatus(u8 portnumber)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
 		while (1)
 			;
 	}
+	portnumber--;
 	Port[portnumber].SetErrorStatus(&Port[portnumber]);
 }
 void PortSetUseTime(u8 portnumber, float time)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
 		while (1)
 			;
 	}
+	portnumber--;
 	Port[portnumber].SetUseTime(&Port[portnumber], time);
 }
 
 void PortClearUseStatus(u8 portnumber)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
 		while (1)
 			;
 	}
+	portnumber--;
 	Port[portnumber].ClearUseStatus(&Port[portnumber]);
 }
 void PortClearFinishStatus(u8 portnumber)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
 		while (1)
 			;
 	}
+	portnumber--;
 	Port[portnumber].ClearFinishStatus(&Port[portnumber]);
 }
 void PortClearUseTime(u8 portnumber)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
 		while (1)
 			;
 	}
+	portnumber--;
 	Port[portnumber].ClearUseTime(&Port[portnumber]);
 }
 
 
 int GetPortUseTime(u8 portnumber)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
-		return -1;
+		while (1)
+			;
 	}
+	portnumber--;
 	return Port[portnumber].GetUseTime(&Port[portnumber]);
 	
 }
 void PortUpdateUseTime(u8 portnumber)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
-		//	return -1;
-			while(1)
-				;
+		while (1)
+			;
 	}
+	portnumber--;
 	Port[portnumber].UpdateUseTime(&Port[portnumber]);
 	
 }
 void PortUpdateUseStatus(u8 portnumber)      //从Flash更新状态，操作IO
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
-		//	return -1;
-			while(1)
-				;
+		while (1)
+			;
 	}
+	portnumber--;
 	Port[portnumber].UpdateUseStatus(&Port[portnumber]);
 }
 void PortUpdateFinishStatus(u8 portnumber)      //从Flash更新状态 
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
-		//	return -1;
-			while(1)
-				;
+		while (1)
+			;
 	}
+	portnumber--;
 	Port[portnumber].UpdateFinishStatus(&Port[portnumber]);
 }
 void PortUpdateErrorStatus(u8 portnumber)      //从Flash更新状态，操作IO
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
-		//	return -1;
-			while(1)
-				;
+		while (1)
+			;
 	}
+	portnumber--;
 	Port[portnumber].UpdateErrorStatus(&Port[portnumber]);
 }
 int PortGetAdcValue(u8 portnumber)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
+		printf("port number is invalid\n");
 		while (1)
-			printf("port number is invalid\n");
+			;
 	}
+	portnumber--;
 	int a1 = 0, a2 = 0, a3 = 0, a4 = 0, a5 = 0, a6 = 0, a7 = 0, a8 = 0, a9 = 0, a10 = 0;
     a1=  Port[portnumber].GetAdcValue(&Port[portnumber]);
 	a2 = Port[portnumber].GetAdcValue(&Port[portnumber]);
@@ -1620,51 +1682,58 @@ int PortGetAdcValue(u8 portnumber)
 }
 int PortGetUseStatus(u8 portnumber)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
 		while (1)
 			;
 	}
+	portnumber--;
 	return Port[portnumber].GetUseStatus(&Port[portnumber]);
 }
 float PortGetUseTime(u8 portnumber)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
 		while (1)
 			;
 	}
+	portnumber--;
 	return Port[portnumber].GetUseTime(&Port[portnumber]);
 }
 int PortGetFinishStatus(u8 portnumber)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
 		while (1)
 			;
 	}
+	portnumber--;
 	return Port[portnumber].GetFinishStatus(&Port[portnumber]);
 }
 int PortGetErrorStatus(u8 portnumber)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
 		printf("port number is invalid\n");
-		return 0;
+		while (1)
+			;
 	}
+	portnumber--;
 	return Port[portnumber].GetErrorStatus(&Port[portnumber]);
 }
 
 void PortConfig(u8 portnumber)
 {
-	if (portnumber < 0 || portnumber >= 20)
+	if (portnumber < 1 || portnumber > 20)
 	{
+		printf("port number is invalid\n");
 		while (1)
-			printf("port number is invalid\n");
+			;
 	}
+	portnumber--;
 	Port[portnumber].PortInit(&Port[portnumber]);
 	HAL_GPIO_WritePin(Port[portnumber].displayLedPinGPIOX, Port[portnumber].displayLedPin, CHARGELEDOFF);
 	HAL_GPIO_WritePin(Port[portnumber].controlPinGPIOX, Port[portnumber].controlPin, CHARGEPOWERON);
@@ -1715,17 +1784,24 @@ void StartCharge(u8 *buf)
 	int port = GetChargePortNumber(buf);
 	long int money = GetChargeMoney(buf);
 	printf("Port %d charges\r\n", port);
-	PortSetUseStatus(port - 1);
-	PortSetUseTime(port - 1, money);
+	PortSetUseStatus(port);
+	PortSetUseTime(port, money);
 	//ChargeStartCheckCallBack(2, port-1);
+	/*加入充电回复*/
+	
+	/*
+	To do
+	*/
 }
 
 void StopCharge(u8 *buf)
 {
 	int port = GetStopPortNumber(buf);
 	printf("Port %d stoped\r\n", port);
-	PortClearUseStatus(port - 1);
-//	ChargeStopCheckCallBack(2, port-1);
+	PortClearUseStatus(port);
+	PortClearFinishStatus(port);
+	PortClearUseTime(port);
+	StopChargeRep(port);
 }
 void PortSleep(u8 port)
 {
@@ -1819,17 +1895,7 @@ int GetErrorPortNumber(u8 *buf)
 		return 0;
 	}
 }
-int CheckPortErrorCmd(u8 * buf)
-{
-	if (NULL != strstr((const char *)buf, (const char *)"porterrors"))
-	{
-		return 1;
-	}
-	else
-	{
-		return 0;
-	}
-}
+
 
 void PortChargeFinish(u8 portnumber, u8 status)
 {
@@ -1838,4 +1904,34 @@ void PortChargeFinish(u8 portnumber, u8 status)
 	PortClearUseStatus(portnumber);
 	PortClearFinishStatus(portnumber);
 	PortClearUseTime(portnumber);
+}
+
+void PortError(u8 *buf)
+{
+	int port = GetErrorPortNumber(buf);
+	printf("port error cmd %d port\r\n",port);
+	PortSetErrorStatus(port);
+	PortErrorRep(port);
+}
+
+void PortErrorRep(int port)
+{
+	cJSON *res = cJSON_CreateObject();
+	cJSON_AddStringToObject(res, "type", "getporterror");
+	cJSON_AddNumberToObject(res, "port",port);
+    char * str;
+	str = cJSON_Print(res);
+	MessageSend(str,1);
+	cJSON_Delete(res); 	
+}
+
+void StopChargeRep(int port)
+{
+	cJSON *res = cJSON_CreateObject();
+	cJSON_AddStringToObject(res, "type", "stopok");
+	cJSON_AddNumberToObject(res, "port",port);
+    char * str;
+	str = cJSON_Print(res);
+	MessageSend(str,1);
+	cJSON_Delete(res); 	
 }

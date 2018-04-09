@@ -34,14 +34,14 @@ TaskHandle_t MsgSendTaskHanhler;        //任务句柄
 
 /*设备参数修改任务*/
 #define DeviceCmdTask_TASK_PRIO    2          //任务优先级
-#define DeviceCmdTask_STK_SIZE     256        //任务堆栈大小
+#define DeviceCmdTask_STK_SIZE     128        //任务堆栈大小
 TaskHandle_t DeviceCmdTaskHanhler;            //任务句柄
 
 extern Gprs G510;
 xTimerHandle connectTimerHandler;
 xTimerHandle testTimerHandler;
 xTimerHandle CSQTimerHandler;
-
+xTimerHandle NetTimerHandler;
 void testTask(void *pArg);
 int main()
 {
@@ -92,12 +92,18 @@ void StartTask(void * pvParameter)
 																	  (void *        )2,
 																		(TimerCallbackFunction_t)testTask
 																		);	
-	 CSQTimerHandler  = xTimerCreate( (const char *  )"CSQTimer",
-																		(TickType_t    )86400000,      /*24小时定时器*/
+	 NetTimerHandler  = xTimerCreate( (const char *  )"NetTimer",
+																		(TickType_t    )10000,      /*24小时定时器*/
 																		(UBaseType_t   )pdTRUE,
 																	  (void *        )3,
+																		(TimerCallbackFunction_t)NetCheck
+																		);	
+	 CSQTimerHandler  = xTimerCreate( (const char *  )"CSQTimer",
+																		(TickType_t    )86400000,      /*网络检查定时器*/
+																		(UBaseType_t   )pdTRUE,
+																	  (void *        )4,
 																		(TimerCallbackFunction_t)DeviceUploadCSQ
-																		);																			
+																		);																					
 		MsgInfoConfig("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");
 		G510.Config("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");																
 	  /*创建串口接收任务*/
@@ -126,7 +132,8 @@ void StartTask(void * pvParameter)
 							 (TaskHandle_t* ) &DeviceCmdTaskHanhler        /*任务句柄*/
 							 );
 		xTimerStart(connectTimerHandler,portMAX_DELAY);
-						
+		xTimerStart(NetTimerHandler,portMAX_DELAY);	
+    xTimerStart(CSQTimerHandler,portMAX_DELAY);								 
 		/*删除开始任务*/
 		vTaskDelete(StartTaskHanhler);
 	  taskEXIT_CRITICAL();      /*退出临界区*/

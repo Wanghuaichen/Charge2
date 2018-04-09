@@ -16,6 +16,7 @@ void DecCmdConfig(void)
 void DevCmdTask(void* pAgr)
 {
 	char* buf = pvPortMalloc(100);
+	DecCmdConfig();
 	while(1)
 	{
 		memset(buf,0,100);

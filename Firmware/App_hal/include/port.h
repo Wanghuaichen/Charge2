@@ -108,14 +108,20 @@ extern int PortGetAdcValue(u8 portnumber);
 extern void PortSubUseTime(u8 portnumber);
 extern void PortConfig(u8 portnumber);
 extern void PortChargeFinish(u8 portnumber, u8 status);
-extern int GetChargePortNumber(u8 *buf);
-extern int GetChargeMoney(u8 *buf);
-extern int GetStopPortNumber(u8 *buf);
-extern int GetErrorPortNumber(u8 *buf);
+extern int  GetChargePortNumber(u8 *buf);
+extern int  GetChargeMoney(u8 *buf);
+extern int  GetStopPortNumber(u8 *buf);
+extern int  GetErrorPortNumber(u8 *buf);
 extern void StartCharge(u8 *buf);
 extern void StopCharge(u8 *buf);
-
+extern void PortError(u8 *buf);
 extern void PortSleep(u8 port);
 
 
+
+
 extern int CheckPortErrorCmd(u8 * buf);
+
+
+extern void PortErrorRep(int port);
+extern void StopChargeRep(int port);

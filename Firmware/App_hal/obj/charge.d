@@ -75,3 +75,5 @@
 ..\obj\charge.o: ..\FreeRTOS\include\list.h
 ..\obj\charge.o: ..\FreeRTOS\include\timers.h
 ..\obj\charge.o: ..\include\flash.h
+..\obj\charge.o: ..\include\port.h
+..\obj\charge.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
