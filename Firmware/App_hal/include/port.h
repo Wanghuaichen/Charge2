@@ -116,6 +116,7 @@ extern void StartCharge(u8 *buf);
 extern void StopCharge(u8 *buf);
 extern void PortError(u8 *buf);
 extern void PortSleep(u8 port);
+extern void PortStopCharge(u8 port);
 
 
 

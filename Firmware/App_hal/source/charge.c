@@ -21,6 +21,7 @@ void ChaCmdConfig(void)
 void ChaCmdTask(void* pAgr)
 {
 	char* buf = pvPortMalloc(100);
+	ChaCmdConfig();
 	while(1)
 	{
 		memset(buf,0,100);

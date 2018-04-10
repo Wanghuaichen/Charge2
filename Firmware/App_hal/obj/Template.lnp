@@ -72,6 +72,7 @@
 "..\obj\fota.o"
 "..\obj\port_1.o"
 "..\obj\net.o"
+"..\obj\chargerep.o"
 "..\obj\flash.o"
 "..\obj\gpio.o"
 --strict --scatter "..\OBJ\Template.sct"

@@ -13,6 +13,8 @@
 #include "csq.h"
 #include "devcmd.h"
 #include "net.h"
+#include "charge.h"
+#include "chargerep.h"
 
 /*开始任务*/
 #define START_TASK_PRIO    1          //任务优先级
@@ -36,6 +38,17 @@ TaskHandle_t MsgSendTaskHanhler;        //任务句柄
 #define DeviceCmdTask_TASK_PRIO    2          //任务优先级
 #define DeviceCmdTask_STK_SIZE     128        //任务堆栈大小
 TaskHandle_t DeviceCmdTaskHanhler;            //任务句柄
+
+
+/*充电端口相关任务*/
+#define ChargeCmdTask_TASK_PRIO    2          //任务优先级
+#define ChargeCmdTask_STK_SIZE     128        //任务堆栈大小
+TaskHandle_t ChargeCmdTaskHanhler;            //任务句柄
+
+/*充电回复检查相关任务*/
+#define ChargeCheckTask_TASK_PRIO    1          //任务优先级
+#define ChargeCheckTask_STK_SIZE     128        //任务堆栈大小
+TaskHandle_t ChargeCheckTaskHanhler;            //任务句柄
 
 extern Gprs G510;
 xTimerHandle connectTimerHandler;
@@ -130,6 +143,22 @@ void StartTask(void * pvParameter)
 							 (void *        ) NULL,                        /*传递给任务函数的参数*/
 							 (UBaseType_t   ) DeviceCmdTask_TASK_PRIO,     /*任务优先级*/
 							 (TaskHandle_t* ) &DeviceCmdTaskHanhler        /*任务句柄*/
+							 );
+		 /*创建ChargeCmd任务*/
+		xTaskCreate( (TaskFunction_t) ChaCmdTask,                /*任务函数*/
+							 (const char*   ) "ChaCmdTask",                /*任务名称*/
+							 (uint16_t      ) ChargeCmdTask_STK_SIZE,      /*任务堆栈大小*/
+							 (void *        ) NULL,                        /*传递给任务函数的参数*/
+							 (UBaseType_t   ) ChargeCmdTask_TASK_PRIO,     /*任务优先级*/
+							 (TaskHandle_t* ) &ChargeCmdTaskHanhler        /*任务句柄*/
+							 );
+		 /*创建ChargeCheck任务*/
+		xTaskCreate( (TaskFunction_t) ChaRepCheckTask,             /*任务函数*/
+							 (const char*   ) "ChaCheckTask",                /*任务名称*/
+							 (uint16_t      ) ChargeCheckTask_STK_SIZE,      /*任务堆栈大小*/
+							 (void *        ) NULL,                          /*传递给任务函数的参数*/
+							 (UBaseType_t   ) ChargeCheckTask_TASK_PRIO,     /*任务优先级*/
+							 (TaskHandle_t* ) &ChargeCheckTaskHanhler        /*任务句柄*/
 							 );
 		xTimerStart(connectTimerHandler,portMAX_DELAY);
 		xTimerStart(NetTimerHandler,portMAX_DELAY);	

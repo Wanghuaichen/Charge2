@@ -80,3 +80,5 @@
 ..\obj\main.o: ..\include\csq.h
 ..\obj\main.o: ..\include\devcmd.h
 ..\obj\main.o: ..\include\net.h
+..\obj\main.o: ..\include\charge.h
+..\obj\main.o: ..\include\chargerep.h

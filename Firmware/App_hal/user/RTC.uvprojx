@@ -809,6 +809,11 @@
               <FileType>1</FileType>
               <FilePath>..\source\net.c</FilePath>
             </File>
+            <File>
+              <FileName>chargerep.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\chargerep.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
