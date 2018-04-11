@@ -60,6 +60,7 @@
 ..\obj\croutine.o: ..\lib\Inc\stm32f1xx_ll_usb.h
 ..\obj\croutine.o: ..\lib\Inc\stm32f1xx_hal_pcd_ex.h
 ..\obj\croutine.o: ..\lib\Inc\stm32f1xx_hal_hcd.h
+..\obj\croutine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\croutine.o: ..\sys\usart.h
 ..\obj\croutine.o: ..\FreeRTOS\include\projdefs.h
 ..\obj\croutine.o: ..\FreeRTOS\include\portable.h

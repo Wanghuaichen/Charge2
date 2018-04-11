@@ -58,3 +58,4 @@
 ..\obj\ota.o: ..\lib\Inc\stm32f1xx_ll_usb.h
 ..\obj\ota.o: ..\lib\Inc\stm32f1xx_hal_pcd_ex.h
 ..\obj\ota.o: ..\lib\Inc\stm32f1xx_hal_hcd.h
+..\obj\ota.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

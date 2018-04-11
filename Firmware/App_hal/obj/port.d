@@ -60,6 +60,7 @@
 ..\obj\port.o: ..\lib\Inc\stm32f1xx_ll_usb.h
 ..\obj\port.o: ..\lib\Inc\stm32f1xx_hal_pcd_ex.h
 ..\obj\port.o: ..\lib\Inc\stm32f1xx_hal_hcd.h
+..\obj\port.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\port.o: ..\sys\usart.h
 ..\obj\port.o: ..\FreeRTOS\include\projdefs.h
 ..\obj\port.o: ..\FreeRTOS\include\portable.h

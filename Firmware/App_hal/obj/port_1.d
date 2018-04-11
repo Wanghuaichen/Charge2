@@ -58,6 +58,7 @@
 ..\obj\port_1.o: ..\lib\Inc\stm32f1xx_ll_usb.h
 ..\obj\port_1.o: ..\lib\Inc\stm32f1xx_hal_pcd_ex.h
 ..\obj\port_1.o: ..\lib\Inc\stm32f1xx_hal_hcd.h
+..\obj\port_1.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\port_1.o: ..\include\portaddr.h
 ..\obj\port_1.o: ..\FreeRTOS\include\FreeRTOS.h
 ..\obj\port_1.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h

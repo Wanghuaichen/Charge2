@@ -58,6 +58,7 @@
 ..\obj\flash.o: ..\lib\Inc\stm32f1xx_ll_usb.h
 ..\obj\flash.o: ..\lib\Inc\stm32f1xx_hal_pcd_ex.h
 ..\obj\flash.o: ..\lib\Inc\stm32f1xx_hal_hcd.h
+..\obj\flash.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\flash.o: ..\sys\delay.h
 ..\obj\flash.o: ..\sys\usart.h
 ..\obj\flash.o: ..\FreeRTOS\include\FreeRTOS.h

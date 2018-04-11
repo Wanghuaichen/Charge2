@@ -58,6 +58,7 @@
 ..\obj\para.o: ..\lib\Inc\stm32f1xx_ll_usb.h
 ..\obj\para.o: ..\lib\Inc\stm32f1xx_hal_pcd_ex.h
 ..\obj\para.o: ..\lib\Inc\stm32f1xx_hal_hcd.h
+..\obj\para.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\para.o: ..\FreeRTOS\include\FreeRTOS.h
 ..\obj\para.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 ..\obj\para.o: ..\FreeRTOS\include\FreeRTOSConfig.h

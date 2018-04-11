@@ -16,6 +16,7 @@
 #include "charge.h"
 #include "chargerep.h"
 
+
 /*开始任务*/
 #define START_TASK_PRIO    1          //任务优先级
 #define START_STK_SIZE     256        //任务堆栈大小
@@ -69,8 +70,13 @@ int main()
 	delay_xms(500);
 	McuPowerEnable(1);	
 	delay_xms(5000);
+	
 	printf("hello usart1\r\n");
 	// V3.0.0
+	
+	char * f = "-0.23423";
+	float tf = atof((const char *)f);
+	printf("result %f \r\n",tf);
 	char * buf = pvPortMalloc(32);
 	memset(buf,0,32);
 	//STMFLASH_Write(0X0807D000,(u32*)"hello huka",8);

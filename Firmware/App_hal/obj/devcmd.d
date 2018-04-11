@@ -58,6 +58,7 @@
 ..\obj\devcmd.o: ..\lib\Inc\stm32f1xx_ll_usb.h
 ..\obj\devcmd.o: ..\lib\Inc\stm32f1xx_hal_pcd_ex.h
 ..\obj\devcmd.o: ..\lib\Inc\stm32f1xx_hal_hcd.h
+..\obj\devcmd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\devcmd.o: ..\FreeRTOS\include\FreeRTOS.h
 ..\obj\devcmd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 ..\obj\devcmd.o: ..\FreeRTOS\include\FreeRTOSConfig.h

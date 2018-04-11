@@ -58,6 +58,7 @@
 ..\obj\chargerep.o: ..\lib\Inc\stm32f1xx_ll_usb.h
 ..\obj\chargerep.o: ..\lib\Inc\stm32f1xx_hal_pcd_ex.h
 ..\obj\chargerep.o: ..\lib\Inc\stm32f1xx_hal_hcd.h
+..\obj\chargerep.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\chargerep.o: ..\FreeRTOS\include\FreeRTOS.h
 ..\obj\chargerep.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 ..\obj\chargerep.o: ..\FreeRTOS\include\FreeRTOSConfig.h

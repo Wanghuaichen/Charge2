@@ -57,3 +57,4 @@
 ..\obj\sys.o: ..\lib\Inc\stm32f1xx_ll_usb.h
 ..\obj\sys.o: ..\lib\Inc\stm32f1xx_hal_pcd_ex.h
 ..\obj\sys.o: ..\lib\Inc\stm32f1xx_hal_hcd.h
+..\obj\sys.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

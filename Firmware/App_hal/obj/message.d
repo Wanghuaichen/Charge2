@@ -62,6 +62,7 @@
 ..\obj\message.o: ..\lib\Inc\stm32f1xx_ll_usb.h
 ..\obj\message.o: ..\lib\Inc\stm32f1xx_hal_pcd_ex.h
 ..\obj\message.o: ..\lib\Inc\stm32f1xx_hal_hcd.h
+..\obj\message.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\message.o: ..\sys\usart.h
 ..\obj\message.o: ..\FreeRTOS\include\projdefs.h
 ..\obj\message.o: ..\FreeRTOS\include\portable.h

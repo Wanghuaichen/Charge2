@@ -58,6 +58,7 @@
 ..\obj\delay.o: ..\lib\Inc\stm32f1xx_ll_usb.h
 ..\obj\delay.o: ..\lib\Inc\stm32f1xx_hal_pcd_ex.h
 ..\obj\delay.o: ..\lib\Inc\stm32f1xx_hal_hcd.h
+..\obj\delay.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\delay.o: ..\FreeRTOS\include\FreeRTOS.h
 ..\obj\delay.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 ..\obj\delay.o: ..\FreeRTOS\include\FreeRTOSConfig.h
