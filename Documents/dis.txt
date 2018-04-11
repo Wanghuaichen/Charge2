@@ -1,0 +1,39 @@
+先完成模组入网
+
+1 设置鉴权信息
+AT+CLOUDAUTH[=<pkey>,<dname>,<dsrt>,<host>]    //产品秘钥  设备名  设备秘钥   主机名
+"AT+CLOUDAUTH=\"QYIvkfNDfNa\",\"dianxiatest\",\"9d13X2ZR98XmWhCVKFYCiBE6bow5oZBp\",\"iot-auth.aliyun.com\"\r\n" 
+设置后自动启动鉴权，首先返回OK代表输入合法，然后返回鉴权结果
+鉴权结果：
++CLOUDAUTH:OK	      //服务器返回鉴权成功
+-CLOUDAUTH:FAIL	      //服务器返回鉴权失败
+
+
+
+2 设置MQTT参数
+"AT+CLOUDCONN=160,0,4\r\n"      //保活时间（60-180s） clean session信息：0--不清除   MQTT版本号：3--3.1  4--3.1.1
+
+3 设置订阅消息命令  //目前只支持一次增加一个订阅
+ +CLOUDSUB=<topic>,<qos>  //申请订阅的topic,该topic对应的QOS等级为（0--2）
+"AT+CLOUDSUB=\"/QYIvkfNDfNa/dianxiatest/data\",0\r\n"
+订阅之后如果收到PUBLISH，模组返回数据包	
++CLOUDPUBLISH: <packId>,<topic>,<msg_len>,<msg>
+packId //数据包ID													topic  //订阅的topic													msg_len //接收到的数据长度												msg     //数据内容
+
+
+4 发布消息指令
+
++CLOUDPUB=<topic>,<qos>,<publength>
+"AT+CLOUDPUB=\"/QYIvkfNDfNa/dianxiatest/data\",1,4\r\n"
+先发这条指令，然后发送发布内容
+topic       //对应申请的topic,取值范围为1-512字节
+qos         //该topic对应的qos等级  0--2
+publength   //消息长度
+
+5 取消订阅命令
++CLOUDUNSUB=<topic>
+"AT+CLOUDUNSUB=\"/QYIvkfNDfNa/dianxiatest/data\"\r\n"
+
+
+6 断开MQTT连接，并做资源释放	
++CLOUDDISCONN

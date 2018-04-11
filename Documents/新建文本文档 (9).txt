@@ -1,0 +1,1 @@
+C:\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin -o C:\Users\iDea\Desktop\STM32F301_12_25\STM32F301\Project\RVMDK\Objects\Demo.bin C:\Users\iDea\Desktop\STM32F301_12_25\STM32F301\Project\RVMDK\Objects\Demo.axf
