@@ -24,11 +24,12 @@ void ChaRepCheckTask(void* pAgr)
 	char* buf = pvPortMalloc(120);
 	ChaRepConfig();
 	int port = 0;
+	u8 getRepflag= 0;
 	while(1)
 	{
 		memset(buf,0,120);
 		xQueuePeek(ChaRepQueue,buf,portMAX_DELAY);
-		printf("DevCmdBuf: %s\r\n",buf);
+		printf("ChaRepPort: %s\r\n",buf);
 		vTaskDelay(1000);
 		port = GetRepPort(buf);
 		cJSON *res = cJSON_CreateObject();
@@ -48,7 +49,7 @@ void ChaRepCheckTask(void* pAgr)
 		{
 			MessageSend(str,1);
 			memset(buf,0,120);
-			err = xQueueReceive(ChaRepCheckQueue,buf,20000);
+			err = xQueueReceive(ChaRepCheckQueue,buf,10000);
 			printf("Check %d times\r\n",i);
 			if(err == pdTRUE)
 			{
@@ -60,9 +61,15 @@ void ChaRepCheckTask(void* pAgr)
 						{
 							PortStopCharge(repPort);
 						}
+						getRepflag = 1;
 					 	break;
 				 }
 			}
+		}
+		if(getRepflag==0)
+		{
+			PortStopCharge(port);
+			xQueueReceive(ChaRepQueue,buf,0);
 		}
 	  cJSON_Delete(res); 	
 		vTaskDelay(100);
@@ -81,7 +88,7 @@ int PostChaRep(int port)
 	memset(msg,0,10);
 	strcpy(msg,head);
 	strcat(msg,num);
-	strcat(msg,num);
+	strcat(msg,end);
 	if(ChaRepQueue!=NULL)
 	{
 		xQueueSend(ChaRepQueue,msg,0);

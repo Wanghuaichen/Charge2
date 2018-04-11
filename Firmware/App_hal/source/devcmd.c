@@ -6,6 +6,7 @@
 #include "timers.h"
 #include "active.h"
 #include "fota.h"
+#include <string.h>
 
 QueueHandle_t DevCmdQueue;   
 void DecCmdConfig(void)

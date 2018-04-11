@@ -76,3 +76,4 @@
 ..\obj\devcmd.o: ..\FreeRTOS\include\timers.h
 ..\obj\devcmd.o: ..\include\active.h
 ..\obj\devcmd.o: ..\include\fota.h
+..\obj\devcmd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
