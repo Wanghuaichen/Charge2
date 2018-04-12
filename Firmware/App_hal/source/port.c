@@ -4,6 +4,8 @@
 #include "string.h"
 #include "cjson.h"
 #include "chargerep.h"
+#include "cost.h"
+#include "message.h"
 
 #define CHARGEPOWERON      0  //更换继电器后0-1状态要反置
 #define CHARGEPOWEROFF     1  //更换继电器后0-1状态要反置
@@ -1780,46 +1782,7 @@ void PortConfig(u8 portnumber)
 	HAL_GPIO_WritePin(Port[portnumber].displayLedPinGPIOX, Port[portnumber].displayLedPin, CHARGELEDOFF);
 	HAL_GPIO_WritePin(Port[portnumber].controlPinGPIOX, Port[portnumber].controlPin, CHARGEPOWERON);
 }
-//void PortSubUseTime(u8 portnumber)
-//{
-//	
-//	static int stopCheck[20] = { 0 };
 
-//	if (PortGetUseTime(portnumber) < 1)              //费用不足  充电停止
-//		{
-//			PortChargeFinish(portnumber, MONEY_OVER);
-//			return ;
-//		}
-//	else if (PortGetAdcValue(portnumber) >= CURRENT_MIN + 10)  //充电正常，继续扣费
-//		{
-//			static u8 costCount = 0;
-//			costCount++;
-//			if (costCount >= 60)  //3min扣一次费用
-//			{
-//				costCount = 0;
-//				float p = GetPrice();
-//				printf("price is %d\r\n", (int)p);
-//				float cur =  0;//GetCurrentValue(PortGetAdcValue(portnumber));
-//				printf("currten is %f\r\n", cur);
-//	         	float cost = (p)*(cur *0.22)*(0.05);
-//				printf("cost %f\r\n", cost);
-//				Port[portnumber].useTime = Port[portnumber].useTime - cost;
-//				char m[20] = { 0};
-//				sprintf(m, "%f", Port[portnumber].useTime);
-//            	printf("money %s\r\n",m);
-//				return ;
-//			}
-//		}
-////	else if (PortGetAdcValue(portnumber) <= CURRENT_MIN)    //充电电流减小
-////		{
-////			stopCheck[portnumber]++;
-////			if (stopCheck[portnumber] >= 3)
-////			{
-////				stopCheck[portnumber] = 0;
-////				PortChargeFinish(portnumber, CHARGE_OVER);      //连续3次减小，则充电完成
-////			}
-////		}
-//}
 
 void StartCharge(u8 *buf)
 {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
@@ -1961,13 +1924,24 @@ int GetErrorClearPortNumber(u8 *buf)
 		return 0;
 	}
 }
+
+extern QueueHandle_t PostFinshQueue; 
 void PortChargeFinish(u8 portnumber, u8 status)
 {
-	printf("charge finish port %d \r\n", portnumber + 1);
-//	FinishRepCheck(portnumber, status);
-	PortClearUseStatus(portnumber);
-	PortClearFinishStatus(portnumber);
-	PortClearUseTime(portnumber);
+	char * js = NULL;
+ 	cJSON *actJson = cJSON_CreateObject();
+	cJSON_AddStringToObject(actJson, "type", "chargestatus");
+	cJSON_AddNumberToObject(actJson, "port",portnumber);
+	cJSON_AddNumberToObject(actJson, "balance",(int)PortGetUseTime(portnumber));
+	cJSON_AddNumberToObject(actJson, "status",status);
+	js = cJSON_Print(actJson); 
+	cJSON_Delete(actJson);
+ 	char * msg = pvPortMalloc(150);
+	memset(msg,0,150);
+ 	strcpy(msg, js);
+	xQueueSend(PostFinshQueue,msg,0);
+ 	vPortFree(msg);
+	printf("charge finish port %d \r\n", portnumber);
 }
 
 void PortError(u8 *buf)
@@ -2013,4 +1987,51 @@ void StopChargeRep(int port)
 	str = cJSON_Print(res);
 	MessageSend(str,1);
 	cJSON_Delete(res); 	
+}
+
+//void PortSubUseTime(u8 portnumber)
+//{
+	
+//	static int stopCheck[20] = { 0 };
+//	if (PortGetUseTime(portnumber) < 1)              //费用不足  充电停止
+//		{
+//			PortChargeFinish(portnumber, MONEY_OVER);
+//			return ;
+//		}
+//	else if (PortGetAdcValue(portnumber) >= CURRENT_MIN + 10)  //充电正常，继续扣费
+//		{
+//			static u8 costCount = 0;
+//			costCount++;
+//			if (costCount >= 60)  //3min扣一次费用
+//			{
+//				costCount = 0;
+//				float p = GetPrice();
+//				printf("price is %d\r\n", (int)p);
+//				float cur =  0;//GetCurrentValue(PortGetAdcValue(portnumber));
+//				printf("currten is %f\r\n", cur);
+//	         	float cost = (p)*(cur *0.22)*(0.05);
+//				printf("cost %f\r\n", cost);
+//				Port[portnumber].useTime = Port[portnumber].useTime - cost;
+//				char m[20] = { 0};
+//				sprintf(m, "%f", Port[portnumber].useTime);
+//        printf("money %s\r\n",m);
+//				return ;
+//			}
+//		}
+////	else if (PortGetAdcValue(portnumber) <= CURRENT_MIN)    //充电电流减小
+////		{
+////			stopCheck[portnumber]++;
+////			if (stopCheck[portnumber] >= 3)
+////			{
+////				stopCheck[portnumber] = 0;
+////				PortChargeFinish(portnumber, CHARGE_OVER);      //连续3次减小，则充电完成
+////			}
+////		}
+//}
+
+
+
+void SubUseTime(u8 portnumber,float cost)
+{
+		Port[portnumber].useTime = Port[portnumber].useTime - cost;
 }

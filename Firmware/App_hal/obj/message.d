@@ -79,3 +79,4 @@
 ..\obj\message.o: ..\include\devcmd.h
 ..\obj\message.o: ..\include\charge.h
 ..\obj\message.o: ..\include\chargerep.h
+..\obj\message.o: ..\include\cost.h

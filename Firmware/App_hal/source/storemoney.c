@@ -3,6 +3,7 @@
 
 void StoreMoneyTask(void)                
 {
+	printf("Money store tomer\r\n");
 	for (int i = 1; i < 21; i++)
 	{
 		if (PortGetErrorStatus(i) == 0)                   

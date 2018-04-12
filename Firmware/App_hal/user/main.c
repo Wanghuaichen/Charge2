@@ -18,6 +18,7 @@
 #include "chargerep.h"
 #include "storemoney.h"
 #include "device.h"
+#include "cost.h"
 
 
 /*开始任务*/
@@ -54,6 +55,11 @@ TaskHandle_t ChargeCmdTaskHanhler;            //任务句柄
 #define ChargeCheckTask_STK_SIZE     128        //任务堆栈大小
 TaskHandle_t ChargeCheckTaskHanhler;            //任务句柄
 
+/*充电完成回复检查相关任务*/
+#define PostFinishTask_TASK_PRIO      2          //任务优先级
+#define PostFinishTask_STK_SIZE     128        //任务堆栈大小
+TaskHandle_t PostFinishTaskHanhler;            //任务句柄
+
 extern Gprs G510;
 xTimerHandle connectTimerHandler;
 xTimerHandle testTimerHandler;
@@ -65,10 +71,10 @@ void testTask(void *pArg);
 int main()
 {
 	HAL_Init();                    	  
-    Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
+  Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
 	HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 	delay_init();
-	LogInit(115200);
+	LogInit(230400);
 	Usart3Init(115200);
 	McuPowerInit();
 	McuPowerEnable(0);	
@@ -83,12 +89,7 @@ int main()
 	char * f = "-0.23423";
 	float tf = atof((const char *)f);
 	printf("result %f \r\n",tf);
-	char * buf = pvPortMalloc(32);
-	memset(buf,0,32);
-	//STMFLASH_Write(0X0807D000,(u32*)"hello huka",8);
-	STMFLASH_Read(0X0807D000,(u32*)buf,8);
-	
-	printf("buf %s\r\n",buf);
+
 	xTaskCreate( (TaskFunction_t) StartTask,         /*任务函数*/
 							 (const char*   ) "StartTask",       /*任务名称*/
 							 (uint16_t      ) START_STK_SIZE,    /*任务堆栈大小*/
@@ -178,9 +179,18 @@ void StartTask(void * pvParameter)
 							 (UBaseType_t   ) ChargeCheckTask_TASK_PRIO,     /*任务优先级*/
 							 (TaskHandle_t* ) &ChargeCheckTaskHanhler        /*任务句柄*/
 							 );
+		 /*创建ChargeCheck任务*/
+		xTaskCreate( (TaskFunction_t)PostFinishTask,             /*任务函数*/
+							 (const char*   ) "PostFinishTask",                /*任务名称*/
+							 (uint16_t      ) PostFinishTask_STK_SIZE,      /*任务堆栈大小*/
+							 (void *        ) NULL,                          /*传递给任务函数的参数*/
+							 (UBaseType_t   ) PostFinishTask_TASK_PRIO,     /*任务优先级*/
+							 (TaskHandle_t* ) &PostFinishTaskHanhler        /*任务句柄*/
+							 );
 		xTimerStart(connectTimerHandler,portMAX_DELAY);
 		xTimerStart(NetTimerHandler,portMAX_DELAY);	
-    xTimerStart(CSQTimerHandler,portMAX_DELAY);								 
+    xTimerStart(CSQTimerHandler,portMAX_DELAY);
+    xTimerStart(StoreTimerHandler,portMAX_DELAY);								 
 		/*删除开始任务*/
 		vTaskDelete(StartTaskHanhler);
 	  taskEXIT_CRITICAL();      /*退出临界区*/

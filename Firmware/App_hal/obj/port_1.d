@@ -72,3 +72,9 @@
 ..\obj\port_1.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ..\obj\port_1.o: ..\include\cjson.h
 ..\obj\port_1.o: ..\include\chargerep.h
+..\obj\port_1.o: ..\include\cost.h
+..\obj\port_1.o: ..\include\message.h
+..\obj\port_1.o: ..\FreeRTOS\include\queue.h
+..\obj\port_1.o: ..\FreeRTOS\include\task.h
+..\obj\port_1.o: ..\FreeRTOS\include\list.h
+..\obj\port_1.o: ..\FreeRTOS\include\semphr.h

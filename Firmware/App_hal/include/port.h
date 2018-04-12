@@ -127,3 +127,5 @@ extern int CheckPortErrorCmd(u8 * buf);
 
 extern void PortErrorRep(int port,u8 clearFlag);
 extern void StopChargeRep(int port);
+
+extern void SubUseTime(u8 portnumber,float cost);

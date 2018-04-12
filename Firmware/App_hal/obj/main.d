@@ -86,3 +86,4 @@
 ..\obj\main.o: ..\include\chargerep.h
 ..\obj\main.o: ..\include\storemoney.h
 ..\obj\main.o: ..\include\device.h
+..\obj\main.o: ..\include\cost.h

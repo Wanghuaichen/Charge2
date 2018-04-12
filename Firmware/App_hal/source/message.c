@@ -6,6 +6,7 @@
 #include "devcmd.h"
 #include "charge.h"
 #include "chargerep.h"
+#include "cost.h"
 
 
 QueueHandle_t UsartRecMsgQueue;   //接收信息队列句柄
@@ -16,7 +17,8 @@ extern SemaphoreHandle_t CSQBinarySemaphore;
 extern SemaphoreHandle_t NetBinarySemaphore;
 extern QueueHandle_t DevCmdQueue;   
 extern QueueHandle_t ChaCmdQueue;
-extern QueueHandle_t ChaRepCheckQueue;;
+extern QueueHandle_t ChaRepCheckQueue;
+extern QueueHandle_t PostFinshRepQueue;
 
 static Mes Message; 
 void MsgInfoConfig(char *productKey,char *deviceName,char *deviceScreat)
@@ -283,12 +285,12 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 		     xSemaphoreGive(CSQBinarySemaphore);
 			 }
 		} 
-		if(NULL != strstr(buf,DEV_CMD))                /*devcmd Queue*/
+		if(NULL != strstr(buf,DEV_CMD))                  /*devcmd Queue*/
 		{
 			 if(DevCmdQueue!=NULL)
 			 xQueueSend(DevCmdQueue,buf,0);
 		}
-		if(NULL != strstr(buf,CHA_CMD))                /*chacmd Queue*/
+		if(NULL != strstr(buf,CHA_CMD))                  /*chacmd Queue*/
 		{
 			 if(ChaCmdQueue!=NULL)
 			 xQueueSend(ChaCmdQueue,buf,0);
@@ -298,11 +300,15 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 			 if(ChaRepCheckQueue!=NULL)
 			 xQueueSend(ChaRepCheckQueue,buf,0);
 		}
+		if(NULL != strstr(buf,FINISH_REP))               /*Finish Rep Queue*/
+		{
+			 if(PostFinshRepQueue!=NULL)
+			 xQueueSend(PostFinshRepQueue,buf,0);
+		}
 		if(NULL != strstr(buf,"OK"))
 		{
 		   xSemaphoreGive(Message.OKBinarySemaphore);
 		}
-		
 		vTaskDelay(100);
 	}
 	vPortFree(buf);
