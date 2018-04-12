@@ -1,4 +1,5 @@
 #include "sys.h"
+#include <string.h>
 #include "delay.h"
 #include "usart.h"
 #include "led.h"
@@ -15,6 +16,8 @@
 #include "net.h"
 #include "charge.h"
 #include "chargerep.h"
+#include "storemoney.h"
+#include "device.h"
 
 
 /*开始任务*/
@@ -56,19 +59,22 @@ xTimerHandle connectTimerHandler;
 xTimerHandle testTimerHandler;
 xTimerHandle CSQTimerHandler;
 xTimerHandle NetTimerHandler;
+xTimerHandle StoreTimerHandler;
+
 void testTask(void *pArg);
 int main()
 {
 	HAL_Init();                    	  
-  Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
+    Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
 	HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 	delay_init();
 	LogInit(115200);
-	Usart2Init(115200);
+	Usart3Init(115200);
 	McuPowerInit();
 	McuPowerEnable(0);	
 	delay_xms(500);
 	McuPowerEnable(1);	
+	DeviceConfig();
 	delay_xms(5000);
 	
 	printf("hello usart1\r\n");
@@ -99,30 +105,36 @@ void StartTask(void * pvParameter)
 	 taskENTER_CRITICAL();     /*进入临界区*/
 	
 	/*触发联网定时器*/
-	 connectTimerHandler = xTimerCreate(  (const char *  )"OneShotTimer",
-																		(TickType_t    )2000,
-																		(UBaseType_t   )pdFALSE,
-																	    (void *        )1,
-																		(TimerCallbackFunction_t)G510.Connect
-																		);
-	 testTimerHandler = xTimerCreate( (const char *  )"OneShotTimer",
-																		(TickType_t    )10000,
-																		(UBaseType_t   )pdTRUE,
-																	  (void *        )2,
-																		(TimerCallbackFunction_t)testTask
-																		);	
-	 NetTimerHandler  = xTimerCreate( (const char *  )"NetTimer",
-																		(TickType_t    )10000,      /*24小时定时器*/
-																		(UBaseType_t   )pdTRUE,
-																	  (void *        )3,
-																		(TimerCallbackFunction_t)NetCheck
-																		);	
-	 CSQTimerHandler  = xTimerCreate( (const char *  )"CSQTimer",
-																		(TickType_t    )86400000,      /*网络检查定时器*/
-																		(UBaseType_t   )pdTRUE,
-																	  (void *        )4,
-																		(TimerCallbackFunction_t)DeviceUploadCSQ
-																		);																					
+	 connectTimerHandler = xTimerCreate((const char *  )"OneShotTimer",
+										(TickType_t    )2000,
+										(UBaseType_t   )pdFALSE,
+										(void *        )1,
+										(TimerCallbackFunction_t)G510.Connect
+										);
+	 testTimerHandler = xTimerCreate(   (const char *  )"OneShotTimer",
+										(TickType_t    )10000,
+										(UBaseType_t   )pdTRUE,
+										(void *        )2,
+										(TimerCallbackFunction_t)testTask
+										);	
+	 NetTimerHandler  = xTimerCreate(   (const char *  )"NetTimer",
+										(TickType_t    )10000,      /*24小时定时器*/
+										(UBaseType_t   )pdTRUE,
+										(void *        )3,
+										(TimerCallbackFunction_t)NetCheck
+										);	
+	 CSQTimerHandler  = xTimerCreate(   (const char *  )"CSQTimer",
+										(TickType_t    )86400000,      /*网络检查定时器*/
+										(UBaseType_t   )pdTRUE,
+									    (void *        )4,
+										(TimerCallbackFunction_t)DeviceUploadCSQ
+										);	
+	 StoreTimerHandler  = xTimerCreate( (const char *  )"StoreTimer",
+										(TickType_t    )180000,        /*存储当前余额*/
+										(UBaseType_t   )pdTRUE,
+									    (void *        )5,
+										(TimerCallbackFunction_t)StoreMoneyTask
+										);											
 		MsgInfoConfig("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");
 		G510.Config("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");																
 	  /*创建串口接收任务*/

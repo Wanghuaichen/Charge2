@@ -814,6 +814,21 @@
               <FileType>1</FileType>
               <FilePath>..\source\chargerep.c</FilePath>
             </File>
+            <File>
+              <FileName>storemoney.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\storemoney.c</FilePath>
+            </File>
+            <File>
+              <FileName>cost.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\cost.c</FilePath>
+            </File>
+            <File>
+              <FileName>device.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\device.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

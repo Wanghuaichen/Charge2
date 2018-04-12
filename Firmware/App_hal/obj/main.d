@@ -58,6 +58,7 @@
 ..\obj\main.o: ..\lib\Inc\stm32f1xx_hal_pcd_ex.h
 ..\obj\main.o: ..\lib\Inc\stm32f1xx_hal_hcd.h
 ..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ..\obj\main.o: ..\sys\delay.h
 ..\obj\main.o: ..\sys\usart.h
 ..\obj\main.o: ..\include\led.h
@@ -83,3 +84,5 @@
 ..\obj\main.o: ..\include\net.h
 ..\obj\main.o: ..\include\charge.h
 ..\obj\main.o: ..\include\chargerep.h
+..\obj\main.o: ..\include\storemoney.h
+..\obj\main.o: ..\include\device.h

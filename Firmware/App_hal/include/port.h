@@ -16,10 +16,10 @@ typedef struct DxPort
 	GPIO_TypeDef * adcPinGPIOX;
 	GPIO_TypeDef * loadPinGPIOX;
 	
-	u8 useStatus;
-	float useTime;
-	u8 finishFlag;
-	u8 errorFlag;
+	volatile u8 useStatus;
+	volatile float useTime;
+	volatile u8 finishFlag;
+	volatile u8 errorFlag;
 
 	const u32 useStatusFlashAddr;
 	const u32 useTimeFlashAddr;
@@ -28,7 +28,7 @@ typedef struct DxPort
 
 	
 	void(*SetUseStatus)(struct DxPort *port);
-	void(*SetErrorStatus)(struct DxPort *port);
+	void(*SetErrorStatus)(struct DxPort *port,u8 perrorStatus);
 	void(*SetFinishStatus)(struct DxPort *port, u8 status);
 	void(*SetUseTime)(struct DxPort *port, float time);
 	
@@ -58,7 +58,7 @@ typedef struct DxPort
 extern void deviceSetUseStatus(struct DxPort *port);
 extern void deviceSetFinishStatus(struct DxPort *port, u8 status);
 extern void deviceSetUseTime(struct DxPort *port, float time);
-extern void deviceSetErrorStatus(struct DxPort *port);
+extern void deviceSetErrorStatus(struct DxPort *port,u8 perrorStatus);
 
 
 extern int  deviceGetAdcValue(struct DxPort *port);
@@ -84,7 +84,7 @@ extern void devicePortInit(struct DxPort *port);
 
 
 extern void PortSetUseStatus(u8 portnumber);
-extern void PortSetErrorStatus(u8 portnumber);
+extern void PortSetErrorStatus(u8 portnumber,u8 perrorStatus);
 extern void PortSetFinishStatus(u8 portnumber, u8 status);
 extern void PortSetUseTime(u8 portnumber, float time);
 
@@ -105,13 +105,14 @@ extern int PortGetErrorStatus(u8 portnumber);
 extern int PortGetFinishStatus(u8 portnumber);
 extern int PortGetAdcValue(u8 portnumber);
 
-extern void PortSubUseTime(u8 portnumber);
+//extern void PortSubUseTime(u8 portnumber);
 extern void PortConfig(u8 portnumber);
 extern void PortChargeFinish(u8 portnumber, u8 status);
 extern int  GetChargePortNumber(u8 *buf);
 extern int  GetChargeMoney(u8 *buf);
 extern int  GetStopPortNumber(u8 *buf);
 extern int  GetErrorPortNumber(u8 *buf);
+extern int  GetErrorClearPortNumber(u8 *buf);
 extern void StartCharge(u8 *buf);
 extern void StopCharge(u8 *buf);
 extern void PortError(u8 *buf);
@@ -124,5 +125,5 @@ extern void PortStopCharge(u8 port);
 extern int CheckPortErrorCmd(u8 * buf);
 
 
-extern void PortErrorRep(int port);
+extern void PortErrorRep(int port,u8 clearFlag);
 extern void StopChargeRep(int port);

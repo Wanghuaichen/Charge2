@@ -22,142 +22,482 @@ Dialog DLL:      TARMSTM.DLL V1.66.0.0
  
 <h2>Project:</h2>
 D:\GitHub\Charge2\Firmware\App_hal\user\RTC.uvprojx
-Project File Date:  04/10/2018
+Project File Date:  04/12/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
-Build target 'RTC'
+Rebuild target 'RTC'
+assembling startup_stm32f103xe.s...
+compiling stm32f1xx_hal_msp.c...
+compiling stm32f1xx_hal_adc_ex.c...
+compiling stm32f1xx_hal_can.c...
+compiling main.c...
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\include\csq.h(6): warning:  #1-D: last line of file ends without a newline
+  extern int DeviceUploadCSQ(void);
+..\include\devcmd.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void DevCmdTask(void* pAgr);
+..\include\net.h(3): warning:  #1-D: last line of file ends without a newline
+  extern int NetCheck(void);
+..\include\charge.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void ChaCmdTask(void* pAgr);
+..\include\chargerep.h(8): warning:  #1-D: last line of file ends without a newline
+  extern void ChaRepCheckTask(void* pAgr);
+..\include\storemoney.h(4): warning:  #1-D: last line of file ends without a newline
+  extern void StoreMoneyTask(void);
+..\include\device.h(4): warning:  #1-D: last line of file ends without a newline
+  extern void DeviceConfig(void);
+main.c(204): warning:  #1-D: last line of file ends without a newline
+  //}
+main.c: 9 warnings, 0 errors
+compiling system_stm32f1xx.c...
+compiling stm32f1xx_it.c...
+compiling stm32f1xx_hal_adc.c...
+compiling stm32f1xx_hal.c...
+compiling stm32f1xx_hal_cortex.c...
+compiling stm32f1xx_hal_cec.c...
+compiling stm32f1xx_hal_crc.c...
+compiling stm32f1xx_hal_dac.c...
+compiling stm32f1xx_hal_eth.c...
+compiling stm32f1xx_hal_dac_ex.c...
+compiling stm32f1xx_hal_flash.c...
+compiling stm32f1xx_hal_dma.c...
+compiling stm32f1xx_hal_flash_ex.c...
+compiling stm32f1xx_hal_gpio.c...
+compiling stm32f1xx_hal_gpio_ex.c...
+compiling stm32f1xx_hal_hcd.c...
+compiling stm32f1xx_hal_iwdg.c...
+compiling stm32f1xx_hal_i2s.c...
+compiling stm32f1xx_hal_i2c.c...
+compiling stm32f1xx_hal_irda.c...
+compiling stm32f1xx_hal_nand.c...
+compiling stm32f1xx_hal_pcd.c...
+compiling stm32f1xx_hal_pcd_ex.c...
+compiling stm32f1xx_hal_nor.c...
+compiling stm32f1xx_hal_pccard.c...
+compiling stm32f1xx_hal_pwr.c...
+compiling stm32f1xx_hal_rcc_ex.c...
+compiling stm32f1xx_hal_rtc.c...
+compiling stm32f1xx_hal_rcc.c...
+compiling stm32f1xx_hal_smartcard.c...
+compiling stm32f1xx_hal_rtc_ex.c...
+compiling stm32f1xx_hal_tim_ex.c...
+compiling stm32f1xx_hal_spi.c...
+compiling stm32f1xx_hal_sram.c...
+compiling stm32f1xx_hal_spi_ex.c...
+compiling stm32f1xx_hal_tim.c...
+compiling stm32f1xx_hal_sd.c...
+compiling stm32f1xx_hal_usart.c...
+compiling stm32f1xx_hal_uart.c...
+compiling stm32f1xx_ll_sdmmc.c...
+compiling stm32f1xx_ll_usb.c...
+compiling stm32f1xx_hal_wwdg.c...
+compiling delay.c...
+..\sys\delay.c(77): warning:  #1-D: last line of file ends without a newline
+  }
+..\sys\delay.c: 1 warning, 0 errors
+compiling stm32f1xx_ll_fsmc.c...
+compiling sys.c...
+compiling event_groups.c...
+compiling list.c...
+compiling timers.c...
+compiling tasks.c...
+compiling croutine.c...
+compiling heap_4.c...
+compiling queue.c...
+compiling usart.c...
+..\sys\usart.c(118): warning:  #223-D: function "MessageReceiveFromISR" declared implicitly
+  		MessageReceiveFromISR(usart3RecBuf);
+..\sys\usart.c(120): warning:  #223-D: function "memset" declared implicitly
+  		memset(usart3RecBuf,0,120);
+..\sys\usart.c(108): warning:  #177-D: variable "err"  was declared but never referenced
+  	BaseType_t err;
+..\sys\usart.c(109): warning:  #177-D: variable "xHighPriorityTaskWoken"  was declared but never referenced
+  	BaseType_t xHighPriorityTaskWoken;
+..\sys\usart.c(127): warning:  #223-D: function "strlen" declared implicitly
+  	int len = strlen(Data);
+..\sys\usart.c: 5 warnings, 0 errors
+compiling ota.c...
+..\source\ota.c(1): warning:  #1-D: last line of file ends without a newline
+  #include "ota.h"
+..\include\ota.h(2): warning:  #1-D: last line of file ends without a newline
+  #include "sys.h"
+..\source\ota.c: 2 warnings, 0 errors
+compiling gprs.c...
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\include\register.h(6): warning:  #1-D: last line of file ends without a newline
+  extern int DeviceRegister(void);
+..\source\gprs.c(262): warning:  #111-D: statement is unreachable
+  	return 1;
+..\source\gprs.c(294): warning:  #167-D: argument of type "volatile char *" is incompatible with parameter of type "void *restrict"
+  								 memcpy(G510.imei,result,15);
+..\source\gprs.c(356): warning:  #167-D: argument of type "volatile char *" is incompatible with parameter of type "void *restrict"
+  								 memcpy(G510.imsi,result,15);
+..\source\gprs.c: 5 warnings, 0 errors
+compiling message.c...
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\include\register.h(6): warning:  #1-D: last line of file ends without a newline
+  extern int DeviceRegister(void);
+..\include\csq.h(6): warning:  #1-D: last line of file ends without a newline
+  extern int DeviceUploadCSQ(void);
+..\include\devcmd.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void DevCmdTask(void* pAgr);
+..\include\charge.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void ChaCmdTask(void* pAgr);
+..\include\chargerep.h(8): warning:  #1-D: last line of file ends without a newline
+  extern void ChaRepCheckTask(void* pAgr);
+..\source\message.c(90): warning:  #940-D: missing return statement at end of non-void function "MessageSendFromISR" 
+  }
+..\source\message.c(135): warning:  #111-D: statement is unreachable
+  	vPortFree(buf);
+..\source\message.c(154): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+  		UsartWrite((uint8_t*)cmd);
+..\source\message.c(156): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+  		UsartWrite((uint8_t*)Message.payLoad);
+..\source\message.c(166): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+  		UsartWrite((uint8_t*)cmd);
+..\source\message.c(193): warning:  #940-D: missing return statement at end of non-void function "MessageReceiveFromISR" 
+  }
+..\source\message.c(181): warning:  #177-D: variable "Res"  was declared but never referenced
+  		u8 Res;
+..\source\message.c(308): warning:  #111-D: statement is unreachable
+  	vPortFree(buf);
+..\source\message.c(310): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\message.c: 15 warnings, 0 errors
+compiling cjson.c...
+..\source\cjson.c(31): warning:  #1293-D: assignment in condition
+  	if (!(copy = (char*)cJSON_malloc(len))) return 0;
+..\source\cjson.c(211): warning:  #1293-D: assignment in condition
+  	ptr = str; while ((token = *ptr) && ++len) {if (strchr("\"\\\b\f\n\r\t", token)) len++;
+..\source\cjson.c(329): warning:  #1293-D: assignment in condition
+  		if (!(new_item = cJSON_New_Item())) return 0; 	/* memory fail */
+..\source\cjson.c(420): warning:  #1293-D: assignment in condition
+  		if (!(new_item = cJSON_New_Item()))	return 0; /* memory fail */
+..\source\cjson.c(600): warning:  #1-D: last line of file ends without a newline
+  //}
+..\source\cjson.c(11): warning:  #550-D: variable "ep"  was set but never used
+  static const char *ep;
+..\source\cjson.c: 6 warnings, 0 errors
+compiling charge.c...
+..\include\charge.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void ChaCmdTask(void* pAgr);
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\include\port.h(129): warning:  #1-D: last line of file ends without a newline
+  extern void StopChargeRep(int port);
+..\source\charge.c(33): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
+  			StartCharge(buf);	
+..\source\charge.c(37): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
+  			PortError(buf);
+..\source\charge.c(41): warning:  #223-D: function "PortErrorClear" declared implicitly
+  			PortErrorClear(buf);
+..\source\charge.c(45): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
+  			StopCharge(buf);
+..\source\charge.c(49): warning:  #111-D: statement is unreachable
+  	vPortFree(buf);
+..\source\charge.c(50): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\charge.c: 9 warnings, 0 errors
 compiling port.c...
-..\include\port.h(128): warning:  #1-D: last line of file ends without a newline
+compiling para.c...
+..\include\para.h(14): warning:  #1-D: last line of file ends without a newline
+  extern void RepPara(void);
+..\include\board.h(7): warning:  #1-D: last line of file ends without a newline
+  extern u8 GetBoardPinNum(void);
+..\source\para.c(36): warning:  #177-D: variable "st"  was declared but never referenced
+  	char * st = NULL;
+..\source\para.c(37): warning:  #177-D: variable "ed"  was declared but never referenced
+  	char * ed = NULL;
+..\source\para.c(96): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(PRICE_ADDR, (u32*)Msg, 10);
+..\source\para.c(109): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+  	STMFLASH_Read(PRICE_ADDR, (u32*)Msg, 10);
+..\source\para.c(161): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(CURRENT_MAX_ADDR, (u32*)Msg, 10);
+..\source\para.c(175): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+  	STMFLASH_Read(CURRENT_MAX_ADDR, (u32*)Msg, 10);
+..\source\para.c(213): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\para.c(12): warning:  #177-D: variable "updateSocket"  was declared but never referenced
+  static char updateSocket[50] = { 0 };
+..\source\para.c(13): warning:  #177-D: variable "hardWareVision"  was declared but never referenced
+  static int hardWareVision       = 0;
+..\source\para.c(14): warning:  #177-D: variable "softWareVision"  was declared but never referenced
+  static int softWareVision       = 0;
+..\source\para.c(16): warning:  #177-D: variable "heartBite"  was declared but never referenced
+  static int heartBite            = 0;
+..\source\para.c: 13 warnings, 0 errors
+compiling active.c...
+..\include\active.h(9): warning:  #1-D: last line of file ends without a newline
+  extern void RepActive(void);
+..\source\active.c(66): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  		STMFLASH_Write(CURRENT_MAX_ADDR, (u32*)curflag, 10);
+..\source\active.c(91): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\active.c: 3 warnings, 0 errors
+compiling register.c...
+..\include\register.h(6): warning:  #1-D: last line of file ends without a newline
+  extern int DeviceRegister(void);
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\source\register.c(31): warning:  #223-D: function "MessageSend" declared implicitly
+  		MessageSend(str,1);
+..\source\register.c(49): warning:  #111-D: statement is unreachable
+  	return -1;
+..\source\register.c(50): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\register.c: 5 warnings, 0 errors
+compiling csq.c...
+..\include\register.h(6): warning:  #1-D: last line of file ends without a newline
+  extern int DeviceRegister(void);
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\source\csq.c(24): warning:  #223-D: function "MessageSend" declared implicitly
+  		MessageSend(str,1);
+..\source\csq.c(42): warning:  #111-D: statement is unreachable
+  	return -1;
+..\source\csq.c(43): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\csq.c: 5 warnings, 0 errors
+compiling net.c...
+..\include\net.h(3): warning:  #1-D: last line of file ends without a newline
+  extern int NetCheck(void);
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\source\net.c(34): warning:  #111-D: statement is unreachable
+  	return -1;
+..\source\net.c(35): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\net.c: 4 warnings, 0 errors
+compiling devcmd.c...
+..\include\devcmd.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void DevCmdTask(void* pAgr);
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\include\active.h(9): warning:  #1-D: last line of file ends without a newline
+  extern void RepActive(void);
+..\include\para.h(14): warning:  #1-D: last line of file ends without a newline
+  extern void RepPara(void);
+..\source\devcmd.c(37): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
+  			StartFota(buf);
+..\source\devcmd.c(41): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
+  			SetPareStatus(buf);
+..\source\devcmd.c(45): warning:  #111-D: statement is unreachable
+  	vPortFree(buf);
+..\source\devcmd.c(46): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\devcmd.c: 8 warnings, 0 errors
+compiling chargerep.c...
+..\include\chargerep.h(8): warning:  #1-D: last line of file ends without a newline
+  extern void ChaRepCheckTask(void* pAgr);
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\include\port.h(129): warning:  #1-D: last line of file ends without a newline
+  extern void StopChargeRep(int port);
+..\source\chargerep.c(77): warning:  #111-D: statement is unreachable
+  	vPortFree(buf);
+..\source\chargerep.c(97): warning:  #940-D: missing return statement at end of non-void function "PostChaRep" 
+  }
+..\source\chargerep.c(114): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\chargerep.c: 6 warnings, 0 errors
+compiling fota.c...
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\include\active.h(9): warning:  #1-D: last line of file ends without a newline
+  extern void RepActive(void);
+..\source\fota.c(15): warning:  #177-D: variable "st"  was declared but never referenced
+  	char * st = NULL;
+..\source\fota.c(16): warning:  #177-D: variable "ed"  was declared but never referenced
+  	char * ed = NULL;
+..\source\fota.c(51): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(SOFT_VISION_ADDR, (u32*)Msg, 16);
+..\source\fota.c(61): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(UPDATE_SOCKET_ADDR, (u32*)Msg, 16);
+..\source\fota.c(82): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\fota.c: 7 warnings, 0 errors
+compiling board.c...
+..\include\board.h(7): warning:  #1-D: last line of file ends without a newline
+  extern u8 GetBoardPinNum(void);
+..\source\board.c(67): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\board.c: 2 warnings, 0 errors
+compiling port.c...
+..\include\port.h(129): warning:  #1-D: last line of file ends without a newline
   extern void StopChargeRep(int port);
 ..\include\chargerep.h(8): warning:  #1-D: last line of file ends without a newline
   extern void ChaRepCheckTask(void* pAgr);
-..\source\port.c(1048): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+..\source\port.c(1045): warning:  #223-D: function "STMFLASH_Write" declared implicitly
   	STMFLASH_Write(port->useStatusFlashAddr, (u32*)Msg, 10);
-..\source\port.c(1049): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+..\source\port.c(1046): warning:  #223-D: function "STMFLASH_Read" declared implicitly
   	STMFLASH_Read(port->useStatusFlashAddr, (u32*)Msg, 10);
-..\source\port.c(1051): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1048): warning:  #188-D: enumerated type mixed with another type
   	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
 HARGEPOWERON);           //打开继电�?
-..\source\port.c(1052): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1049): warning:  #188-D: enumerated type mixed with another type
   	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
 HARGELEDON);       //打开充电�?
-..\source\port.c(1082): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+..\source\port.c(1079): warning:  #223-D: function "STMFLASH_Write" declared implicitly
   	STMFLASH_Write(port->finishFlagFlashAddr, (u32*)Msg, 10);
-..\source\port.c(1083): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+..\source\port.c(1080): warning:  #223-D: function "STMFLASH_Read" declared implicitly
   	STMFLASH_Read(port->finishFlagFlashAddr, (u32*)Msg, 10);
-..\source\port.c(1085): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1082): warning:  #188-D: enumerated type mixed with another type
   	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
 HARGEPOWEROFF);            //关闭继电�?
-..\source\port.c(1086): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1083): warning:  #188-D: enumerated type mixed with another type
   	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
 HARGELEDOFF);        //关闭充电�?
-..\source\port.c(1097): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+..\source\port.c(1101): warning:  #223-D: function "STMFLASH_Write" declared implicitly
   	STMFLASH_Write(port->errorFlagFlashAddr, (u32*)Msg, 10);
-..\source\port.c(1099): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1103): warning:  #188-D: enumerated type mixed with another type
   	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
 HARGEPOWEROFF);            //关闭继电�?
-..\source\port.c(1100): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1104): warning:  #188-D: enumerated type mixed with another type
   	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
 HARGELEDON);        //打开充电�?
-..\source\port.c(1116): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+..\source\port.c(1120): warning:  #223-D: function "STMFLASH_Write" declared implicitly
   	STMFLASH_Write(port->useTimeFlashAddr, (u32*)Msg, 8);
-..\source\port.c(1118): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+..\source\port.c(1122): warning:  #223-D: function "STMFLASH_Read" declared implicitly
   	STMFLASH_Read(port->useTimeFlashAddr, (u32*)Msg, 8);
-..\source\port.c(1165): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+..\source\port.c(1169): warning:  #223-D: function "STMFLASH_Write" declared implicitly
   	STMFLASH_Write(port->useStatusFlashAddr, (u32*)Msg, 10);
-..\source\port.c(1167): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1171): warning:  #188-D: enumerated type mixed with another type
   	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
 HARGEPOWEROFF);            //关闭继电�?
-..\source\port.c(1168): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1172): warning:  #188-D: enumerated type mixed with another type
       HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
 HARGELEDOFF);        //关闭充电�?
-..\source\port.c(1178): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+..\source\port.c(1182): warning:  #223-D: function "STMFLASH_Write" declared implicitly
   	STMFLASH_Write(port->errorFlagFlashAddr, (u32*)Msg, 10);
-..\source\port.c(1180): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1184): warning:  #188-D: enumerated type mixed with another type
   	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
 HARGEPOWEROFF);             //关闭继电�?
-..\source\port.c(1181): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1185): warning:  #188-D: enumerated type mixed with another type
       HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
 HARGELEDOFF);         //关闭充电�?
-..\source\port.c(1191): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+..\source\port.c(1195): warning:  #223-D: function "STMFLASH_Write" declared implicitly
   	STMFLASH_Write(port->finishFlagFlashAddr, (u32*)Msg, 10);	
-..\source\port.c(1193): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1197): warning:  #188-D: enumerated type mixed with another type
   	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
 HARGEPOWEROFF);             //关闭继电�?
-..\source\port.c(1194): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1198): warning:  #188-D: enumerated type mixed with another type
   	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
 HARGELEDOFF);         //关闭充电�?
-..\source\port.c(1210): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+..\source\port.c(1214): warning:  #223-D: function "STMFLASH_Write" declared implicitly
   	STMFLASH_Write(port->useTimeFlashAddr, (u32*)Msg, 8);
-..\source\port.c(1212): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+..\source\port.c(1216): warning:  #223-D: function "STMFLASH_Read" declared implicitly
   	STMFLASH_Read(port->useTimeFlashAddr, (u32*)Msg, 8);
-..\source\port.c(1228): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+..\source\port.c(1232): warning:  #223-D: function "STMFLASH_Read" declared implicitly
   	STMFLASH_Read(port->useStatusFlashAddr, (u32*)Msg, 10);
-..\source\port.c(1240): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1244): warning:  #188-D: enumerated type mixed with another type
   				HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
 HARGEPOWERON);            //打开继电�?
-..\source\port.c(1241): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1245): warning:  #188-D: enumerated type mixed with another type
   		    	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
 HARGELEDON);        //打开充电�?
-..\source\port.c(1246): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1250): warning:  #188-D: enumerated type mixed with another type
   				HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
 HARGEPOWEROFF);              //关闭继电�?
-..\source\port.c(1247): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1251): warning:  #188-D: enumerated type mixed with another type
   				HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
 HARGELEDOFF);          //关闭充电�?
-..\source\port.c(1251): warning:  #68-D: integer conversion resulted in a change of sign
+..\source\port.c(1255): warning:  #68-D: integer conversion resulted in a change of sign
   				port->useStatus = -1;
-..\source\port.c(1252): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1256): warning:  #188-D: enumerated type mixed with another type
   				HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
 HARGEPOWEROFF);              //关闭继电�?
-..\source\port.c(1253): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1257): warning:  #188-D: enumerated type mixed with another type
   			    HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
 HARGELEDOFF);          //关闭充电�?
-..\source\port.c(1271): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+..\source\port.c(1275): warning:  #223-D: function "STMFLASH_Read" declared implicitly
   	STMFLASH_Read(port->errorFlagFlashAddr, (u32*)Msg, 10);
-..\source\port.c(1283): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1287): warning:  #188-D: enumerated type mixed with another type
   				HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
 HARGEPOWEROFF);              //关闭继电�?
-..\source\port.c(1284): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1288): warning:  #188-D: enumerated type mixed with another type
   		    	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
 HARGELEDON);           //打开充电�?
-..\source\port.c(1293): warning:  #68-D: integer conversion resulted in a change of sign
+..\source\port.c(1297): warning:  #68-D: integer conversion resulted in a change of sign
   				*s = -1;
-..\source\port.c(1294): warning:  #68-D: integer conversion resulted in a change of sign
+..\source\port.c(1298): warning:  #68-D: integer conversion resulted in a change of sign
   				port->errorFlag = -1;
-..\source\port.c(1311): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+..\source\port.c(1315): warning:  #223-D: function "STMFLASH_Read" declared implicitly
   	STMFLASH_Read(port->finishFlagFlashAddr, (u32*)Msg, 10);
-..\source\port.c(1341): warning:  #68-D: integer conversion resulted in a change of sign
+..\source\port.c(1345): warning:  #68-D: integer conversion resulted in a change of sign
   				port->finishFlag = -1;
-..\source\port.c(1355): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+..\source\port.c(1359): warning:  #223-D: function "STMFLASH_Read" declared implicitly
   	STMFLASH_Read(port->useTimeFlashAddr, (u32*)Msg, 10);
-..\source\port.c(1776): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1780): warning:  #188-D: enumerated type mixed with another type
   	HAL_GPIO_WritePin(Port[portnumber].displayLedPinGPIOX, Port[portnumber].displayLedPin, 
 HARGELEDOFF);
-..\source\port.c(1777): warning:  #188-D: enumerated type mixed with another type
+..\source\port.c(1781): warning:  #188-D: enumerated type mixed with another type
   	HAL_GPIO_WritePin(Port[portnumber].controlPinGPIOX, Port[portnumber].controlPin, 
 HARGEPOWERON);
-..\source\port.c(1796): warning:  #223-D: function "GetPrice" declared implicitly
-  				float p = GetPrice();
-..\source\port.c(1782): warning:  #177-D: variable "stopCheck"  was declared but never referenced
-  	static int stopCheck[20] = { 0 };
-..\source\port.c(1965): warning:  #223-D: function "MessageSend" declared implicitly
+..\source\port.c(1995): warning:  #223-D: function "MessageSend" declared implicitly
   	MessageSend(str,1);
-..\source\port.c(1976): warning:  #223-D: function "MessageSend" declared implicitly
+..\source\port.c(2014): warning:  #223-D: function "MessageSend" declared implicitly
   	MessageSend(str,1);
-..\source\port.c: 48 warnings, 0 errors
+..\source\port.c: 46 warnings, 0 errors
+compiling storemoney.c...
+..\include\storemoney.h(4): warning:  #1-D: last line of file ends without a newline
+  extern void StoreMoneyTask(void);
+..\include\port.h(129): warning:  #1-D: last line of file ends without a newline
+  extern void StopChargeRep(int port);
+..\source\storemoney.c(18): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\storemoney.c: 3 warnings, 0 errors
+compiling device.c...
+..\include\device.h(4): warning:  #1-D: last line of file ends without a newline
+  extern void DeviceConfig(void);
+..\include\para.h(14): warning:  #1-D: last line of file ends without a newline
+  extern void RepPara(void);
+..\include\port.h(129): warning:  #1-D: last line of file ends without a newline
+  extern void StopChargeRep(int port);
+..\source\device.c(23): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\device.c: 4 warnings, 0 errors
+compiling cost.c...
+..\include\cost.h(2): warning:  #1-D: last line of file ends without a newline
+  #include "sys.h"
+..\include\port.h(129): warning:  #1-D: last line of file ends without a newline
+  extern void StopChargeRep(int port);
+..\include\para.h(14): warning:  #1-D: last line of file ends without a newline
+  extern void RepPara(void);
+..\source\cost.c(51): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\cost.c: 4 warnings, 0 errors
+compiling gpio.c...
+..\source\gpio.c(16): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(
+PIOE, 
+PIO_PIN_0, status);
+..\source\gpio.c(17): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\gpio.c: 2 warnings, 0 errors
+compiling flash.c...
+..\source\flash.c(26): warning:  #550-D: variable "FlashStatus"  was set but never used
+  	HAL_StatusTypeDef FlashStatus = HAL_OK;
+..\source\flash.c(55): warning:  #177-D: variable "FlashStatus"  was declared but never referenced
+  	HAL_StatusTypeDef FlashStatus = HAL_OK;	
+..\source\flash.c(56): warning:  #550-D: variable "addrx"  was set but never used
+  	u32 addrx = 0;
+..\source\flash.c: 3 warnings, 0 errors
 linking...
-Program Size: Code=45742 RO-data=1134 RW-data=4344 ZI-data=25688  
+Program Size: Code=48366 RO-data=1134 RW-data=4364 ZI-data=25692  
 FromELF: creating hex file...
-"..\OBJ\Template.axf" - 0 Error(s), 48 Warning(s).
+"..\OBJ\Template.axf" - 0 Error(s), 167 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_RTC
   C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:52
 </pre>
 </body>
 </html>

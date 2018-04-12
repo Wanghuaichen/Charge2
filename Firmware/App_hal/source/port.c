@@ -10,10 +10,7 @@
 #define CHARGELEDON        1
 #define CHARGELEDOFF       0
 
-#define CURRENT_MIN        100    //电池充电完成后端口的  输出电流  阈值
 
-#define CHARGE_OVER        1
-#define MONEY_OVER         4
 
 static  DevicePort Port[20] =
 { 
@@ -1086,13 +1083,20 @@ void deviceSetFinishStatus(struct DxPort *port, u8 status)       //设置IO断�
 	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, CHARGELEDOFF);        //关闭充电灯
 	vPortFree(Msg);
 }
-void deviceSetErrorStatus(struct DxPort *port)          //设置端口损坏  状态设置并写入flash
+void deviceSetErrorStatus(struct DxPort *port,u8 perrorStatus)          //设置端口损坏  状态设置并写入flash
 {
 	char * Msg = pvPortMalloc(64);
 	memset(Msg, 0, 64);
-	port->errorFlag = 1;		
+	port->errorFlag = perrorStatus;		
 	strcpy(Msg, "port");
-	strcat(Msg, "1");
+	if(perrorStatus==1)
+	{
+		strcat(Msg, "1");
+	}
+	else if(perrorStatus==0)
+	{
+		strcat(Msg, "0");
+	}
 	strcat(Msg, "status");
 	STMFLASH_Write(port->errorFlagFlashAddr, (u32*)Msg, 10);
 	vPortFree(Msg);
@@ -1493,9 +1497,9 @@ void devicePortInit(struct DxPort *port)
 			__GPIOG_CLK_ENABLE();
 		}
 		GPIO_InitStructure.Pin = port->loadPin;
-		GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStructure.Mode = GPIO_MODE_INPUT;
 		GPIO_InitStructure.Speed = GPIO_SPEED_HIGH;
-		GPIO_InitStructure.Pull = GPIO_NOPULL;
+		GPIO_InitStructure.Pull = GPIO_PULLDOWN;
 		HAL_GPIO_Init(port->loadPinGPIOX, &GPIO_InitStructure);
 	}
 	//adc　　IO
@@ -1561,7 +1565,7 @@ void devicePortInit(struct DxPort *port)
 
 void PortSetUseStatus(u8 portnumber)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1572,7 +1576,7 @@ void PortSetUseStatus(u8 portnumber)
 }
 void PortSetFinishStatus(u8 portnumber, u8 status)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1581,20 +1585,20 @@ void PortSetFinishStatus(u8 portnumber, u8 status)
 	portnumber--;
 	Port[portnumber].SetFinishStatus(&Port[portnumber], status);
 }
-void PortSetErrorStatus(u8 portnumber)
+void PortSetErrorStatus(u8 portnumber,u8 perrorStatus)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
 			;
 	}
 	portnumber--;
-	Port[portnumber].SetErrorStatus(&Port[portnumber]);
+	Port[portnumber].SetErrorStatus(&Port[portnumber],perrorStatus);
 }
 void PortSetUseTime(u8 portnumber, float time)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1606,7 +1610,7 @@ void PortSetUseTime(u8 portnumber, float time)
 
 void PortClearUseStatus(u8 portnumber)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1617,7 +1621,7 @@ void PortClearUseStatus(u8 portnumber)
 }
 void PortClearFinishStatus(u8 portnumber)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1628,7 +1632,7 @@ void PortClearFinishStatus(u8 portnumber)
 }
 void PortClearUseTime(u8 portnumber)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1641,7 +1645,7 @@ void PortClearUseTime(u8 portnumber)
 
 int GetPortUseTime(u8 portnumber)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1653,7 +1657,7 @@ int GetPortUseTime(u8 portnumber)
 }
 void PortUpdateUseTime(u8 portnumber)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1665,7 +1669,7 @@ void PortUpdateUseTime(u8 portnumber)
 }
 void PortUpdateUseStatus(u8 portnumber)      //从Flash更新状态，操作IO
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1676,7 +1680,7 @@ void PortUpdateUseStatus(u8 portnumber)      //从Flash更新状态，操作IO
 }
 void PortUpdateFinishStatus(u8 portnumber)      //从Flash更新状态 
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1687,7 +1691,7 @@ void PortUpdateFinishStatus(u8 portnumber)      //从Flash更新状态
 }
 void PortUpdateErrorStatus(u8 portnumber)      //从Flash更新状态，操作IO
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1698,7 +1702,7 @@ void PortUpdateErrorStatus(u8 portnumber)      //从Flash更新状态，操作IO
 }
 int PortGetAdcValue(u8 portnumber)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1720,7 +1724,7 @@ int PortGetAdcValue(u8 portnumber)
 }
 int PortGetUseStatus(u8 portnumber)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1731,7 +1735,7 @@ int PortGetUseStatus(u8 portnumber)
 }
 float PortGetUseTime(u8 portnumber)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1742,7 +1746,7 @@ float PortGetUseTime(u8 portnumber)
 }
 int PortGetFinishStatus(u8 portnumber)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1753,7 +1757,7 @@ int PortGetFinishStatus(u8 portnumber)
 }
 int PortGetErrorStatus(u8 portnumber)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1765,7 +1769,7 @@ int PortGetErrorStatus(u8 portnumber)
 
 void PortConfig(u8 portnumber)
 {
-	if (portnumber < 1 || portnumber > 20)
+	if (portnumber < 1 || portnumber > 21)
 	{
 		printf("port number is invalid\n");
 		while (1)
@@ -1776,46 +1780,46 @@ void PortConfig(u8 portnumber)
 	HAL_GPIO_WritePin(Port[portnumber].displayLedPinGPIOX, Port[portnumber].displayLedPin, CHARGELEDOFF);
 	HAL_GPIO_WritePin(Port[portnumber].controlPinGPIOX, Port[portnumber].controlPin, CHARGEPOWERON);
 }
-void PortSubUseTime(u8 portnumber)
-{
-	
-	static int stopCheck[20] = { 0 };
+//void PortSubUseTime(u8 portnumber)
+//{
+//	
+//	static int stopCheck[20] = { 0 };
 
-	if (PortGetUseTime(portnumber) < 1)              //费用不足  充电停止
-		{
-			PortChargeFinish(portnumber, MONEY_OVER);
-			return ;
-		}
-	else if (PortGetAdcValue(portnumber) >= CURRENT_MIN + 10)  //充电正常，继续扣费
-		{
-			static u8 costCount = 0;
-			costCount++;
-			if (costCount >= 60)  //3min扣一次费用
-			{
-				costCount = 0;
-				float p = GetPrice();
-				printf("price is %d\r\n", (int)p);
-				float cur =  0;//GetCurrentValue(PortGetAdcValue(portnumber));
-				printf("currten is %f\r\n", cur);
-	         	float cost = (p)*(cur *0.22)*(0.05);
-				printf("cost %f\r\n", cost);
-				Port[portnumber].useTime = Port[portnumber].useTime - cost;
-				char m[20] = { 0};
-				sprintf(m, "%f", Port[portnumber].useTime);
-            	printf("money %s\r\n",m);
-				return ;
-			}
-		}
-//	else if (PortGetAdcValue(portnumber) <= CURRENT_MIN)    //充电电流减小
+//	if (PortGetUseTime(portnumber) < 1)              //费用不足  充电停止
 //		{
-//			stopCheck[portnumber]++;
-//			if (stopCheck[portnumber] >= 3)
+//			PortChargeFinish(portnumber, MONEY_OVER);
+//			return ;
+//		}
+//	else if (PortGetAdcValue(portnumber) >= CURRENT_MIN + 10)  //充电正常，继续扣费
+//		{
+//			static u8 costCount = 0;
+//			costCount++;
+//			if (costCount >= 60)  //3min扣一次费用
 //			{
-//				stopCheck[portnumber] = 0;
-//				PortChargeFinish(portnumber, CHARGE_OVER);      //连续3次减小，则充电完成
+//				costCount = 0;
+//				float p = GetPrice();
+//				printf("price is %d\r\n", (int)p);
+//				float cur =  0;//GetCurrentValue(PortGetAdcValue(portnumber));
+//				printf("currten is %f\r\n", cur);
+//	         	float cost = (p)*(cur *0.22)*(0.05);
+//				printf("cost %f\r\n", cost);
+//				Port[portnumber].useTime = Port[portnumber].useTime - cost;
+//				char m[20] = { 0};
+//				sprintf(m, "%f", Port[portnumber].useTime);
+//            	printf("money %s\r\n",m);
+//				return ;
 //			}
 //		}
-}
+////	else if (PortGetAdcValue(portnumber) <= CURRENT_MIN)    //充电电流减小
+////		{
+////			stopCheck[portnumber]++;
+////			if (stopCheck[portnumber] >= 3)
+////			{
+////				stopCheck[portnumber] = 0;
+////				PortChargeFinish(portnumber, CHARGE_OVER);      //连续3次减小，则充电完成
+////			}
+////		}
+//}
 
 void StartCharge(u8 *buf)
 {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
@@ -1846,7 +1850,7 @@ void PortStopCharge(u8 port)
 }
 void PortSleep(u8 port)
 {
-	PortSetErrorStatus(port);
+	PortSetErrorStatus(port,1);
 //	PortErrorCheckCallBack(1, port+1);
 }
 
@@ -1936,8 +1940,27 @@ int GetErrorPortNumber(u8 *buf)
 		return 0;
 	}
 }
-
-
+int GetErrorClearPortNumber(u8 *buf)
+{
+#define  ERRORCLEARPORTNUMBERSTAT "portrecovers"
+#define  ERRORCLEARPORTNUMBEREND  "portrecoverd"	
+	char * tmp;
+	u8 portNumber = 0;
+	if (NULL != strstr((const char *)buf, (const char *)ERRORCLEARPORTNUMBEREND))
+	{
+		tmp = strstr((const char *)buf, (const char *)ERRORCLEARPORTNUMBERSTAT);
+		tmp += strlen(ERRORCLEARPORTNUMBERSTAT);
+		portNumber = ((*tmp) - '0') * 10 + (*(tmp + 1) - '0');
+	}
+	if ((portNumber <= 20)&&(portNumber > 0))
+	{
+		return portNumber;
+	}
+	else
+	{
+		return 0;
+	}
+}
 void PortChargeFinish(u8 portnumber, u8 status)
 {
 	printf("charge finish port %d \r\n", portnumber + 1);
@@ -1951,19 +1974,34 @@ void PortError(u8 *buf)
 {
 	int port = GetErrorPortNumber(buf);
 	printf("port error cmd %d port\r\n",port);
-	PortSetErrorStatus(port);
-	PortErrorRep(port);
+	PortSetErrorStatus(port,1);
+	PortErrorRep(port,0);
 }
 
-void PortErrorRep(int port)
+void PortErrorRep(int port,u8 clearFlag)
 {
 	cJSON *res = cJSON_CreateObject();
-	cJSON_AddStringToObject(res, "type", "getporterror");
+	if(clearFlag==0)
+	{
+		cJSON_AddStringToObject(res, "type", "getporterror");
+	}
+	else if(clearFlag==1)
+	{
+		cJSON_AddStringToObject(res, "type", "getportrecover");
+	}
 	cJSON_AddNumberToObject(res, "port",port);
     char * str;
 	str = cJSON_Print(res);
 	MessageSend(str,1);
 	cJSON_Delete(res); 	
+}
+
+void PortErrorClear(u8 *buf)
+{
+	int port = GetErrorClearPortNumber(buf);
+	printf("port clear error cmd %d port\r\n",port);
+	PortSetErrorStatus(port,0);
+	PortErrorRep(port,1);
 }
 
 void StopChargeRep(int port)

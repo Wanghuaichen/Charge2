@@ -16,28 +16,6 @@ static int softWareVision       = 0;
 static int heartBite            = 0;
 
 
-void UpDateParaFromFlash(void)
-{
-	UpdateBoardPara();
-	UpdateCurrentMax();
-	UpdatePrice();
-	printf("%d %d\r\n",GetStartPin(),GetStopPin());
-	int f = GetStartPin();
-	int l = GetStopPin();
-	for (int i = f; i < l; i++)
-	{
-	//	PortConfig(i);
-	}
-	for (int i = f; i < l; i++)
-	{
-	//	PortUpdateUseStatus(i);
-	//	PortUpdateUseTime(i);
-	//	PortUpdateFinishStatus(i);
-	//	PortUpdateErrorStatus(i);
-	}
-	printf("Update Para Succ\r\n");
-}
-
 int CheckParaCmd(u8 *buf)
 {
 	if (NULL != strstr((const char *)buf, (const char *)"chfres"))
@@ -104,62 +82,51 @@ void SetPrice(int p)
 		return ;
 	}
 	devicePrice = p;
-	char * Msg = pvPortMalloc(50);
-	memset(Msg, 0, 50);
-	char *stat = pvPortMalloc(6);
-	memset(stat, 0, 6);
-	sprintf(stat, "%3d", devicePrice);
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
+	char price[4] = {0};
+	price[0] = (p/100)+'0';
+	price[1] = (p/10)%10+'0';
+	price[2] = p%10+'0';
 	const char * head = "price";
 	const char * end =  "status";
 	strcpy(Msg, head);
-	strcat(Msg, stat);
+	strcat(Msg, price);
 	strcat(Msg, end);
-	STMFLASH_Write(PRICE_ADDR, (u32*)Msg, 4);
+	STMFLASH_Write(PRICE_ADDR, (u32*)Msg, 10);
 	vPortFree(Msg);
-	vPortFree(stat);
 }
 
 void  UpdatePrice(void)
 {
-	char * Msg = pvPortMalloc(50);
-	memset(Msg, 0, 50);
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
 	
 	const char * head = "price";
 	
 	const char * end = "status";
 	
-	STMFLASH_Read(PRICE_ADDR, (u32*)Msg, 4);
+	STMFLASH_Read(PRICE_ADDR, (u32*)Msg, 10);
 	//	printf("Msg %s\n", Msg);
 	
-		if(NULL != strstr((const char *)Msg, (const char *)end))
+	if(NULL != strstr((const char *)Msg, (const char *)end))
 	{
 		if (NULL != strstr((const char *)Msg, (const char *)head))
 		{
 			char * s  = strstr((const char *)Msg, (const char *)head);
 			s = s + strlen(head);
-			int tim = 0;
-			u8 tmp[5] = { 0 };
-			for (int i = 0; i < 3; i++)
+			int tim = ((*s)-'0')*100+((*(s+1))-'0')*10+((*(s+2))-'0');
+			if(tim<999&&tim>0)
 			{
-				tmp[i] = *s;
-				s++;
+				devicePrice = tim;
 			}
-			if ((tmp[0] <= '9')&&tmp[0] >= '0')
+			else
 			{
-				tim = (tmp[0] - '0') * 100 + (tmp[1] - '0') * 10 + (tmp[2] - '0');
+				devicePrice = 100;
 			}
-			else if ((tmp[1] <= '9')&&tmp[1] >= '0')
-			{
-				tim = (tmp[1] - '0') * 10 + (tmp[2] - '0');
-			}
-			else if ((tmp[2] <= '9')&&tmp[2] >= '4')
-			{
-				tim = (tmp[2] - '0');
-			}
-			devicePrice = tim;
-			printf("device price is %d\r\n", devicePrice);
 		}
 	}
+	printf("device price Updaet from flash is %d\r\n", devicePrice);
 	vPortFree(Msg);
 }
 
@@ -176,38 +143,36 @@ void SetCurrentMax(int c)
 		return ;
 	}
 	currentMax = c;
-	char * Msg = pvPortMalloc(50);
-	memset(Msg, 0, 50);
-	
-	char *stat = pvPortMalloc(6);
-	memset(stat, 0, 6);
-	sprintf(stat, "%4d", devicePrice);
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
+  char current[5] = {0};
+	current[0] = (c/1000)+'0';
+	current[1] = (c/100)%10+'0';
+	current[2] = (c/10)%10+'0';
+	current[3] = c%10+'0';
 	
 	const char * head = "current";
 	
 	const char * end = "status";
 	
 	strcpy(Msg, head);
-	strcat(Msg, stat);
+	strcat(Msg, current);
 	strcat(Msg, end);
-	
-	STMFLASH_Write(CURRENT_MAX_ADDR, (u32*)Msg, 4);
-	
+	STMFLASH_Write(CURRENT_MAX_ADDR, (u32*)Msg, 10);
 	vPortFree(Msg);
-	vPortFree(stat);
 }
 
 void UpdateCurrentMax(void)
 {
 	char * s = NULL;
-	char * Msg = pvPortMalloc(50);
-	memset(Msg, 0, 50);
+	char * Msg = pvPortMalloc(64);
+	memset(Msg, 0, 64);
 	
 	const char * head = "current";
 	const char * end = "status";
 
 	
-	STMFLASH_Read(CURRENT_MAX_ADDR, (u32*)Msg, 4);
+	STMFLASH_Read(CURRENT_MAX_ADDR, (u32*)Msg, 10);
 	//	printf("Msg %s\n", Msg);
 
 		if(NULL != strstr((const char *)Msg, (const char *)end))
@@ -216,33 +181,19 @@ void UpdateCurrentMax(void)
 			{
 				s = strstr((const char *)Msg,(const char *)head);
 				s = s + strlen(head);
-				int tim = 0;
-				u8 tmp[4] = { 0 };
-				for (int i = 0; i < 4; i++)
+				int tim = ((*s)-'0')*1000+((*(s+1))-'0')*100+((*(s+2))-'0')*10+((*(s+3))-'0');
+				if(tim<9999&&tim>0)
 				{
-					tmp[i] = *s;
-					s++;
+					currentMax = tim;
 				}
-				if ((tmp[0] <= '9')&&tmp[0] >= '0')
+				else
 				{
-					tim = (tmp[0] - '0') * 1000 + (tmp[1] - '0') * 100 + (tmp[2] - '0') * 10 + (tmp[3] - '0');
+					currentMax = 3000;
 				}
-				else if ((tmp[1] <= '9')&&tmp[1] >= '0')
-				{
-					tim = (tmp[1] - '0') * 100 + (tmp[2] - '0') * 10 + (tmp[3] - '0');
-				}
-				else if ((tmp[2] <= '9')&&tmp[2] >= '0')
-				{
-					tim = (tmp[1] - '0') * 10 + (tmp[2] - '0');
-				}
-				else if ((tmp[3] <= '9')&&tmp[3] >= '4')
-				{
-					tim = (tmp[2] - '0');
-				}
-				currentMax = tim;
-				printf("device currentMax is %d\r\n", currentMax);
+				
 			}
-	}
+	  }
+	printf("device currentMax is %d\r\n", currentMax);
 	vPortFree(Msg);
 }
 

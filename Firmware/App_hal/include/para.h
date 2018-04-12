@@ -1,13 +1,10 @@
 #pragma once
 #include "sys.h"
 
+#define PARA_CMD   "chfres"
 
-
-extern void UpDateParaFromFlash(void);
 extern void SetPareStatus(u8 *buf);
-
 extern int CheckParaCmd(u8 *buf);
-
 extern int   GetPrice(void);
 extern void  SetPrice(int p);            
 extern void  UpdatePrice(void);

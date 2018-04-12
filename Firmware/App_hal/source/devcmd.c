@@ -6,6 +6,7 @@
 #include "timers.h"
 #include "active.h"
 #include "fota.h"
+#include "para.h"
 #include <string.h>
 
 QueueHandle_t DevCmdQueue;   
@@ -31,9 +32,13 @@ void DevCmdTask(void* pAgr)
 		{
 			ReleaseDevice();
 		}
-		if(NULL!=strstr(buf,(const char*)FOTA_END))    /*设备更新*/
+		if(NULL!=strstr(buf,(const char*)FOTA_END))    /*设备OTA更新*/
 		{
 			StartFota(buf);
+		}
+	    if(NULL!=strstr(buf,(const char*)PARA_CMD))    /*设备参数更新*/
+		{
+			SetPareStatus(buf);
 		}
 		vTaskDelay(100);
 	}

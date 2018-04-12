@@ -10,6 +10,7 @@
 
 #define CHARGE "charges"
 #define PORT_ERROR "porterrors"
+#define PORT_ERROR_CLEAR "portrecovers"
 #define STOP_CHARGE "stopport"
 
 QueueHandle_t ChaCmdQueue;   
@@ -34,6 +35,10 @@ void ChaCmdTask(void* pAgr)
 		if(NULL!=strstr(buf,(const char*)PORT_ERROR))    /*端口损坏*/
 		{
 			PortError(buf);
+		}
+	    if(NULL!=strstr(buf,(const char*)PORT_ERROR_CLEAR))    /*端口损坏清除*/
+		{
+			PortErrorClear(buf);
 		}
 		if(NULL!=strstr(buf,(const char*)STOP_CHARGE))    /*停止充电*/
 		{
