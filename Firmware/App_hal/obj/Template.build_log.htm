@@ -27,28 +27,130 @@ Project File Date:  04/10/2018
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'RTC'
-compiling main.c...
-..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
-  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
-..\include\csq.h(6): warning:  #1-D: last line of file ends without a newline
-  extern int DeviceUploadCSQ(void);
-..\include\devcmd.h(6): warning:  #1-D: last line of file ends without a newline
-  extern void DevCmdTask(void* pAgr);
-..\include\net.h(3): warning:  #1-D: last line of file ends without a newline
-  extern int NetCheck(void);
-..\include\charge.h(6): warning:  #1-D: last line of file ends without a newline
-  extern void ChaCmdTask(void* pAgr);
+compiling port.c...
+..\include\port.h(128): warning:  #1-D: last line of file ends without a newline
+  extern void StopChargeRep(int port);
 ..\include\chargerep.h(8): warning:  #1-D: last line of file ends without a newline
   extern void ChaRepCheckTask(void* pAgr);
-main.c(81): warning:  #223-D: function "memset" declared implicitly
-  	memset(buf,0,32);
-main.c(192): warning:  #1-D: last line of file ends without a newline
-  //}
-main.c: 8 warnings, 0 errors
+..\source\port.c(1048): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(port->useStatusFlashAddr, (u32*)Msg, 10);
+..\source\port.c(1049): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+  	STMFLASH_Read(port->useStatusFlashAddr, (u32*)Msg, 10);
+..\source\port.c(1051): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
+HARGEPOWERON);           //打开继电�?
+..\source\port.c(1052): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
+HARGELEDON);       //打开充电�?
+..\source\port.c(1082): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(port->finishFlagFlashAddr, (u32*)Msg, 10);
+..\source\port.c(1083): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+  	STMFLASH_Read(port->finishFlagFlashAddr, (u32*)Msg, 10);
+..\source\port.c(1085): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
+HARGEPOWEROFF);            //关闭继电�?
+..\source\port.c(1086): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
+HARGELEDOFF);        //关闭充电�?
+..\source\port.c(1097): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(port->errorFlagFlashAddr, (u32*)Msg, 10);
+..\source\port.c(1099): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
+HARGEPOWEROFF);            //关闭继电�?
+..\source\port.c(1100): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
+HARGELEDON);        //打开充电�?
+..\source\port.c(1116): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(port->useTimeFlashAddr, (u32*)Msg, 8);
+..\source\port.c(1118): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+  	STMFLASH_Read(port->useTimeFlashAddr, (u32*)Msg, 8);
+..\source\port.c(1165): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(port->useStatusFlashAddr, (u32*)Msg, 10);
+..\source\port.c(1167): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
+HARGEPOWEROFF);            //关闭继电�?
+..\source\port.c(1168): warning:  #188-D: enumerated type mixed with another type
+      HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
+HARGELEDOFF);        //关闭充电�?
+..\source\port.c(1178): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(port->errorFlagFlashAddr, (u32*)Msg, 10);
+..\source\port.c(1180): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
+HARGEPOWEROFF);             //关闭继电�?
+..\source\port.c(1181): warning:  #188-D: enumerated type mixed with another type
+      HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
+HARGELEDOFF);         //关闭充电�?
+..\source\port.c(1191): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(port->finishFlagFlashAddr, (u32*)Msg, 10);	
+..\source\port.c(1193): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
+HARGEPOWEROFF);             //关闭继电�?
+..\source\port.c(1194): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
+HARGELEDOFF);         //关闭充电�?
+..\source\port.c(1210): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(port->useTimeFlashAddr, (u32*)Msg, 8);
+..\source\port.c(1212): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+  	STMFLASH_Read(port->useTimeFlashAddr, (u32*)Msg, 8);
+..\source\port.c(1228): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+  	STMFLASH_Read(port->useStatusFlashAddr, (u32*)Msg, 10);
+..\source\port.c(1240): warning:  #188-D: enumerated type mixed with another type
+  				HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
+HARGEPOWERON);            //打开继电�?
+..\source\port.c(1241): warning:  #188-D: enumerated type mixed with another type
+  		    	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
+HARGELEDON);        //打开充电�?
+..\source\port.c(1246): warning:  #188-D: enumerated type mixed with another type
+  				HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
+HARGEPOWEROFF);              //关闭继电�?
+..\source\port.c(1247): warning:  #188-D: enumerated type mixed with another type
+  				HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
+HARGELEDOFF);          //关闭充电�?
+..\source\port.c(1251): warning:  #68-D: integer conversion resulted in a change of sign
+  				port->useStatus = -1;
+..\source\port.c(1252): warning:  #188-D: enumerated type mixed with another type
+  				HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
+HARGEPOWEROFF);              //关闭继电�?
+..\source\port.c(1253): warning:  #188-D: enumerated type mixed with another type
+  			    HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
+HARGELEDOFF);          //关闭充电�?
+..\source\port.c(1271): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+  	STMFLASH_Read(port->errorFlagFlashAddr, (u32*)Msg, 10);
+..\source\port.c(1283): warning:  #188-D: enumerated type mixed with another type
+  				HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, 
+HARGEPOWEROFF);              //关闭继电�?
+..\source\port.c(1284): warning:  #188-D: enumerated type mixed with another type
+  		    	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, 
+HARGELEDON);           //打开充电�?
+..\source\port.c(1293): warning:  #68-D: integer conversion resulted in a change of sign
+  				*s = -1;
+..\source\port.c(1294): warning:  #68-D: integer conversion resulted in a change of sign
+  				port->errorFlag = -1;
+..\source\port.c(1311): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+  	STMFLASH_Read(port->finishFlagFlashAddr, (u32*)Msg, 10);
+..\source\port.c(1341): warning:  #68-D: integer conversion resulted in a change of sign
+  				port->finishFlag = -1;
+..\source\port.c(1355): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+  	STMFLASH_Read(port->useTimeFlashAddr, (u32*)Msg, 10);
+..\source\port.c(1776): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(Port[portnumber].displayLedPinGPIOX, Port[portnumber].displayLedPin, 
+HARGELEDOFF);
+..\source\port.c(1777): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(Port[portnumber].controlPinGPIOX, Port[portnumber].controlPin, 
+HARGEPOWERON);
+..\source\port.c(1796): warning:  #223-D: function "GetPrice" declared implicitly
+  				float p = GetPrice();
+..\source\port.c(1782): warning:  #177-D: variable "stopCheck"  was declared but never referenced
+  	static int stopCheck[20] = { 0 };
+..\source\port.c(1965): warning:  #223-D: function "MessageSend" declared implicitly
+  	MessageSend(str,1);
+..\source\port.c(1976): warning:  #223-D: function "MessageSend" declared implicitly
+  	MessageSend(str,1);
+..\source\port.c: 48 warnings, 0 errors
 linking...
 Program Size: Code=45742 RO-data=1134 RW-data=4344 ZI-data=25688  
 FromELF: creating hex file...
-"..\OBJ\Template.axf" - 0 Error(s), 8 Warning(s).
+"..\OBJ\Template.axf" - 0 Error(s), 48 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_RTC
