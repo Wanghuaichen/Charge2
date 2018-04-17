@@ -115,13 +115,12 @@ void PostFinishTask(void * pAgr)
 	}
 	vPortFree(buf);
 	vPortFree(repRec);
-	
 }
 
 #define PORT_KEY  "\"port\":"
 int GetPortNumberFromJson(u8 *buf)
 {
-	if(NULL!=strstr(buf,(const char*)PORT_KEY))   
+	  if(NULL!=strstr(buf,(const char*)PORT_KEY))   
 		{
 			int port = 0;
 				char * result = strstr(buf,(const char*)PORT_KEY);
@@ -136,5 +135,5 @@ int GetPortNumberFromJson(u8 *buf)
 			}
 			return port;
 		}
-	 return 0;
+	  return 0;
 }

@@ -3,7 +3,7 @@
 
 void StoreMoneyTask(void)                
 {
-	printf("Money store tomer\r\n");
+	printf("Money store timer\r\n");
 	for (int i = 1; i < 21; i++)
 	{
 		if (PortGetErrorStatus(i) == 0)                   
@@ -11,7 +11,7 @@ void StoreMoneyTask(void)
 				if ((PortGetUseStatus(i)==1)&&(PortGetFinishStatus(i) == 0))     
 					{
 						float tmp = PortGetUseTime(i);
-						printf("port %d money %f\r\n",i+1,tmp);
+						printf("port %d money %f\r\n",i,tmp);
 						PortSetUseTime(i, tmp);                                        
 					}
 			}

@@ -3,6 +3,7 @@
 #include "semphr.h"
 #include "gprs.h"
 #include "cjson.h"
+#include "message.h"
 extern Gprs G510;
 SemaphoreHandle_t CSQBinarySemaphore;
 

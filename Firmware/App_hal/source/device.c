@@ -8,11 +8,11 @@ void DeviceConfig(void)
 {
 	UpdateCurrentMax();
 	UpdatePrice();
-	for (int i = 1; i < 21; i++)
+	for(int i = 1; i < 21; i++)
 	{
 		PortConfig(i);
 	}
-	for (int i = 1; i < 21; i++)
+	for(int i = 1; i < 21; i++)
 	{
 		PortUpdateUseStatus(i);
 		PortUpdateUseTime(i);

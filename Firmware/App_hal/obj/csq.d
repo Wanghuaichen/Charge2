@@ -72,3 +72,6 @@
 ..\obj\csq.o: ..\FreeRTOS\include\queue.h
 ..\obj\csq.o: ..\include\gprs.h
 ..\obj\csq.o: ..\include\cjson.h
+..\obj\csq.o: ..\include\message.h
+..\obj\csq.o: ..\FreeRTOS\include\task.h
+..\obj\csq.o: ..\FreeRTOS\include\list.h
