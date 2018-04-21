@@ -80,12 +80,12 @@ int main()
 	McuPowerEnable(0);	
 	delay_xms(500);
 	McuPowerEnable(1);	
-	DeviceConfig();
+	//DeviceConfig();
 	delay_xms(5000);
 	
 	printf("hello usart1\r\n");
-	// V3.0.0
-	
+	// V4.0 Dynamic Register branch
+	while(1);
 	char * f = "-0.23423";
 	float tf = atof((const char *)f);
 	printf("result %f \r\n",tf);
@@ -136,8 +136,8 @@ void StartTask(void * pvParameter)
 									    (void *        )5,
 										(TimerCallbackFunction_t)StoreMoneyTask
 										);											
-		MsgInfoConfig("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");
-		G510.Config("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");																
+		MsgInfoConfig("a1BFMiIbqxv","devicename","dpuJrLdY54jJa6C8");
+		G510.Config("a1BFMiIbqxv","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");																
 	  /*创建串口接收任务*/
   	xTaskCreate( (TaskFunction_t) MessageReceiveTask,       /*任务函数*/
 							 (const char*   ) "LED0Task",                 /*任务名称*/
