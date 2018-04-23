@@ -738,43 +738,6 @@
         </Group>
         <Group>
           <GroupName>app</GroupName>
-          <Files>
-            <File>
-              <FileName>gprs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\gprs.c</FilePath>
-            </File>
-            <File>
-              <FileName>message.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\message.c</FilePath>
-            </File>
-            <File>
-              <FileName>cjson.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\cjson.c</FilePath>
-            </File>
-            <File>
-              <FileName>para.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\para.c</FilePath>
-            </File>
-            <File>
-              <FileName>csq.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\csq.c</FilePath>
-            </File>
-            <File>
-              <FileName>net.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\net.c</FilePath>
-            </File>
-            <File>
-              <FileName>gps.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\gps.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>driver</GroupName>
