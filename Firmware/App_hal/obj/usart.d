@@ -72,3 +72,4 @@
 ..\obj\usart.o: ..\FreeRTOS\include\list.h
 ..\obj\usart.o: ..\include\message.h
 ..\obj\usart.o: ..\FreeRTOS\include\semphr.h
+..\obj\usart.o: ..\include\gps.h

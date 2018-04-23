@@ -87,3 +87,4 @@
 ..\obj\main.o: ..\include\storemoney.h
 ..\obj\main.o: ..\include\device.h
 ..\obj\main.o: ..\include\cost.h
+..\obj\main.o: ..\include\gps.h

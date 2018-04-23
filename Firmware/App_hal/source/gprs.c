@@ -5,6 +5,7 @@
 #include "timers.h"
 #include "queue.h"
 #include "register.h"
+#include "gps.h"
 //const char* AT =			      	  "AT\r\n";
 //const char* ATi8 =		          "ATi8\r\n";
 //const char* ATE0 =			        "ATE0\r\n\0";
@@ -42,46 +43,31 @@ static char authenticationCode[160] = {0};
 static char subscriptionCode[160] = {0};
 Gprs G510={
 	
-	.cmdNum = 12,
+	.cmdNum = 8,
 	.rep[0] = "OK",
 	.rep[1] = "OK",
-	.rep[2] = "OK",
-	.rep[3] = "OK",
-	.rep[4] = "+CPIN: READY",
-	.rep[5] = "+CGREG: 0,1",
-	.rep[6] = "OK",
-	.rep[7] = "OK",
-	.rep[8] = ".",
-	
-	.rep[9] = "+CLOUDAUTH: OK",
-	.rep[10] = "CLOUDCONN",
-	.rep[11] = "OK",
-	.rep[12] = "+CSQ: ",
-	.rep[13] = "+CIMI: ",       /*Get imsi*/
-	.rep[14] = "+CGSN: \"",     /*Get imei*/
+	.rep[2] = "READY",
+	.rep[3] = "CGATT: 1",
+	.rep[4] = "OK",
+	.rep[5] = "OK",
+	.rep[6] = ".",
+	.rep[7] = "MIPOPEN: 1,1",
+	.rep[8] = "+CGSN: \"",     /*Get imei*/
 	
 	.cmd[0] = "AT\r\n",
-	.cmd[1] = "ATi8\r\n",
-	.cmd[2] = "ATE0\r\n\0",
-	.cmd[3] = "AT+CMEE=2\r\n",
-	.cmd[4] = "AT+CPIN?\r\n",
-	.cmd[5] = "AT+CGREG?\r\n",
-	.cmd[6] = "AT+COPS?\r\n",
-	.cmd[7] = "AT+MIPCALL=1,\"CMNET\"\r\n",
-	.cmd[8] = "AT+MIPCALL?\r\n",
-	
-	.cmd[10] = "AT+CLOUDCONN=70,0,3\r\n",
-	
-	.cmd[12] = "AT+CSQ?\r\n",
-	.cmd[13] = "AT+CIMI\r\n",    /*Get imsi*/
-	.cmd[14] = "AT+CGSN?\r\n",   /*Get imei*/
+	.cmd[1] = "ATE0\r\n\0",
+	.cmd[2] = "AT+CPIN?\r\n\0",
+	.cmd[3] = "AT+CGATT?\r\n\0",
+	.cmd[4] = "AT+GTSET=\"IPRFMT\",2\r\n\0",
+	.cmd[5] = "AT+MIPCALL=1,\"CMNET\"\r\n\0",
+	.cmd[6] = "AT+MIPCALL?\r\n\0",
+	.cmd[7] = "AT+MIPOPEN=1,,\"139.224.129.147\",5000,0\r\n",
+	.cmd[8] = "AT+CGSN?\r\n",   /*Get imei*/
 
 	.IPFlashAddr = 0,
 	.OtaIPFlashAddr =0,
 	.Connect = deviceConnect,
-	.UpdateCSQ = deviceUpdateCSQ,
 	.UpdateIMEI = deviceUpdateIMEI,
-	.UpdateIMSI = deviceUpdateIMSI,
 	.Config = deviceConfig,
 };
 void deviceConfig(const char *pproductKey,const char *pdeviceName,const char * pdeviceScreat)
@@ -126,14 +112,10 @@ void deviceConfig(const char *pproductKey,const char *pdeviceName,const char * p
 	G510.cmd[11] = subscriptionCode;
 	
 	G510.GprsConnectBinarySemaphore = xSemaphoreCreateBinary();
-	G510.GprsCSQBinarySemaphore = xSemaphoreCreateBinary();
 	G510.IMEIBinarySemaphore = xSemaphoreCreateBinary();
-	G510.IMSIBinarySemaphore = xSemaphoreCreateBinary();
-//	G510.GprsNetCheckBinarySemaphore = xSemaphoreCreateBinary();
 	G510.GprsRepQueue = xQueueCreate(1,30);
-	G510.CSQRepQueue = xQueueCreate(1,120);
 	G510.IMEIRepQueue = xQueueCreate(1,120);
-	G510.IMSIRepQueue = xQueueCreate(1,120);
+
 }
 static int pdeviceConnect(void)
 {
@@ -192,89 +174,20 @@ static int pdeviceConnect(void)
 	return 1;
 }
 
-static int pdeviceUpdateCSQ(void)
-{
-	  u8 count = 0;
-	  BaseType_t err;
-	  if(G510.GprsRepQueue!=NULL)
-	  {
-			err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[12]);
-			if(err!=pdTRUE)
-			{
-				printf("Rep Send failed\r\n");
-				return -1;
-			}
-  	  }
-	  MessageSend(G510.cmd[12],0);
-		while(1)
-		{
-			count++;
-			if(G510.GprsCSQBinarySemaphore!=NULL)
-			{
-			    err = xSemaphoreTake(G510.GprsCSQBinarySemaphore,15000);
-					printf("%d\r\n",count);
-					if(err == pdTRUE)
-					{
-							char * csqbuf = pvPortMalloc(120);
-							xQueueReceive(G510.CSQRepQueue,csqbuf,10);
-							if(NULL != strstr(csqbuf,"CSQ"))   /*Receive csq*/
-							{
-								 char * result;
-								 result = strstr(csqbuf,G510.rep[12]);
-								 result+=strlen(G510.rep[12]);
-								 if((*(result+1))!=',')
-								 {
-									 G510.csq = ((*result)-'0')*10+(*(result+1))-'0';
-								 }
-								 else 
-								 {
-									 G510.csq = (*result)-'0';
-								 }
-								 vPortFree(csqbuf);
-								 printf("CSQ Value %d\r\n",G510.csq);
-								 return 1;
-							 }
-							vPortFree(csqbuf);
-					}
-					else
-					{
-						MessageSend(G510.cmd[12],0);
-						if(G510.GprsRepQueue!=NULL)
-						{
-							err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[12]);
-							if(err!=pdTRUE)
-							{
-								printf("Rep Sen failed\r\n");
-								return -1;
-							}
-						}
-					}
-			}
-			else
-			{
-				printf("No G510 semaphore \r\n");
-			}
-			if(count>=5)
-			{
-				return -1; 
-			}
-		}
-	return 1;
-}
 static int pdeviceUpdateIMEI(void)
 {
 		u8 count = 0;
 		BaseType_t err;
 		if(G510.GprsRepQueue!=NULL)
 	  {
-			err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[14]);
+			err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[8]);
 			if(err!=pdTRUE)
 			{
 				printf("Rep Send failed\r\n");
 				return -1;
 			}
   	}
-	  MessageSend(G510.cmd[14],0);
+	  MessageSend(G510.cmd[8],0);
 		while(1)
 		{
 			count++;
@@ -286,11 +199,11 @@ static int pdeviceUpdateIMEI(void)
 					{
 							char * imeibuf = pvPortMalloc(120);
 							xQueueReceive(G510.IMEIRepQueue,imeibuf,10);
-							if(NULL != strstr(imeibuf,G510.rep[14]))   /*Receive imei*/
+							if(NULL != strstr(imeibuf,G510.rep[8]))   /*Receive imei*/
 							{
 								 char * result;
-								 result = strstr(imeibuf,G510.rep[14]);
-								 result+=strlen(G510.rep[14]);
+								 result = strstr(imeibuf,G510.rep[8]);
+								 result+=strlen(G510.rep[8]);
 								 memcpy(G510.imei,result,15);
 								 printf("IMEI Value %s\r\n",G510.imei);
 								 vPortFree(imeibuf);
@@ -300,10 +213,10 @@ static int pdeviceUpdateIMEI(void)
 					}
 					else
 					{
-						MessageSend(G510.cmd[14],0);
+						MessageSend(G510.cmd[8],0);
 						if(G510.GprsRepQueue!=NULL)
 						{
-							err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[14]);
+							err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[8]);
 							if(err!=pdTRUE)
 							{
 								printf("Rep Sen failed\r\n");
@@ -323,70 +236,8 @@ static int pdeviceUpdateIMEI(void)
 		}
 	return 1;
 }
-static int pdeviceUpdateIMSI(void)
-{
-		u8 count = 0;
-		BaseType_t err;
-		if(G510.GprsRepQueue!=NULL)
-	  {
-			err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[13]);
-			if(err!=pdTRUE)
-			{
-				printf("Rep Send failed\r\n");
-				return -1;
-			}
-  	}
-	  MessageSend(G510.cmd[13],0);
-		while(1)
-		{
-			count++;
-			if(G510.IMSIBinarySemaphore!=NULL)
-			{
-			    err = xSemaphoreTake(G510.IMSIBinarySemaphore,15000);
-					printf("%d\r\n",count);
-					if(err == pdTRUE)
-					{
-							char * imsibuf = pvPortMalloc(120);
-							xQueueReceive(G510.IMSIRepQueue,imsibuf,10);
-							if(NULL != strstr(imsibuf,G510.rep[13]))   /*Receive imei*/
-							{
-								 char * result;
-								 result = strstr(imsibuf,G510.rep[13]);
-								 result+=strlen(G510.rep[13]);
-								 memcpy(G510.imsi,result,15);
-								 printf("IMSI Value %s\r\n",G510.imsi);
-								 vPortFree(imsibuf);
-								 break;
-							 }
-							vPortFree(imsibuf);
-					}
-					else
-					{
-						MessageSend(G510.cmd[14],0);
-						if(G510.GprsRepQueue!=NULL)
-						{
-							err = xQueueOverwrite(G510.GprsRepQueue,G510.rep[14]);
-							if(err!=pdTRUE)
-							{
-								printf("Rep Sen failed\r\n");
-								return -1;
-							}
-						}
-					}
-			}
-			else
-			{
-				printf("No G510 semaphore \r\n");
-			}
-			if(count>=5)
-			{
-				return -1; 
-			}
-		}
-	return 1;
-}
-extern xTimerHandle testTimerHandler;
 
+extern xTimerHandle GPSTimerHandler;
 int deviceConnect(void)
 {
 	printf("connecty\r\n");
@@ -397,28 +248,10 @@ int deviceConnect(void)
 		{
       printf("Connecet to cloud successful\r\n");
 			G510.connectFlag = 0;
-			DeviceRegister();
-		  xTimerStart(testTimerHandler,portMAX_DELAY);
+			xTimerStart(GPSTimerHandler,portMAX_DELAY);
 			return 1;
 		}
     printf("Connect to cloud failed %d.....\r\n",i+1);
-	}
-	printf("Device Rebooting\r\n");
-	vTaskSuspendAll();
-	while(1);
-}
-
-int deviceUpdateCSQ(void)
-{
-  G510.csqFlag = 1;
-	for(int i=0;i<5;i++)
-	{
-		if(pdeviceUpdateCSQ()>0)
-		{
-			G510.csqFlag = 0;
-			return 1;
-		}
-    printf("Get CSQ failed %d.....\r\n",i+1);
 	}
 	printf("Device Rebooting\r\n");
 	vTaskSuspendAll();
@@ -435,22 +268,6 @@ int deviceUpdateIMEI(void)
 			return 1;
 		}
     printf("Get IMEI failed %d.....\r\n",i+1);
-	}
-	printf("Device Rebooting\r\n");
-	vTaskSuspendAll();
-	while(1);
-}
-int deviceUpdateIMSI(void)
-{
-  G510.imsiFlag = 1;
-	for(int i=0;i<5;i++)
-	{
-		if(pdeviceUpdateIMSI()>0)
-		{
-			G510.imsiFlag = 0;
-			return 1;
-		}
-    printf("Get IMSI failed %d.....\r\n",i+1);
 	}
 	printf("Device Rebooting\r\n");
 	vTaskSuspendAll();

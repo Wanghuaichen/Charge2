@@ -40,8 +40,8 @@ void MsgInfoConfig(char *productKey,char *deviceName,char *deviceScreat)
 int MessageSend(const char *msg,u8 head)
 {
 	BaseType_t err;
-	char * Msg = pvPortMalloc(200);
-	memset(Msg,0,200);
+	char * Msg = pvPortMalloc(500);
+	memset(Msg,0,500);
 	if(head==0)
 	{
 	  strcpy(Msg,"AT-");
@@ -139,23 +139,23 @@ void MessageSendTask(void *pArg)
 /*消息发送注册函数*/
 void deviceSend(u8 head)
 {
-	char *cmd = pvPortMalloc(200);
+	char *cmd = pvPortMalloc(1000);
+	char *hex = pvPortMalloc(500);
 	char *len = pvPortMalloc(6);
 	if(head==1)
 	{
-		memset(cmd,0,200);
+		memset(cmd,0,1000);
+		memset(hex,0,500);
 		memset(len,0,6);
-		sprintf(len, "%d", strlen(Message.payLoad));
-		strcpy(cmd,"AT+CLOUDPUB=\"/");
-		strcat(cmd,Message.productKey);
-		strcat(cmd,"/");
-		strcat(cmd,Message.deviceName);
-		strcat(cmd,"/data\",0,");
-		strcat(cmd,len);
+		ToHexStr(Message.payLoad,hex);
+		strcpy(cmd,"AT+MIPSEND=1,");
+		strcat(cmd,"\"");
+		strcat(cmd,hex);
+		strcat(cmd,"\"");
 		strcat(cmd,"\r\n");
 		UsartWrite((uint8_t*)cmd);
-		vTaskDelay(100);
-		UsartWrite((uint8_t*)Message.payLoad);
+		vTaskDelay(300);
+		UsartWrite("AT+MIPPUSH=1\r\n");
 #ifdef 	DEBUG
 	  printf("send message: %s",cmd);
 		printf("%s\r\n",Message.payLoad);
@@ -174,9 +174,34 @@ void deviceSend(u8 head)
 	}
 	vPortFree(len);
 	vPortFree(cmd);
+	vPortFree(hex);
 }
 
-
+void ToHexStr(const char *str,char * hex)
+{
+	 int len = strlen(str);
+	 int i,j = 0;
+	for (i = 0,j=0; i < len; i++)
+	{
+		hex[j] = str[i]/16+'0';
+		j++;
+		hex[j] = str[i]%16 + '0';
+		j++;
+	}
+		for(i=0;i<j;i++)
+	{
+		switch(hex[i])
+		{
+			case ':':hex[i]='A';break;
+			case ';':hex[i]='B';break;
+			case '<':hex[i]='C';break;
+			case '=':hex[i]='D';break;
+			case '>':hex[i]='E';break;
+			case '?':hex[i]='F';break;
+			default:break;
+		}
+	}
+}
 
 int MessageReceiveFromISR(char *msg)
 {
@@ -212,21 +237,6 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 				}
 		 	}
 	  }
-		if(G510.csqFlag == 1)
-		{
-			if(xQueuePeek(G510.GprsRepQueue,rep,0)==pdTRUE)
-			{
-				if(NULL != strstr(buf,rep))
-				{
-					xQueueReceive(G510.GprsRepQueue,rep,0);
-					if(G510.GprsRepQueue!=NULL)
-	        {
-			       xQueueOverwrite(G510.CSQRepQueue,buf);
-  	      }
-					xSemaphoreGive(G510.GprsCSQBinarySemaphore);
-				}
-			}
-	  }
 		if(G510.imeiFlag == 1)
 		{
 			if(xQueuePeek(G510.GprsRepQueue,rep,0)==pdTRUE)
@@ -241,70 +251,7 @@ void MessageReceiveTask(void *pArg)   //命令解析任务
 					xSemaphoreGive(G510.IMEIBinarySemaphore);
 				}
 			}
-	    }
-		if(G510.imsiFlag == 1)
-		{
-			if(xQueuePeek(G510.GprsRepQueue,rep,0)==pdTRUE)
-			{
-				if(NULL != strstr(buf,rep))
-				{
-					xQueueReceive(G510.GprsRepQueue,rep,0);
-					if(G510.IMSIRepQueue!=NULL)
-	        {
-			       xQueueOverwrite(G510.IMSIRepQueue,buf);
-  	      }
-					xSemaphoreGive(G510.IMSIBinarySemaphore);
-				}
-			}
-	    }
-		if(G510.netFlag == 1)                               /*网络检查*/
-		{
-			if(NULL != strstr(buf,"MIPCALL"))
-			{
-				char * result = strstr(buf,"MIPCALL");
-				if(NULL != strstr(result,"."))
-				if(NetBinarySemaphore!=NULL)
-				{
-					xSemaphoreGive(NetBinarySemaphore);
-				}
-			}
-	    }		
-		if(RigisterBinarySemaphore!=NULL)                    /*注册回复*/
-		{  
-			 if(NULL != strstr(buf,REGISTER_REP))
-		   {
-				 if(RigisterBinarySemaphore!=NULL)
-		     xSemaphoreGive(RigisterBinarySemaphore);
-			 }
-		}
-		if(CSQBinarySemaphore!=NULL)                          /*CSQ回复*/
-		{  
-			 if(NULL != strstr(buf,CSQ_REP))
-		   {
-				 if(CSQBinarySemaphore!=NULL)
-		     xSemaphoreGive(CSQBinarySemaphore);
-			 }
-		} 
-		if(NULL != strstr(buf,DEV_CMD))                  /*devcmd Queue*/
-		{
-			 if(DevCmdQueue!=NULL)
-			 xQueueSend(DevCmdQueue,buf,0);
-		}
-		if(NULL != strstr(buf,CHA_CMD))                  /*chacmd Queue*/
-		{
-			 if(ChaCmdQueue!=NULL)
-			 xQueueSend(ChaCmdQueue,buf,0);
-		}
-		if(NULL != strstr(buf,CHECK_GET))                /*chacheck Queue*/
-		{
-			 if(ChaRepCheckQueue!=NULL)
-			 xQueueSend(ChaRepCheckQueue,buf,0);
-		}
-		if(NULL != strstr(buf,FINISH_REP))               /*Finish Rep Queue*/
-		{
-			 if(PostFinshRepQueue!=NULL)
-			 xQueueSend(PostFinshRepQueue,buf,0);
-		}
+	   }
 		if(NULL != strstr(buf,"OK"))
 		{
 		   xSemaphoreGive(Message.OKBinarySemaphore);

@@ -25,3 +25,4 @@ extern void MessageSendTask(void *pArg);
 extern int  MessageSendFromISR(char *msg,u8 head);
 
 extern void MessageReceiveTask(void *pArg);
+extern void ToHexStr(const char *str,char * hex);

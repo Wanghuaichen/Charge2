@@ -6,6 +6,7 @@
 #include "queue.h"
 #include "task.h"
 #include "message.h"
+#include "gps.h"
 #endif
 
 #if 1
@@ -35,6 +36,7 @@ int fputc(int ch, FILE *f)
 
 
 UART_HandleTypeDef UART3_Handler;
+UART_HandleTypeDef UART2_Handler; 
 UART_HandleTypeDef UART1_Handler; 
 
 
@@ -63,7 +65,63 @@ void LogInit(unsigned int  bound)
 	UART1_Handler.Init.Mode = UART_MODE_TX_RX;
 	HAL_UART_Init(&UART1_Handler);
 } 
+
+static u8 usart2RecBuf[usart2RecBufLen];     
+volatile unsigned short int usart2RecLen = 0;  
+
+void Usart2Init(void)
+{	
+	GPIO_InitTypeDef GPIO_Initure;
+	
+	__HAL_RCC_GPIOA_CLK_ENABLE();			 
+	__HAL_RCC_USART2_CLK_ENABLE();			 
+	
+	GPIO_Initure.Pin = GPIO_PIN_2;			 
+	GPIO_Initure.Mode = GPIO_MODE_AF_PP;		 
+	GPIO_Initure.Pull = GPIO_PULLUP;			 
+	GPIO_Initure.Speed = GPIO_SPEED_HIGH;		 
+	HAL_GPIO_Init(GPIOA, &GPIO_Initure);	   	 
+
+	GPIO_Initure.Pin = GPIO_PIN_3;		
+	GPIO_Initure.Mode = GPIO_MODE_AF_INPUT;	//模式要设置为复用输入模式！			
+	HAL_GPIO_Init(GPIOA, &GPIO_Initure);	
  
+	UART2_Handler.Instance = USART2;					  
+	UART2_Handler.Init.BaudRate = 9600;				   
+	UART2_Handler.Init.WordLength = UART_WORDLENGTH_8B;   
+	UART2_Handler.Init.StopBits = UART_STOPBITS_1;	    
+	UART2_Handler.Init.Parity = UART_PARITY_NONE;		    
+	UART2_Handler.Init.HwFlowCtl = UART_HWCONTROL_NONE;    
+	UART2_Handler.Init.Mode = UART_MODE_TX_RX;
+	HAL_UART_Init(&UART2_Handler);
+	HAL_UART_Receive_IT(&UART2_Handler, (u8 *)usart2RecBuf, usart2RecBufLen); 
+	HAL_NVIC_EnableIRQ(USART2_IRQn);			 
+	HAL_NVIC_SetPriority(USART2_IRQn, 7, 0);
+	__HAL_UART_CLEAR_IDLEFLAG(&UART2_Handler); 
+	__HAL_UART_ENABLE_IT(&UART2_Handler, UART_IT_IDLE);
+}
+
+void USART2_IRQHandler(void)                	
+{ 
+	u8 Res;
+	BaseType_t err;
+	BaseType_t xHighPriorityTaskWoken;
+	if ((__HAL_UART_GET_FLAG(&UART2_Handler, UART_FLAG_RXNE) != RESET))  
+	{
+		Res = USART2->DR;
+		usart2RecBuf[usart2RecLen++] = Res;	 
+	}
+	if ((__HAL_UART_GET_FLAG(&UART2_Handler, UART_FLAG_IDLE) != RESET))  
+	{
+		__HAL_UART_CLEAR_IDLEFLAG(&UART2_Handler);  
+		GPSReceiveFromISR(usart2RecBuf);
+		usart2RecLen = 0;
+		memset(usart2RecBuf,0,1024);
+	}
+	HAL_UART_IRQHandler(&UART2_Handler);	
+}  
+
+
 static u8 usart3RecBuf[usart3RecBufLen];     
 volatile unsigned short int usart3RecLen = 0;  
 

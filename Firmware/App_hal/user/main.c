@@ -19,6 +19,7 @@
 #include "storemoney.h"
 #include "device.h"
 #include "cost.h"
+#include  "gps.h"
 
 
 /*开始任务*/
@@ -39,48 +40,29 @@ TaskHandle_t MsgRecTaskHanhler;                  //任务句柄
 #define MsgSendTask_STK_SIZE     256        //任务堆栈大小
 TaskHandle_t MsgSendTaskHanhler;        //任务句柄
 
-/*设备参数修改任务*/
-#define DeviceCmdTask_TASK_PRIO    2          //任务优先级
-#define DeviceCmdTask_STK_SIZE     128        //任务堆栈大小
-TaskHandle_t DeviceCmdTaskHanhler;            //任务句柄
-
-
-/*充电端口相关任务*/
-#define ChargeCmdTask_TASK_PRIO    2          //任务优先级
-#define ChargeCmdTask_STK_SIZE     128        //任务堆栈大小
-TaskHandle_t ChargeCmdTaskHanhler;            //任务句柄
-
-/*充电回复检查相关任务*/
-#define ChargeCheckTask_TASK_PRIO    1          //任务优先级
-#define ChargeCheckTask_STK_SIZE     128        //任务堆栈大小
-TaskHandle_t ChargeCheckTaskHanhler;            //任务句柄
-
-/*充电完成回复检查相关任务*/
-#define PostFinishTask_TASK_PRIO      2          //任务优先级
-#define PostFinishTask_STK_SIZE     128        //任务堆栈大小
-TaskHandle_t PostFinishTaskHanhler;            //任务句柄
+/*GPS接收任务*/
+#define GPSTask_TASK_PRIO    2          //任务优先级
+#define GPSTask_STK_SIZE     256        //任务堆栈大小
+TaskHandle_t GPSTaskHanhler;        //任务句柄
 
 extern Gprs G510;
 xTimerHandle connectTimerHandler;
-xTimerHandle testTimerHandler;
-xTimerHandle CSQTimerHandler;
 xTimerHandle NetTimerHandler;
-xTimerHandle StoreTimerHandler;
-
+xTimerHandle testTimerHandler;
+xTimerHandle GPSTimerHandler;
 void testTask(void *pArg);
 int main()
 {
-	HAL_Init();                    	  
-  Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
+ 	HAL_Init();                    	  
+    Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
 	HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 	delay_init();
 	LogInit(230400);
 	Usart3Init(115200);
 	McuPowerInit();
-	McuPowerEnable(0);	
-	delay_xms(500);
 	McuPowerEnable(1);	
-	DeviceConfig();
+	delay_xms(500);
+	McuPowerEnable(0);	
 	delay_xms(5000);
 	
 	printf("hello usart1\r\n");
@@ -111,35 +93,25 @@ void StartTask(void * pvParameter)
 										(UBaseType_t   )pdFALSE,
 										(void *        )1,
 										(TimerCallbackFunction_t)G510.Connect
-										);
-	 testTimerHandler = xTimerCreate(   (const char *  )"OneShotTimer",
-										(TickType_t    )10000,
+										);	
+	/*触发ceshi定时器*/
+	 testTimerHandler = xTimerCreate((const char *  )"OneShotTimer",
+										(TickType_t    )5000,
 										(UBaseType_t   )pdTRUE,
 										(void *        )2,
 										(TimerCallbackFunction_t)testTask
-										);	
-	 NetTimerHandler  = xTimerCreate(   (const char *  )"NetTimer",
-										(TickType_t    )10000,      /*24小时定时器*/
+										);		
+	/*数据上报定时器*/
+	 GPSTimerHandler = xTimerCreate((const char *  )"OneShotTimer",
+										(TickType_t    )3000,
 										(UBaseType_t   )pdTRUE,
 										(void *        )3,
-										(TimerCallbackFunction_t)NetCheck
-										);	
-	 CSQTimerHandler  = xTimerCreate(   (const char *  )"CSQTimer",
-										(TickType_t    )86400000,      /*网络检查定时器*/
-										(UBaseType_t   )pdTRUE,
-									    (void *        )4,
-										(TimerCallbackFunction_t)DeviceUploadCSQ
-										);	
-	 StoreTimerHandler  = xTimerCreate( (const char *  )"StoreTimer",
-										(TickType_t    )180000,        /*存储当前余额*/
-										(UBaseType_t   )pdTRUE,
-									    (void *        )5,
-										(TimerCallbackFunction_t)StoreMoneyTask
+										(TimerCallbackFunction_t)GpsUpload
 										);											
 		MsgInfoConfig("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");
 		G510.Config("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");																
-	  /*创建串口接收任务*/
-  	xTaskCreate( (TaskFunction_t) MessageReceiveTask,       /*任务函数*/
+	   /*创建串口接收任务*/
+    	xTaskCreate( (TaskFunction_t) MessageReceiveTask,       /*任务函数*/
 							 (const char*   ) "LED0Task",                 /*任务名称*/
 							 (uint16_t      ) MsgRecTask_STK_SIZE,        /*任务堆栈大小*/
 							 (void *        ) NULL,                       /*传递给任务函数的参数*/
@@ -155,42 +127,20 @@ void StartTask(void * pvParameter)
 							 (UBaseType_t   ) MsgSendTask_TASK_PRIO,      /*任务优先级*/
 							 (TaskHandle_t* ) &MsgSendTaskHanhler         /*任务句柄*/
 							 );
-		 /*创建DeviceCmd任务*/
-		xTaskCreate( (TaskFunction_t) DevCmdTask,                /*任务函数*/
-							 (const char*   ) "DevCmdTask",                /*任务名称*/
-							 (uint16_t      ) DeviceCmdTask_STK_SIZE,      /*任务堆栈大小*/
-							 (void *        ) NULL,                        /*传递给任务函数的参数*/
-							 (UBaseType_t   ) DeviceCmdTask_TASK_PRIO,     /*任务优先级*/
-							 (TaskHandle_t* ) &DeviceCmdTaskHanhler        /*任务句柄*/
+
+
+	  	/*创建GPS接收任务*/
+		xTaskCreate( (TaskFunction_t) GPSReceiveTask,          /*任务函数*/
+							 (const char*   ) "GPSTask",                  /*任务名称*/
+							 (uint16_t      ) GPSTask_STK_SIZE,       /*任务堆栈大小*/
+							 (void *        ) NULL,                       /*传递给任务函数的参数*/
+							 (UBaseType_t   ) GPSTask_TASK_PRIO,      /*任务优先级*/
+							 (TaskHandle_t* ) &GPSTaskHanhler         /*任务句柄*/
 							 );
-		 /*创建ChargeCmd任务*/
-		xTaskCreate( (TaskFunction_t) ChaCmdTask,                /*任务函数*/
-							 (const char*   ) "ChaCmdTask",                /*任务名称*/
-							 (uint16_t      ) ChargeCmdTask_STK_SIZE,      /*任务堆栈大小*/
-							 (void *        ) NULL,                        /*传递给任务函数的参数*/
-							 (UBaseType_t   ) ChargeCmdTask_TASK_PRIO,     /*任务优先级*/
-							 (TaskHandle_t* ) &ChargeCmdTaskHanhler        /*任务句柄*/
-							 );
-		 /*创建ChargeCheck任务*/
-		xTaskCreate( (TaskFunction_t) ChaRepCheckTask,             /*任务函数*/
-							 (const char*   ) "ChaCheckTask",                /*任务名称*/
-							 (uint16_t      ) ChargeCheckTask_STK_SIZE,      /*任务堆栈大小*/
-							 (void *        ) NULL,                          /*传递给任务函数的参数*/
-							 (UBaseType_t   ) ChargeCheckTask_TASK_PRIO,     /*任务优先级*/
-							 (TaskHandle_t* ) &ChargeCheckTaskHanhler        /*任务句柄*/
-							 );
-		 /*创建ChargeCheck任务*/
-		xTaskCreate( (TaskFunction_t)PostFinishTask,             /*任务函数*/
-							 (const char*   ) "PostFinishTask",                /*任务名称*/
-							 (uint16_t      ) PostFinishTask_STK_SIZE,      /*任务堆栈大小*/
-							 (void *        ) NULL,                          /*传递给任务函数的参数*/
-							 (UBaseType_t   ) PostFinishTask_TASK_PRIO,     /*任务优先级*/
-							 (TaskHandle_t* ) &PostFinishTaskHanhler        /*任务句柄*/
-							 );
-		xTimerStart(connectTimerHandler,portMAX_DELAY);
-		xTimerStart(NetTimerHandler,portMAX_DELAY);	
-    xTimerStart(CSQTimerHandler,portMAX_DELAY);
-    xTimerStart(StoreTimerHandler,portMAX_DELAY);								 
+
+
+		xTimerStart(connectTimerHandler,portMAX_DELAY);	
+									 
 		/*删除开始任务*/
 		vTaskDelete(StartTaskHanhler);
 	  taskEXIT_CRITICAL();      /*退出临界区*/
@@ -198,17 +148,7 @@ void StartTask(void * pvParameter)
 
 void testTask(void *pArg)
 {
-	MessageSend("hello",1);
+	//MessageSend("hesldhf%&^zhxc123",1);
+	
+	// G510.UpdateIMEI();
 }
-//void LED1Task(void *pArg)
-//{	
-//	u8   p[20];
-//	u8 msgQRemainSize;   //消息队列剩余大小
-//	u8 msgQTotalSize;    //消息队列总大小
-//	while(1)
-//	{
-//		printf("hello\r\n");
-//		vTaskDelay(500);
-//		
-//	}
-//}

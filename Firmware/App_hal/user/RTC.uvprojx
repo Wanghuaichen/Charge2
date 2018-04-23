@@ -755,29 +755,9 @@
               <FilePath>..\source\cjson.c</FilePath>
             </File>
             <File>
-              <FileName>active.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\active.c</FilePath>
-            </File>
-            <File>
-              <FileName>charge.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\charge.c</FilePath>
-            </File>
-            <File>
               <FileName>para.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\source\para.c</FilePath>
-            </File>
-            <File>
-              <FileName>ota.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\ota.c</FilePath>
-            </File>
-            <File>
-              <FileName>register.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\register.c</FilePath>
             </File>
             <File>
               <FileName>csq.c</FileName>
@@ -785,49 +765,14 @@
               <FilePath>..\source\csq.c</FilePath>
             </File>
             <File>
-              <FileName>devcmd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\devcmd.c</FilePath>
-            </File>
-            <File>
-              <FileName>board.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\board.c</FilePath>
-            </File>
-            <File>
-              <FileName>fota.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\fota.c</FilePath>
-            </File>
-            <File>
-              <FileName>port.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\port.c</FilePath>
-            </File>
-            <File>
               <FileName>net.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\source\net.c</FilePath>
             </File>
             <File>
-              <FileName>chargerep.c</FileName>
+              <FileName>gps.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\source\chargerep.c</FilePath>
-            </File>
-            <File>
-              <FileName>storemoney.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\storemoney.c</FilePath>
-            </File>
-            <File>
-              <FileName>cost.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\cost.c</FilePath>
-            </File>
-            <File>
-              <FileName>device.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\device.c</FilePath>
+              <FilePath>..\source\gps.c</FilePath>
             </File>
           </Files>
         </Group>
