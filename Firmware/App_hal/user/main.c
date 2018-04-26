@@ -54,7 +54,7 @@ void testTask(void *pArg);
 int main()
 {
  	HAL_Init();                    	  
-    Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
+  Stm32_Clock_Init(RCC_PLL_MUL9);   	               		 
 	HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 	delay_init();
 	LogInit(230400);
