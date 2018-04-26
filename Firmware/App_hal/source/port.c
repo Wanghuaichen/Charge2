@@ -45,13 +45,15 @@ static  DevicePort Port[20] =
 	.SetUseStatus = deviceSetUseStatus,
 	.SetFinishStatus = deviceSetFinishStatus,
 	.SetErrorStatus = deviceSetErrorStatus,
+	.SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	.GetInsertStatus = deviceGetInsertStatus,
 	.GetUseTime = deviceGetUseTime,		
 	.GetAdcValue = deviceGetAdcValue,
 	.GetUseStatus = deviceGetUseStatus,
 	.GetErrorStatus = deviceGetErrorStatus,
 	.GetFinishStatus = deviceGetFinishStatus,
+	.GetInsertPinValue = deviceGetInsertPinValue,
 			
 	.ClearUseTime = deviceClearUseTime,
 	.ClearUseStatus = deviceClearUseStatus,
@@ -96,13 +98,15 @@ static  DevicePort Port[20] =
 	.SetUseStatus = deviceSetUseStatus,
 	.SetFinishStatus = deviceSetFinishStatus,
 	.SetErrorStatus = deviceSetErrorStatus,
+	.SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	.GetInsertStatus = deviceGetInsertStatus,		
 	.GetUseTime = deviceGetUseTime,		
 	.GetAdcValue = deviceGetAdcValue,
 	.GetUseStatus = deviceGetUseStatus,
 	.GetErrorStatus = deviceGetErrorStatus,
 	.GetFinishStatus = deviceGetFinishStatus,
+	.GetInsertPinValue = deviceGetInsertPinValue,
 			
 	.ClearUseTime = deviceClearUseTime,
 	.ClearUseStatus = deviceClearUseStatus,
@@ -148,13 +152,15 @@ static  DevicePort Port[20] =
 	.SetUseStatus = deviceSetUseStatus,
 	.SetFinishStatus = deviceSetFinishStatus,
 	.SetErrorStatus = deviceSetErrorStatus,
+	.SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	.GetInsertStatus = deviceGetInsertStatus,	
 	.GetUseTime = deviceGetUseTime,		
 	.GetAdcValue = deviceGetAdcValue,
 	.GetUseStatus = deviceGetUseStatus,
 	.GetErrorStatus = deviceGetErrorStatus,
 	.GetFinishStatus = deviceGetFinishStatus,
+	.GetInsertPinValue = deviceGetInsertPinValue,
 			
 	.ClearUseTime = deviceClearUseTime,
 	.ClearUseStatus = deviceClearUseStatus,
@@ -198,13 +204,15 @@ static  DevicePort Port[20] =
 	.SetUseTime = deviceSetUseTime,
 	.SetUseStatus = deviceSetUseStatus,
 	.SetFinishStatus = deviceSetFinishStatus,
+	.SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	.GetInsertStatus = deviceGetInsertStatus,			
 	.GetUseTime = deviceGetUseTime,		
 	.GetAdcValue = deviceGetAdcValue,
 	.GetUseStatus = deviceGetUseStatus,
 	.GetErrorStatus = deviceGetErrorStatus,
 	.GetFinishStatus = deviceGetFinishStatus,
+	.GetInsertPinValue = deviceGetInsertPinValue,
 			
 	.ClearUseTime = deviceClearUseTime,
 	.ClearUseStatus = deviceClearUseStatus,
@@ -248,13 +256,15 @@ static  DevicePort Port[20] =
 	.SetUseStatus = deviceSetUseStatus,
 	.SetFinishStatus = deviceSetFinishStatus,
 	.SetErrorStatus = deviceSetErrorStatus,
+	.SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	.GetInsertStatus = deviceGetInsertStatus,	
 	.GetUseTime = deviceGetUseTime,		
 	.GetAdcValue = deviceGetAdcValue,
 	.GetUseStatus = deviceGetUseStatus,
 	.GetErrorStatus = deviceGetErrorStatus,
 	.GetFinishStatus = deviceGetFinishStatus,
+	.GetInsertPinValue = deviceGetInsertPinValue,
 			
 	.ClearUseTime = deviceClearUseTime,
 	.ClearUseStatus = deviceClearUseStatus,
@@ -299,13 +309,15 @@ static  DevicePort Port[20] =
 	.SetUseStatus = deviceSetUseStatus,
 	.SetFinishStatus = deviceSetFinishStatus,
 	.SetErrorStatus = deviceSetErrorStatus,
+	.SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	.GetInsertStatus = deviceGetInsertStatus,		
 	.GetUseTime = deviceGetUseTime,		
 	.GetAdcValue = deviceGetAdcValue,
 	.GetUseStatus = deviceGetUseStatus,
 	.GetErrorStatus = deviceGetErrorStatus,
 	.GetFinishStatus = deviceGetFinishStatus,
+	.GetInsertPinValue = deviceGetInsertPinValue,
 			
 	.ClearUseTime = deviceClearUseTime,
 	.ClearUseStatus = deviceClearUseStatus,
@@ -350,13 +362,15 @@ static  DevicePort Port[20] =
 	.SetUseStatus = deviceSetUseStatus,
 	.SetFinishStatus = deviceSetFinishStatus,
 	.SetErrorStatus = deviceSetErrorStatus,
+	.SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	.GetInsertStatus = deviceGetInsertStatus,	
 	.GetUseTime = deviceGetUseTime,		
 	.GetAdcValue = deviceGetAdcValue,
 	.GetUseStatus = deviceGetUseStatus,
 	.GetErrorStatus = deviceGetErrorStatus,
 	.GetFinishStatus = deviceGetFinishStatus,
+	.GetInsertPinValue = deviceGetInsertPinValue,
 			
 	.ClearUseTime = deviceClearUseTime,
 	.ClearUseStatus = deviceClearUseStatus,
@@ -401,13 +415,15 @@ static  DevicePort Port[20] =
 	.SetUseStatus = deviceSetUseStatus,
 	.SetFinishStatus = deviceSetFinishStatus,
 	.SetErrorStatus = deviceSetErrorStatus,
+	.SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	.GetInsertStatus = deviceGetInsertStatus,		
 	.GetUseTime = deviceGetUseTime,		
 	.GetAdcValue = deviceGetAdcValue,
 	.GetUseStatus = deviceGetUseStatus,
 	.GetErrorStatus = deviceGetErrorStatus,
 	.GetFinishStatus = deviceGetFinishStatus,
+	.GetInsertPinValue = deviceGetInsertPinValue,
 			
 	.ClearUseTime = deviceClearUseTime,
 	.ClearUseStatus = deviceClearUseStatus,
@@ -452,13 +468,15 @@ static  DevicePort Port[20] =
 	.SetUseStatus = deviceSetUseStatus,
 	.SetFinishStatus = deviceSetFinishStatus,
 	.SetErrorStatus = deviceSetErrorStatus,
+	.SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	.GetInsertStatus = deviceGetInsertStatus,	
 	.GetUseTime = deviceGetUseTime,		
 	.GetAdcValue = deviceGetAdcValue,
 	.GetUseStatus = deviceGetUseStatus,
 	.GetErrorStatus = deviceGetErrorStatus,
 	.GetFinishStatus = deviceGetFinishStatus,
+	.GetInsertPinValue = deviceGetInsertPinValue,
 			
 	.ClearUseTime = deviceClearUseTime,
 	.ClearUseStatus = deviceClearUseStatus,
@@ -503,13 +521,15 @@ static  DevicePort Port[20] =
 	.SetUseStatus = deviceSetUseStatus,
 	.SetFinishStatus = deviceSetFinishStatus,
 	.SetErrorStatus = deviceSetErrorStatus,
+	.SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	.GetInsertStatus = deviceGetInsertStatus,	
 	.GetUseTime = deviceGetUseTime,		
 	.GetAdcValue = deviceGetAdcValue,
 	.GetUseStatus = deviceGetUseStatus,
 	.GetErrorStatus = deviceGetErrorStatus,
 	.GetFinishStatus = deviceGetFinishStatus,
+	.GetInsertPinValue = deviceGetInsertPinValue,
 			
 	.ClearUseTime = deviceClearUseTime,
 	.ClearUseStatus = deviceClearUseStatus,
@@ -554,13 +574,15 @@ static  DevicePort Port[20] =
 		.SetUseStatus = deviceSetUseStatus,
 		.SetFinishStatus = deviceSetFinishStatus,
 		.SetErrorStatus = deviceSetErrorStatus,
+	  .SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	  .GetInsertStatus = deviceGetInsertStatus,	
 		.GetUseTime = deviceGetUseTime,		
 		.GetAdcValue = deviceGetAdcValue,
 		.GetUseStatus = deviceGetUseStatus,
-	    .GetErrorStatus = deviceGetErrorStatus,
+	  .GetErrorStatus = deviceGetErrorStatus,
 		.GetFinishStatus = deviceGetFinishStatus,
+		.GetInsertPinValue = deviceGetInsertPinValue,
 			
 		.ClearUseTime = deviceClearUseTime,
 		.ClearUseStatus = deviceClearUseStatus,
@@ -605,13 +627,15 @@ static  DevicePort Port[20] =
 		.SetUseStatus = deviceSetUseStatus,
 		.SetFinishStatus = deviceSetFinishStatus,
 		.SetErrorStatus = deviceSetErrorStatus,
+	  .SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	  .GetInsertStatus = deviceGetInsertStatus,	
 		.GetUseTime = deviceGetUseTime,		
 		.GetAdcValue = deviceGetAdcValue,
 		.GetUseStatus = deviceGetUseStatus,
-    	.GetErrorStatus = deviceGetErrorStatus,
+    .GetErrorStatus = deviceGetErrorStatus,
 	 	.GetFinishStatus = deviceGetFinishStatus,
+		.GetInsertPinValue = deviceGetInsertPinValue,
 			
 		.ClearUseTime = deviceClearUseTime,
 		.ClearUseStatus = deviceClearUseStatus,
@@ -657,13 +681,15 @@ static  DevicePort Port[20] =
 		.SetUseStatus = deviceSetUseStatus,
 		.SetFinishStatus = deviceSetFinishStatus,
 		.SetErrorStatus = deviceSetErrorStatus,
+	  .SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	  .GetInsertStatus = deviceGetInsertStatus,	
 		.GetUseTime = deviceGetUseTime,		
 		.GetAdcValue = deviceGetAdcValue,
 		.GetUseStatus = deviceGetUseStatus,
 		.GetErrorStatus = deviceGetErrorStatus,
 		.GetFinishStatus = deviceGetFinishStatus,
+		.GetInsertPinValue = deviceGetInsertPinValue,
 			
 		.ClearUseTime = deviceClearUseTime,
 		.ClearUseStatus = deviceClearUseStatus,
@@ -707,13 +733,15 @@ static  DevicePort Port[20] =
 		.SetUseTime = deviceSetUseTime,
 		.SetUseStatus = deviceSetUseStatus,
 		.SetFinishStatus = deviceSetFinishStatus,
+	  .SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	  .GetInsertStatus = deviceGetInsertStatus,	
 		.GetUseTime = deviceGetUseTime,		
 		.GetAdcValue = deviceGetAdcValue,
 		.GetUseStatus = deviceGetUseStatus,
 		.GetErrorStatus = deviceGetErrorStatus,
 		.GetFinishStatus = deviceGetFinishStatus,
+		.GetInsertPinValue = deviceGetInsertPinValue,
 			
 		.ClearUseTime = deviceClearUseTime,
 		.ClearUseStatus = deviceClearUseStatus,
@@ -757,13 +785,15 @@ static  DevicePort Port[20] =
 		.SetUseStatus = deviceSetUseStatus,
 		.SetFinishStatus = deviceSetFinishStatus,
 		.SetErrorStatus = deviceSetErrorStatus,
+	  .SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	  .GetInsertStatus = deviceGetInsertStatus,	
 		.GetUseTime = deviceGetUseTime,		
 		.GetAdcValue = deviceGetAdcValue,
 		.GetUseStatus = deviceGetUseStatus,
 		.GetErrorStatus = deviceGetErrorStatus,
 		.GetFinishStatus = deviceGetFinishStatus,
+		.GetInsertPinValue = deviceGetInsertPinValue,
 			
 		.ClearUseTime = deviceClearUseTime,
 		.ClearUseStatus = deviceClearUseStatus,
@@ -808,13 +838,15 @@ static  DevicePort Port[20] =
 		.SetUseStatus = deviceSetUseStatus,
 		.SetFinishStatus = deviceSetFinishStatus,
 		.SetErrorStatus = deviceSetErrorStatus,
+	  .SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	  .GetInsertStatus = deviceGetInsertStatus,	
 		.GetUseTime = deviceGetUseTime,		
 		.GetAdcValue = deviceGetAdcValue,
 		.GetUseStatus = deviceGetUseStatus,
 		.GetErrorStatus = deviceGetErrorStatus,
 		.GetFinishStatus = deviceGetFinishStatus,
+		.GetInsertPinValue = deviceGetInsertPinValue,
 			
 		.ClearUseTime = deviceClearUseTime,
 		.ClearUseStatus = deviceClearUseStatus,
@@ -859,13 +891,15 @@ static  DevicePort Port[20] =
 		.SetUseStatus = deviceSetUseStatus,
 		.SetFinishStatus = deviceSetFinishStatus,
 		.SetErrorStatus = deviceSetErrorStatus,
+	  .SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	  .GetInsertStatus = deviceGetInsertStatus,	
 		.GetUseTime = deviceGetUseTime,		
 		.GetAdcValue = deviceGetAdcValue,
 		.GetUseStatus = deviceGetUseStatus,
 		.GetErrorStatus = deviceGetErrorStatus,
 		.GetFinishStatus = deviceGetFinishStatus,
+		.GetInsertPinValue = deviceGetInsertPinValue,
 			
 		.ClearUseTime = deviceClearUseTime,
 		.ClearUseStatus = deviceClearUseStatus,
@@ -910,13 +944,15 @@ static  DevicePort Port[20] =
 		.SetUseStatus = deviceSetUseStatus,
 		.SetFinishStatus = deviceSetFinishStatus,
 		.SetErrorStatus = deviceSetErrorStatus,
+	  .SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	  .GetInsertStatus = deviceGetInsertStatus,	
 		.GetUseTime = deviceGetUseTime,		
 		.GetAdcValue = deviceGetAdcValue,
 		.GetUseStatus = deviceGetUseStatus,
 		.GetErrorStatus = deviceGetErrorStatus,
 		.GetFinishStatus = deviceGetFinishStatus,
+		.GetInsertPinValue = deviceGetInsertPinValue,
 			
 		.ClearUseTime = deviceClearUseTime,
 		.ClearUseStatus = deviceClearUseStatus,
@@ -961,13 +997,15 @@ static  DevicePort Port[20] =
 		.SetUseStatus = deviceSetUseStatus,
 		.SetFinishStatus = deviceSetFinishStatus,
 		.SetErrorStatus = deviceSetErrorStatus,
+	  .SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	  .GetInsertStatus = deviceGetInsertStatus,	
 		.GetUseTime = deviceGetUseTime,		
 		.GetAdcValue = deviceGetAdcValue,
 		.GetUseStatus = deviceGetUseStatus,
 		.GetErrorStatus = deviceGetErrorStatus,
 		.GetFinishStatus = deviceGetFinishStatus,
+		.GetInsertPinValue = deviceGetInsertPinValue,
 			
 		.ClearUseTime = deviceClearUseTime,
 		.ClearUseStatus = deviceClearUseStatus,
@@ -1012,13 +1050,15 @@ static  DevicePort Port[20] =
 		.SetUseStatus = deviceSetUseStatus,
 		.SetFinishStatus = deviceSetFinishStatus,
 		.SetErrorStatus = deviceSetErrorStatus,
+	  .SetInsertStatus = deviceSetInsertStatus,
 		
-			
+	  .GetInsertStatus = deviceGetInsertStatus,	
 		.GetUseTime = deviceGetUseTime,		
 		.GetAdcValue = deviceGetAdcValue,
 		.GetUseStatus = deviceGetUseStatus,
 		.GetErrorStatus = deviceGetErrorStatus,
 		.GetFinishStatus = deviceGetFinishStatus,
+		.GetInsertPinValue = deviceGetInsertPinValue,
 			
 		.ClearUseTime = deviceClearUseTime,
 		.ClearUseStatus = deviceClearUseStatus,
@@ -1050,6 +1090,11 @@ void deviceSetUseStatus(struct DxPort *port)          //设置IO充电       充
 	HAL_GPIO_WritePin(port->controlPinGPIOX, port->controlPin, CHARGEPOWERON);           //打开继电器
 	HAL_GPIO_WritePin(port->displayLedPinGPIOX, port->displayLedPin, CHARGELEDON);       //打开充电灯
 	vPortFree(Msg);
+}
+
+void deviceSetInsertStatus(struct DxPort *port,u8 status)          //设置IO充电       充电  状态设置并写入flash
+{
+  port->InsertStatus = status;
 }
 void deviceSetFinishStatus(struct DxPort *port, u8 status)       //设置IO断电       完成  状态设置并写入flash
 {
@@ -1127,15 +1172,19 @@ void deviceSetUseTime(struct DxPort *port, float time)           //充电  时�
 	vPortFree(stat);
 }
 
-int   deviceGetUseStatus(struct DxPort *port)
+int  deviceGetUseStatus(struct DxPort *port)
 {
 	return port->useStatus;
 }  
-int   deviceGetErrorStatus(struct DxPort *port)
+int  deviceGetInsertStatus(struct DxPort *port)
+{
+	return port->InsertStatus;
+} 
+int  deviceGetErrorStatus(struct DxPort *port)
 {
 	return port->errorFlag;
 }  
-float  deviceGetUseTime(struct DxPort *port)
+float deviceGetUseTime(struct DxPort *port)
 {
 	return port->useTime;
 }
@@ -1154,9 +1203,17 @@ int  deviceGetAdcValue(struct DxPort *port)
  
 	return (int)HAL_ADC_GetValue(&(port->adcHandler));     	        //返回最近一次ADC1规则组的转换结果
 }
-int   deviceGetFinishStatus(struct DxPort *port)
+int  deviceGetFinishStatus(struct DxPort *port)
 {
 	return port->finishFlag;
+}  
+int deviceGetInsertPinValue(struct DxPort *port)
+{
+	if(HAL_GPIO_ReadPin(port->loadPinGPIOX,port->loadPin)==INSERT)
+	{
+		return 1;
+	}
+	return 0;
 }  
 
 
@@ -1576,6 +1633,17 @@ void PortSetUseStatus(u8 portnumber)
 	portnumber--;
 	Port[portnumber].SetUseStatus(&Port[portnumber]);
 }
+void PortSetInsertStatus(u8 portnumber,u8 status)
+{
+	if (portnumber < 1 || portnumber > 21)
+	{
+		printf("port number is invalid\n");
+		while (1)
+			;
+	}
+	portnumber--;
+	Port[portnumber].SetInsertStatus(&Port[portnumber],status);
+}
 void PortSetFinishStatus(u8 portnumber, u8 status)
 {
 	if (portnumber < 1 || portnumber > 21)
@@ -1735,6 +1803,17 @@ int PortGetUseStatus(u8 portnumber)
 	portnumber--;
 	return Port[portnumber].GetUseStatus(&Port[portnumber]);
 }
+int PortGetInsertStatus(u8 portnumber)
+{
+	if (portnumber < 1 || portnumber > 21)
+	{
+		printf("port number is invalid\n");
+		while (1)
+			;
+	}
+	portnumber--;
+	return Port[portnumber].GetInsertStatus(&Port[portnumber]);
+}
 float PortGetUseTime(u8 portnumber)
 {
 	if (portnumber < 1 || portnumber > 21)
@@ -1768,7 +1847,17 @@ int PortGetErrorStatus(u8 portnumber)
 	portnumber--;
 	return Port[portnumber].GetErrorStatus(&Port[portnumber]);
 }
-
+int PortGetInsertPinValue(u8 portnumber)
+{
+	if (portnumber < 1 || portnumber > 21)
+	{
+		printf("port number is invalid\n");
+		while (1)
+			;
+	}
+	portnumber--;
+	return Port[portnumber].GetInsertPinValue(&Port[portnumber]);
+}
 void PortConfig(u8 portnumber)
 {
 	if (portnumber < 1 || portnumber > 21)

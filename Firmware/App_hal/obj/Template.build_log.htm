@@ -22,32 +22,46 @@ Dialog DLL:      TARMSTM.DLL V1.66.0.0
  
 <h2>Project:</h2>
 D:\GitHub\Charge2\Firmware\App_hal\user\RTC.uvprojx
-Project File Date:  04/12/2018
+Project File Date:  04/26/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'RTC'
-compiling net.c...
-..\include\net.h(3): warning:  #1-D: last line of file ends without a newline
-  extern int NetCheck(void);
+compiling main.c...
 ..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
   extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
-..\source\net.c(34): warning:  #111-D: statement is unreachable
-  	return -1;
-..\source\net.c(35): warning:  #1-D: last line of file ends without a newline
-  }
-..\source\net.c: 4 warnings, 0 errors
+..\include\csq.h(6): warning:  #1-D: last line of file ends without a newline
+  extern int DeviceUploadCSQ(void);
+..\include\devcmd.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void DevCmdTask(void* pAgr);
+..\include\net.h(3): warning:  #1-D: last line of file ends without a newline
+  extern int NetCheck(void);
+..\include\charge.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void ChaCmdTask(void* pAgr);
+..\include\chargerep.h(8): warning:  #1-D: last line of file ends without a newline
+  extern void ChaRepCheckTask(void* pAgr);
+..\include\storemoney.h(4): warning:  #1-D: last line of file ends without a newline
+  extern void StoreMoneyTask(void);
+..\include\device.h(4): warning:  #1-D: last line of file ends without a newline
+  extern void DeviceConfig(void);
+..\include\cost.h(15): warning:  #1-D: last line of file ends without a newline
+  extern void PostFinishTask(void * pAgr);
+..\include\insert.h(4): warning:  #1-D: last line of file ends without a newline
+  extern void UpdateInsertStatus(void *pAgr);
+main.c(222): warning:  #1-D: last line of file ends without a newline
+  //}
+main.c: 11 warnings, 0 errors
 linking...
-Program Size: Code=48810 RO-data=1134 RW-data=4380 ZI-data=25692  
+Program Size: Code=49158 RO-data=1134 RW-data=4624 ZI-data=25688  
 FromELF: creating hex file...
-"..\OBJ\Template.axf" - 0 Error(s), 4 Warning(s).
+"..\OBJ\Template.axf" - 0 Error(s), 11 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_RTC
   C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>

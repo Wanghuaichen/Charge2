@@ -1,9 +1,12 @@
 #pragma once 
 #include "sys.h"
 
+#define INSERT 0
+
 typedef struct DxPort 
 {
 	u8 portNumber;
+	volatile u8 InsertStatus;
 	uint16_t controlPin;
 	uint16_t displayLedPin;
 	uint16_t adcPin;
@@ -31,7 +34,10 @@ typedef struct DxPort
 	void(*SetErrorStatus)(struct DxPort *port,u8 perrorStatus);
 	void(*SetFinishStatus)(struct DxPort *port, u8 status);
 	void(*SetUseTime)(struct DxPort *port, float time);
+	void(*SetInsertStatus)(struct DxPort *port, u8 status);
 	
+	int(*GetInsertStatus)(struct DxPort *port);
+	int(*GetInsertPinValue)(struct DxPort *port);
 	int(*GetUseStatus)(struct DxPort *port);
 	int(*GetErrorStatus)(struct DxPort *port);
 	int(*GetAdcValue)(struct DxPort *port);
@@ -56,6 +62,7 @@ typedef struct DxPort
 
 
 extern void deviceSetUseStatus(struct DxPort *port);
+extern void deviceSetInsertStatus(struct DxPort *port, u8 status);
 extern void deviceSetFinishStatus(struct DxPort *port, u8 status);
 extern void deviceSetUseTime(struct DxPort *port, float time);
 extern void deviceSetErrorStatus(struct DxPort *port,u8 perrorStatus);
@@ -66,6 +73,8 @@ extern float  deviceGetUseTime(struct DxPort *port);
 extern int  deviceGetFinishStatus(struct DxPort *port);
 extern int  deviceGetUseStatus(struct DxPort *port);
 extern int  deviceGetErrorStatus(struct DxPort *port);
+extern int  deviceGetInsertStatus(struct DxPort *port);
+extern int  deviceGetInsertPinValue(struct DxPort *port);
 
 extern void deviceClearUseStatus(struct DxPort *port);
 extern void deviceClearFinishStatus(struct DxPort *port);
@@ -86,6 +95,7 @@ extern void devicePortInit(struct DxPort *port);
 extern void PortSetUseStatus(u8 portnumber);
 extern void PortSetErrorStatus(u8 portnumber,u8 perrorStatus);
 extern void PortSetFinishStatus(u8 portnumber, u8 status);
+extern void PortSetInsertStatus(u8 portnumber, u8 status);
 extern void PortSetUseTime(u8 portnumber, float time);
 
 extern void PortClearUseStatus(u8 portnumber);
@@ -100,10 +110,12 @@ extern void PortUpdateErrorStatus(u8 portnumber);
 
 
 extern int PortGetUseStatus(u8 portnumber);
+extern int PortGetInsertStatus(u8 portnumber);
 extern float PortGetUseTime(u8 portnumber);
 extern int PortGetErrorStatus(u8 portnumber);
 extern int PortGetFinishStatus(u8 portnumber);
 extern int PortGetAdcValue(u8 portnumber);
+extern int PortGetInsertPinValue(u8 portnumber);
 
 //extern void PortSubUseTime(u8 portnumber);
 extern void PortConfig(u8 portnumber);

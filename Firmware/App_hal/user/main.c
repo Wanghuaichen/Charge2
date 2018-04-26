@@ -19,6 +19,7 @@
 #include "storemoney.h"
 #include "device.h"
 #include "cost.h"
+#include "insert.h"
 
 
 /*开始任务*/
@@ -66,7 +67,7 @@ xTimerHandle testTimerHandler;
 xTimerHandle CSQTimerHandler;
 xTimerHandle NetTimerHandler;
 xTimerHandle StoreTimerHandler;
-
+xTimerHandle PortInsertTimerHandler;
 void testTask(void *pArg);
 int main()
 {
@@ -135,9 +136,15 @@ void StartTask(void * pvParameter)
 										(UBaseType_t   )pdTRUE,
 									    (void *        )5,
 										(TimerCallbackFunction_t)StoreMoneyTask
+										);	
+	 PortInsertTimerHandler  = xTimerCreate( (const char *  )"InsertTimer",
+										(TickType_t    )1000,        /*存储当前余额*/
+										(UBaseType_t   )pdTRUE,
+									    (void *        )6,
+										(TimerCallbackFunction_t)UpdateInsertStatus
 										);											
-		MsgInfoConfig("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");
-		G510.Config("C8OzD6Pkm9V","devicename","TGMmysg7DXDBBYUGEeTzv6hcAae4z5M9");																
+		MsgInfoConfig("a1E8aztfkKP","chargeDevice","KlnMWkwaPEAku2Oh0Toe8F2V7H4nLkn9");
+		G510.Config("a1E8aztfkKP","chargeDevice","KlnMWkwaPEAku2Oh0Toe8F2V7H4nLkn9");																
 	  /*创建串口接收任务*/
   	xTaskCreate( (TaskFunction_t) MessageReceiveTask,       /*任务函数*/
 							 (const char*   ) "LED0Task",                 /*任务名称*/
@@ -190,7 +197,8 @@ void StartTask(void * pvParameter)
 		xTimerStart(connectTimerHandler,portMAX_DELAY);
 		xTimerStart(NetTimerHandler,portMAX_DELAY);	
     xTimerStart(CSQTimerHandler,portMAX_DELAY);
-    xTimerStart(StoreTimerHandler,portMAX_DELAY);								 
+    xTimerStart(StoreTimerHandler,portMAX_DELAY);		
+    xTimerStart(PortInsertTimerHandler,portMAX_DELAY);								 
 		/*删除开始任务*/
 		vTaskDelete(StartTaskHanhler);
 	  taskEXIT_CRITICAL();      /*退出临界区*/

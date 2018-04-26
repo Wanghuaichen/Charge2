@@ -76,6 +76,7 @@
 "..\obj\storemoney.o"
 "..\obj\cost.o"
 "..\obj\device.o"
+"..\obj\insert.o"
 "..\obj\flash.o"
 "..\obj\gpio.o"
 --strict --scatter "..\OBJ\Template.sct"
