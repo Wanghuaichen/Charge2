@@ -6,7 +6,8 @@
 #include "string.h"
 #include "message.h"
 #include "timers.h"
-
+#include "gprs.h"
+extern Gprs G510;
 extern xTimerHandle GPSTimerHandler;
 
 
@@ -106,8 +107,10 @@ void GPSReceiveTask(void *pArg)   //命令解析任务
 
 void GpsUpload(void)
 {
+	static u32 i =0;
 	printf("GPS Task\r\n");
 	char* msg = pvPortMalloc(1024);
+	char *buf = pvPortMalloc(1024);
 	
 //	char* g1 = pvPortMalloc(100);
 //	char* g2 = pvPortMalloc(100);
@@ -117,6 +120,7 @@ void GpsUpload(void)
 //	char* g6 = pvPortMalloc(100);
 //	char* g7 = pvPortMalloc(100);
 	memset(msg,0,1024);
+	memset(buf,0,1024);
 //	memset(g1,0,100);
 //	memset(g2,0,100);
 //	memset(g3,0,100);
@@ -144,8 +148,19 @@ void GpsUpload(void)
 //	strcat(msg,g6);
 //	strcat(msg,g7);
 	
-	MessageSend(msg,1);
-	
+	strcpy(buf,"$IMEI,");
+	strcat(buf,(const char*)G510.imei);
+	strcat(buf,"\r\n");
+	if(i==0)
+	{
+		strcat(buf,"$FLAG,0\r\n");
+	}
+	else if(i>0)
+	{
+		strcat(buf,"$FLAG,1\r\n");
+	}
+	strcat(buf,msg);
+	MessageSend(buf,1);
 	vPortFree(msg);
 //	vPortFree(g1);
 //	vPortFree(g2);

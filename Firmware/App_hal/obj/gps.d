@@ -75,3 +75,4 @@
 ..\obj\gps.o: ..\include\message.h
 ..\obj\gps.o: ..\FreeRTOS\include\semphr.h
 ..\obj\gps.o: ..\FreeRTOS\include\timers.h
+..\obj\gps.o: ..\include\gprs.h

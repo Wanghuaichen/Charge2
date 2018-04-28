@@ -103,7 +103,7 @@ void StartTask(void * pvParameter)
 										);		
 	/*数据上报定时器*/
 	 GPSTimerHandler = xTimerCreate((const char *  )"OneShotTimer",
-										(TickType_t    )3000,
+										(TickType_t    )10000,
 										(UBaseType_t   )pdTRUE,
 										(void *        )3,
 										(TimerCallbackFunction_t)GpsUpload

@@ -22,19 +22,260 @@ Dialog DLL:      TARMSTM.DLL V1.66.0.0
  
 <h2>Project:</h2>
 D:\GitHub\Charge2\Firmware\App_hal\user\RTC.uvprojx
-Project File Date:  04/25/2018
+Project File Date:  04/28/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
-Build target 'RTC'
-"..\OBJ\Template.axf" - 0 Error(s), 0 Warning(s).
+Rebuild target 'RTC'
+assembling startup_stm32f103xe.s...
+compiling stm32f1xx_it.c...
+compiling stm32f1xx_hal_msp.c...
+compiling stm32f1xx_hal.c...
+compiling system_stm32f1xx.c...
+compiling stm32f1xx_hal_can.c...
+compiling main.c...
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\include\csq.h(6): warning:  #1-D: last line of file ends without a newline
+  extern int DeviceUploadCSQ(void);
+..\include\devcmd.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void DevCmdTask(void* pAgr);
+..\include\net.h(3): warning:  #1-D: last line of file ends without a newline
+  extern int NetCheck(void);
+..\include\charge.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void ChaCmdTask(void* pAgr);
+..\include\chargerep.h(8): warning:  #1-D: last line of file ends without a newline
+  extern void ChaRepCheckTask(void* pAgr);
+..\include\storemoney.h(4): warning:  #1-D: last line of file ends without a newline
+  extern void StoreMoneyTask(void);
+..\include\device.h(4): warning:  #1-D: last line of file ends without a newline
+  extern void DeviceConfig(void);
+..\include\cost.h(15): warning:  #1-D: last line of file ends without a newline
+  extern void PostFinishTask(void * pAgr);
+..\include\gps.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void GpsUpload(void);
+main.c: 10 warnings, 0 errors
+compiling stm32f1xx_hal_adc.c...
+compiling stm32f1xx_hal_adc_ex.c...
+compiling stm32f1xx_hal_crc.c...
+compiling stm32f1xx_hal_flash.c...
+compiling stm32f1xx_hal_cortex.c...
+compiling stm32f1xx_hal_dma.c...
+compiling stm32f1xx_hal_eth.c...
+compiling stm32f1xx_hal_dac.c...
+compiling stm32f1xx_hal_dac_ex.c...
+compiling stm32f1xx_hal_cec.c...
+compiling stm32f1xx_hal_gpio.c...
+compiling stm32f1xx_hal_flash_ex.c...
+compiling stm32f1xx_hal_iwdg.c...
+compiling stm32f1xx_hal_gpio_ex.c...
+compiling stm32f1xx_hal_irda.c...
+compiling stm32f1xx_hal_hcd.c...
+compiling stm32f1xx_hal_i2c.c...
+compiling stm32f1xx_hal_i2s.c...
+compiling stm32f1xx_hal_pcd_ex.c...
+compiling stm32f1xx_hal_rcc_ex.c...
+compiling stm32f1xx_hal_pccard.c...
+compiling stm32f1xx_hal_nand.c...
+compiling stm32f1xx_hal_pwr.c...
+compiling stm32f1xx_hal_pcd.c...
+compiling stm32f1xx_hal_nor.c...
+compiling stm32f1xx_hal_rcc.c...
+compiling stm32f1xx_hal_rtc.c...
+compiling stm32f1xx_hal_spi_ex.c...
+compiling stm32f1xx_hal_smartcard.c...
+compiling stm32f1xx_hal_rtc_ex.c...
+compiling stm32f1xx_hal_sram.c...
+compiling stm32f1xx_hal_sd.c...
+compiling stm32f1xx_hal_spi.c...
+compiling stm32f1xx_hal_tim.c...
+compiling stm32f1xx_ll_sdmmc.c...
+compiling stm32f1xx_hal_uart.c...
+compiling stm32f1xx_ll_fsmc.c...
+compiling stm32f1xx_hal_tim_ex.c...
+compiling stm32f1xx_hal_wwdg.c...
+compiling stm32f1xx_hal_usart.c...
+compiling stm32f1xx_ll_usb.c...
+compiling delay.c...
+..\sys\delay.c(77): warning:  #1-D: last line of file ends without a newline
+  }
+..\sys\delay.c: 1 warning, 0 errors
+compiling croutine.c...
+compiling usart.c...
+..\include\gps.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void GpsUpload(void);
+..\sys\usart.c(117): warning:  #167-D: argument of type "u8 *" is incompatible with parameter of type "char *"
+  		GPSReceiveFromISR(usart2RecBuf);
+..\sys\usart.c(119): warning:  #223-D: function "memset" declared implicitly
+  		memset(usart2RecBuf,0,1024);
+..\sys\usart.c(107): warning:  #177-D: variable "err"  was declared but never referenced
+  	BaseType_t err;
+..\sys\usart.c(108): warning:  #177-D: variable "xHighPriorityTaskWoken"  was declared but never referenced
+  	BaseType_t xHighPriorityTaskWoken;
+..\sys\usart.c(176): warning:  #223-D: function "MessageReceiveFromISR" declared implicitly
+  		MessageReceiveFromISR(usart3RecBuf);
+..\sys\usart.c(178): warning:  #223-D: function "memset" declared implicitly
+  		memset(usart3RecBuf,0,120);
+..\sys\usart.c(166): warning:  #177-D: variable "err"  was declared but never referenced
+  	BaseType_t err;
+..\sys\usart.c(167): warning:  #177-D: variable "xHighPriorityTaskWoken"  was declared but never referenced
+  	BaseType_t xHighPriorityTaskWoken;
+..\sys\usart.c(185): warning:  #223-D: function "strlen" declared implicitly
+  	int len = strlen(Data);
+..\sys\usart.c: 10 warnings, 0 errors
+compiling sys.c...
+compiling event_groups.c...
+compiling queue.c...
+compiling timers.c...
+compiling tasks.c...
+compiling list.c...
+compiling heap_4.c...
+compiling cjson.c...
+..\source\cjson.c(31): warning:  #1293-D: assignment in condition
+  	if (!(copy = (char*)cJSON_malloc(len))) return 0;
+..\source\cjson.c(211): warning:  #1293-D: assignment in condition
+  	ptr = str; while ((token = *ptr) && ++len) {if (strchr("\"\\\b\f\n\r\t", token)) len++;
+..\source\cjson.c(329): warning:  #1293-D: assignment in condition
+  		if (!(new_item = cJSON_New_Item())) return 0; 	/* memory fail */
+..\source\cjson.c(420): warning:  #1293-D: assignment in condition
+  		if (!(new_item = cJSON_New_Item()))	return 0; /* memory fail */
+..\source\cjson.c(600): warning:  #1-D: last line of file ends without a newline
+  //}
+..\source\cjson.c(11): warning:  #550-D: variable "ep"  was set but never used
+  static const char *ep;
+..\source\cjson.c: 6 warnings, 0 errors
+compiling port.c...
+compiling csq.c...
+..\include\register.h(6): warning:  #1-D: last line of file ends without a newline
+  extern int DeviceRegister(void);
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\source\csq.c(43): warning:  #111-D: statement is unreachable
+  	return -1;
+..\source\csq.c(44): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\csq.c: 4 warnings, 0 errors
+compiling net.c...
+..\include\net.h(3): warning:  #1-D: last line of file ends without a newline
+  extern int NetCheck(void);
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\source\net.c(34): warning:  #111-D: statement is unreachable
+  	return -1;
+..\source\net.c(35): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\net.c: 4 warnings, 0 errors
+compiling gprs.c...
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\include\register.h(6): warning:  #1-D: last line of file ends without a newline
+  extern int DeviceRegister(void);
+..\include\gps.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void GpsUpload(void);
+..\source\gprs.c(207): warning:  #167-D: argument of type "volatile char *" is incompatible with parameter of type "void *restrict"
+  								 memcpy(G510.imei,result,15);
+..\source\gprs.c(275): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\gprs.c: 5 warnings, 0 errors
+compiling para.c...
+..\include\para.h(14): warning:  #1-D: last line of file ends without a newline
+  extern void RepPara(void);
+..\include\board.h(7): warning:  #1-D: last line of file ends without a newline
+  extern u8 GetBoardPinNum(void);
+..\source\para.c(36): warning:  #177-D: variable "st"  was declared but never referenced
+  	char * st = NULL;
+..\source\para.c(37): warning:  #177-D: variable "ed"  was declared but never referenced
+  	char * ed = NULL;
+..\source\para.c(96): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(PRICE_ADDR, (u32*)Msg, 10);
+..\source\para.c(109): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+  	STMFLASH_Read(PRICE_ADDR, (u32*)Msg, 10);
+..\source\para.c(161): warning:  #223-D: function "STMFLASH_Write" declared implicitly
+  	STMFLASH_Write(CURRENT_MAX_ADDR, (u32*)Msg, 10);
+..\source\para.c(175): warning:  #223-D: function "STMFLASH_Read" declared implicitly
+  	STMFLASH_Read(CURRENT_MAX_ADDR, (u32*)Msg, 10);
+..\source\para.c(213): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\para.c(12): warning:  #177-D: variable "updateSocket"  was declared but never referenced
+  static char updateSocket[50] = { 0 };
+..\source\para.c(13): warning:  #177-D: variable "hardWareVision"  was declared but never referenced
+  static int hardWareVision       = 0;
+..\source\para.c(14): warning:  #177-D: variable "softWareVision"  was declared but never referenced
+  static int softWareVision       = 0;
+..\source\para.c(16): warning:  #177-D: variable "heartBite"  was declared but never referenced
+  static int heartBite            = 0;
+..\source\para.c: 13 warnings, 0 errors
+compiling message.c...
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\include\register.h(6): warning:  #1-D: last line of file ends without a newline
+  extern int DeviceRegister(void);
+..\include\csq.h(6): warning:  #1-D: last line of file ends without a newline
+  extern int DeviceUploadCSQ(void);
+..\include\devcmd.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void DevCmdTask(void* pAgr);
+..\include\charge.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void ChaCmdTask(void* pAgr);
+..\include\chargerep.h(8): warning:  #1-D: last line of file ends without a newline
+  extern void ChaRepCheckTask(void* pAgr);
+..\include\cost.h(15): warning:  #1-D: last line of file ends without a newline
+  extern void PostFinishTask(void * pAgr);
+..\source\message.c(92): warning:  #940-D: missing return statement at end of non-void function "MessageSendFromISR" 
+  }
+..\source\message.c(137): warning:  #111-D: statement is unreachable
+  	vPortFree(buf);
+..\source\message.c(156): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+  		UsartWrite((uint8_t*)cmd);
+..\source\message.c(168): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+  		UsartWrite((uint8_t*)cmd);
+..\source\message.c(220): warning:  #940-D: missing return statement at end of non-void function "MessageReceiveFromISR" 
+  }
+..\source\message.c(208): warning:  #177-D: variable "Res"  was declared but never referenced
+  		u8 Res;
+..\source\message.c(261): warning:  #111-D: statement is unreachable
+  	vPortFree(buf);
+..\source\message.c(263): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\message.c: 15 warnings, 0 errors
+compiling gpio.c...
+..\source\gpio.c(16): warning:  #188-D: enumerated type mixed with another type
+  	HAL_GPIO_WritePin(
+PIOE, 
+PIO_PIN_0, status);
+..\source\gpio.c(17): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\gpio.c: 2 warnings, 0 errors
+compiling gps.c...
+..\include\gps.h(6): warning:  #1-D: last line of file ends without a newline
+  extern void GpsUpload(void);
+..\include\gprs.h(53): warning:  #1-D: last line of file ends without a newline
+  extern void deviceConfig(const char *pimei,const char *pimsi,const char * pcsq);
+..\source\gps.c(51): warning:  #940-D: missing return statement at end of non-void function "GPSReceiveFromISR" 
+  }
+..\source\gps.c(39): warning:  #177-D: variable "Res"  was declared but never referenced
+  	  u8 Res;
+..\source\gps.c(172): warning:  #1-D: last line of file ends without a newline
+  }
+..\source\gps.c: 5 warnings, 0 errors
+compiling flash.c...
+..\source\flash.c(26): warning:  #550-D: variable "FlashStatus"  was set but never used
+  	HAL_StatusTypeDef FlashStatus = HAL_OK;
+..\source\flash.c(55): warning:  #177-D: variable "FlashStatus"  was declared but never referenced
+  	HAL_StatusTypeDef FlashStatus = HAL_OK;	
+..\source\flash.c(56): warning:  #550-D: variable "addrx"  was set but never used
+  	u32 addrx = 0;
+..\source\flash.c: 3 warnings, 0 errors
+linking...
+Program Size: Code=29720 RO-data=1056 RW-data=540 ZI-data=24700  
+FromELF: creating hex file...
+"..\OBJ\Template.axf" - 0 Error(s), 78 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_RTC
   C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:47
 </pre>
 </body>
 </html>
